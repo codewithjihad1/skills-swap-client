@@ -1,4 +1,4 @@
-import { User } from "@/components/matchmaking/UserProfile";
+import { User } from "@/app/matchmaking/components/UserProfile";
 
 export const mockUsers: User[] = [
     {
