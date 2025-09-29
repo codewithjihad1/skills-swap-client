@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
 import { ModeToggle } from "../theme/toggle-theme";
+import { Button } from "@/components/ui/button";
 
 interface User {
     id: string;
@@ -50,12 +51,12 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <div className="flex items-center space-x-2">
-                            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-gradient">
                                 <span className="text-white font-bold text-lg">
                                     S
                                 </span>
                             </div>
-                            <span className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                            <span className="hidden lg:block text-xl font-bold text-gray-900 dark:text-gray-100">
                                 SkillShare Hub
                             </span>
                         </div>
@@ -200,18 +201,12 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                             </div>
                         ) : (
                             <div className="flex items-center space-x-4">
-                                <Link
-                                    href="/auth/signin"
-                                    className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:bg-gray-100 dark:hover:bg-slate-800"
-                                >
-                                    Sign In
-                                </Link>
-                                <Link
-                                    href="/auth/signup"
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 shadow-md hover:shadow-lg"
-                                >
-                                    Get Started
-                                </Link>
+                                <Button variant="ghost" asChild>
+                                    <Link href="/auth/signin">Sign In</Link>
+                                </Button>
+                                <Button variant="gradient" asChild>
+                                    <Link href="/auth/signup">Get Started</Link>
+                                </Button>
                             </div>
                         )}
                     </div>
@@ -327,24 +322,34 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                                     </>
                                 ) : (
                                     <>
-                                        <Link
-                                            href="/auth/signin"
-                                            className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 rounded-md mx-2"
-                                            onClick={() =>
-                                                setIsMobileMenuOpen(false)
-                                            }
+                                        <Button
+                                            variant="ghost"
+                                            className="w-full mx-2"
+                                            asChild
                                         >
-                                            Sign In
-                                        </Link>
-                                        <Link
-                                            href="/auth/signup"
-                                            className="block px-3 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-md mx-3 mt-2 text-center font-medium shadow-md hover:shadow-lg transition-all duration-200"
-                                            onClick={() =>
-                                                setIsMobileMenuOpen(false)
-                                            }
+                                            <Link
+                                                href="/auth/signin"
+                                                onClick={() =>
+                                                    setIsMobileMenuOpen(false)
+                                                }
+                                            >
+                                                Sign In
+                                            </Link>
+                                        </Button>
+                                        <Button
+                                            variant="gradient"
+                                            className="w-full mx-2 mt-2"
+                                            asChild
                                         >
-                                            Get Started
-                                        </Link>
+                                            <Link
+                                                href="/auth/signup"
+                                                onClick={() =>
+                                                    setIsMobileMenuOpen(false)
+                                                }
+                                            >
+                                                Get Started
+                                            </Link>
+                                        </Button>
                                     </>
                                 )}
                             </div>

@@ -10,7 +10,7 @@ export default function page() {
     <main>
       <HeroSection />
       <HowItWorks />
-      <Matchmaking />
+      {/* <Matchmaking /> */}
       <Testimonials />
       <FAQ />
       <TrustCommunity />
