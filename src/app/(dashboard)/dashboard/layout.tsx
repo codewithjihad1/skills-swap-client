@@ -107,8 +107,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     const closeSidebar = () => setSidebarOpen(false);
 
     return (
-        <html lang="en">
-            <body>
+        <html lang="en" suppressHydrationWarning>
+            <body className="max-w-screen overflow-x-hidden" suppressHydrationWarning>
                 <AuthProvider>
                     <ThemeProvider
                         attribute="class"
@@ -116,7 +116,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+                        <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900">
                             {/* Mobile Header */}
                             <MobileHeader setSidebarOpen={setSidebarOpen} />
 

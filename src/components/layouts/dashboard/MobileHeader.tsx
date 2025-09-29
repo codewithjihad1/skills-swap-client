@@ -20,9 +20,6 @@ const MobileHeader = ({ setSidebarOpen }: any) => {
                         <div className="w-8 h-8 bg-gradient-to-r from-primary to-purple-600 rounded-lg flex items-center justify-center">
                             <BookOpen className="w-5 h-5 text-white" />
                         </div>
-                        <span className="font-bold text-gray-900 dark:text-white">
-                            SkillSwap
-                        </span>
                     </Link>
                 </div>
                 <div className="flex items-center gap-2">
