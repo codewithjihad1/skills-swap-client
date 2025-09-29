@@ -1,6 +1,9 @@
 // Re-export Button component for easier imports
 export { Button, buttonVariants } from "./button";
 
+// Re-export Tabs component for easier imports
+export { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
+
 // Additional button utility types
 export type ButtonVariant =
     | "default"
