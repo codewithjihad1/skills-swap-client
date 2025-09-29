@@ -64,7 +64,7 @@ const TeamSection = () => {
     },
     {
       id: 4,
-      name: "Ishan Uddin",
+      name: "Ihsan Uddin Khan",
       role: "Full-Stack Developer",
       bio: "Builds engaged communities with passion. Connects people and fosters meaningful interactions through technology.",
       image: "/ishan.jpeg",
