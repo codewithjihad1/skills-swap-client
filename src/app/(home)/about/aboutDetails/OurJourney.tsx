@@ -319,7 +319,7 @@ const OurJourney = () => {
     const current = journeyData[activeIndex];
 
     return (
-        <section className="py-16 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-gray-900 to-gray-950 text-white">
+        <section className="py-16 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 text-gray-900 dark:text-white">
             <div className="max-w-7xl mx-auto">
                 {/* Section header */}
                 <motion.div
@@ -328,21 +328,21 @@ const OurJourney = () => {
                     viewport={{ once: true, margin: "-100px" }}
                     className="text-center mb-16"
                 >
-                    <motion.div className="inline-flex items-center justify-center mb-6 px-6 py-3 bg-gray-800/50 backdrop-blur-md rounded-full border border-gray-700">
-                        <CalendarIcon className="w-5 h-5 text-blue-400 mr-2" />
-                        <span className="text-sm font-semibold text-blue-400 uppercase tracking-wider">
+                    <motion.div className="inline-flex items-center justify-center mb-6 px-6 py-3 bg-white/70 dark:bg-gray-800/50 backdrop-blur-md rounded-full border border-gray-200 dark:border-gray-700">
+                        <CalendarIcon className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2" />
+                        <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
                             Our Development Journey
                         </span>
                     </motion.div>
 
                     <motion.h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
                         Building{" "}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">
                             SkillShareHub
                         </span>
                     </motion.h2>
 
-                    <motion.p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    <motion.p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
                         For the past 8 days, our team has dedicated 8-10 hours
                         daily to create a professional platform with dark mode
                         design.
@@ -356,29 +356,35 @@ const OurJourney = () => {
                     viewport={{ once: true }}
                     className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
                 >
-                    <div className="bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-700">
-                        <div className="text-3xl font-bold text-blue-400 mb-2">
+                    <div className="bg-white/70 dark:bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-200 dark:border-gray-700">
+                        <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
                             8
                         </div>
-                        <div className="text-gray-400">Days of Work</div>
+                        <div className="text-gray-600 dark:text-gray-400">
+                            Days of Work
+                        </div>
                     </div>
-                    <div className="bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-700">
-                        <div className="text-3xl font-bold text-purple-400 mb-2">
+                    <div className="bg-white/70 dark:bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-200 dark:border-gray-700">
+                        <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
                             70+
                         </div>
-                        <div className="text-gray-400">Hours Invested</div>
+                        <div className="text-gray-600 dark:text-gray-400">
+                            Hours Invested
+                        </div>
                     </div>
-                    <div className="bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-700">
-                        <div className="text-3xl font-bold text-emerald-400 mb-2">
+                    <div className="bg-white/70 dark:bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-200 dark:border-gray-700">
+                        <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">
                             12+
                         </div>
-                        <div className="text-gray-400">Components Built</div>
+                        <div className="text-gray-600 dark:text-gray-400">
+                            Components Built
+                        </div>
                     </div>
-                    <div className="bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-700">
-                        <div className="text-3xl font-bold text-amber-400 mb-2">
+                    <div className="bg-white/70 dark:bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-200 dark:border-gray-700">
+                        <div className="text-3xl font-bold text-amber-600 dark:text-amber-400 mb-2">
                             2
                         </div>
-                        <div className="text-gray-400">
+                        <div className="text-gray-600 dark:text-gray-400">
                             Dedicated Developers
                         </div>
                     </div>
@@ -389,16 +395,16 @@ const OurJourney = () => {
                     {/* Navigation arrows */}
                     <button
                         onClick={prevSlide}
-                        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-gray-800/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg border border-gray-700 hover:bg-gray-700/80 transition-all duration-300"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100/80 dark:hover:bg-gray-700/80 transition-all duration-300"
                     >
-                        <ChevronLeft className="w-6 h-6 text-white" />
+                        <ChevronLeft className="w-6 h-6 text-gray-800 dark:text-white" />
                     </button>
 
                     <button
                         onClick={nextSlide}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-gray-800/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg border border-gray-700 hover:bg-gray-700/80 transition-all duration-300"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100/80 dark:hover:bg-gray-700/80 transition-all duration-300"
                     >
-                        <ChevronRight className="w-6 h-6 text-white" />
+                        <ChevronRight className="w-6 h-6 text-gray-800 dark:text-white" />
                     </button>
 
                     {/* Carousel track */}
@@ -411,7 +417,7 @@ const OurJourney = () => {
                             className="flex"
                         >
                             <div className="w-full flex-shrink-0">
-                                <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-3xl p-8 md:p-12 border border-gray-700 shadow-2xl">
+                                <div className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-3xl p-8 md:p-12 border border-gray-200 dark:border-gray-700 shadow-2xl">
                                     <div className="grid md:grid-cols-2 gap-12 items-center">
                                         {/* Content */}
                                         <div>
@@ -427,10 +433,10 @@ const OurJourney = () => {
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <span className="text-2xl font-bold text-white">
+                                                    <span className="text-2xl font-bold text-gray-900 dark:text-white">
                                                         {current.day}
                                                     </span>
-                                                    <div className="flex items-center text-gray-400 mt-1">
+                                                    <div className="flex items-center text-gray-600 dark:text-gray-400 mt-1">
                                                         <ClockIcon className="w-4 h-4 mr-1" />
                                                         <span className="text-sm">
                                                             {current.hours} work
@@ -446,17 +452,17 @@ const OurJourney = () => {
                                                 </div>
                                             </motion.div>
 
-                                            <motion.h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">
+                                            <motion.h3 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white">
                                                 {current.title}
                                             </motion.h3>
 
-                                            <motion.p className="text-lg text-gray-300 mb-8 leading-relaxed">
+                                            <motion.p className="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
                                                 {current.description}
                                             </motion.p>
 
                                             {/* Features */}
                                             <motion.div className="space-y-3 mb-8">
-                                                <h4 className="font-semibold text-gray-200">
+                                                <h4 className="font-semibold text-gray-800 dark:text-gray-200">
                                                     Key Features:
                                                 </h4>
                                                 <ul className="space-y-2">
@@ -469,7 +475,7 @@ const OurJourney = () => {
                                                                 <div
                                                                     className={`w-2 h-2 rounded-full bg-gradient-to-r ${current.color} mr-3`}
                                                                 ></div>
-                                                                <span className="text-gray-400">
+                                                                <span className="text-gray-600 dark:text-gray-400">
                                                                     {feature}
                                                                 </span>
                                                             </li>
@@ -485,24 +491,24 @@ const OurJourney = () => {
                                             className="relative"
                                         >
                                             <div
-                                                className={`rounded-3xl overflow-hidden shadow-2xl aspect-video bg-gradient-to-br ${current.color}/10 flex items-center justify-center p-8 border border-gray-700`}
+                                                className={`rounded-3xl overflow-hidden shadow-2xl aspect-video bg-gradient-to-br ${current.color}/10 flex items-center justify-center p-8 border border-gray-200 dark:border-gray-700`}
                                             >
                                                 <div className="text-center">
                                                     <div className="w-20 h-20 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                                                        <div className="w-10 h-10 text-blue-400">
+                                                        <div className="w-10 h-10 text-blue-600 dark:text-blue-400">
                                                             {current.icon}
                                                         </div>
                                                     </div>
-                                                    <h4 className="text-xl font-semibold text-white mb-2">
+                                                    <h4 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                                                         {current.day} Progress
                                                     </h4>
-                                                    <p className="text-gray-400">
+                                                    <p className="text-gray-600 dark:text-gray-400">
                                                         Focused development on{" "}
                                                         {current.title.toLowerCase()}
                                                     </p>
 
                                                     {/* Progress bar */}
-                                                    <div className="mt-6 bg-gray-700 rounded-full h-2">
+                                                    <div className="mt-6 bg-gray-300 dark:bg-gray-700 rounded-full h-2">
                                                         <div
                                                             className={`h-2 rounded-full bg-gradient-to-r ${current.color}`}
                                                             style={{
@@ -559,7 +565,7 @@ const OurJourney = () => {
                             className={`w-3 h-3 rounded-full transition-all duration-300 ${
                                 index === activeIndex
                                     ? `bg-gradient-to-r ${current.color} w-8`
-                                    : "bg-gray-700 hover:bg-gray-600"
+                                    : "bg-gray-400 dark:bg-gray-700 hover:bg-gray-500 dark:hover:bg-gray-600"
                             }`}
                             aria-label={`Go to ${journeyData[index].day}`}
                         />
@@ -580,7 +586,7 @@ const OurJourney = () => {
                             className={`px-4 py-2 rounded-full font-medium transition-all duration-300 ${
                                 index === activeIndex
                                     ? `bg-gradient-to-r ${item.color} text-white shadow-lg`
-                                    : "bg-gray-800 text-gray-400 hover:bg-gray-700"
+                                    : "bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-700"
                             }`}
                         >
                             {item.day}

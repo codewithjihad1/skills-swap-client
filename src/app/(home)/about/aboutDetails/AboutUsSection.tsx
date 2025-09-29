@@ -1,5 +1,6 @@
 // 'use client';
 
+import { Button } from '@/components/ui';
 import { motion } from 'framer-motion';
 import { 
   Users, 
@@ -10,6 +11,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const AboutUsSection = () => {
   // Animation variants
@@ -76,12 +78,12 @@ const AboutUsSection = () => {
             </motion.div>
             
             <motion.div variants={fadeIn} className="flex flex-wrap gap-4">
-              <button className="px-6 py-3 bg-primary text-white rounded-lg font-medium flex items-center shadow-lg hover:shadow-primary/30 transition-all duration-300">
-                Join Our Community <ArrowRight className="ml-2 w-5 h-5" />
-              </button>
-              <button className="px-6 py-3 border border-foreground/20 rounded-lg font-medium hover:bg-foreground/5 transition-colors duration-300">
-                Meet The Team
-              </button>
+              <Button variant="gradient" asChild>
+                <Link href="/auth/signup">Join Our Community <ArrowRight className="ml-2 w-5 h-5" /></Link>
+              </Button>
+              <Button variant="outline" asChild>
+                <Link href="about/team">Meet The Team</Link>
+              </Button>
             </motion.div>
           </motion.div>
           
