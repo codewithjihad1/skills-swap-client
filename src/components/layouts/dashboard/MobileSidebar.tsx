@@ -5,7 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const MobileSidebar = ({ sidebarOpen, closeSidebar, navigationItems, isActive }) => {
+const MobileSidebar = ({
+    sidebarOpen,
+    closeSidebar,
+    navigationItems,
+    isActive,
+}: any) => {
     return (
         <AnimatePresence>
             {sidebarOpen && (
