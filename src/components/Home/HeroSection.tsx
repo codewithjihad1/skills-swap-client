@@ -1,6 +1,7 @@
 import Image from "next/image";
 import img from "../../../public/banner.jpeg";
 import { GraduationCap, Medal } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
     return (
@@ -52,9 +53,9 @@ const HeroSection = () => {
                     <br className="hidden sm:block" />
                     with Skill Boost.
                 </p>
-                <button className="bg-primary text-white px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 rounded-lg shadow-md dark:shadow-gray-700 hover:bg-blue-500 dark:hover:bg-blue-700 transition text-sm sm:text-base md:text-lg cursor-pointer">
+                <Button variant="gradient" size="lg">
                     Explore Academic Courses
-                </button>
+                </Button>
             </div>
         </div>
     );
