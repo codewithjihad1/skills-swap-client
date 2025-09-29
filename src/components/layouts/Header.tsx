@@ -201,7 +201,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                             </div>
                         ) : (
                             <div className="flex items-center space-x-4">
-                                <Button variant="ghost" asChild>
+                                <Button variant="secondary" asChild>
                                     <Link href="/auth/signin">Sign In</Link>
                                 </Button>
                                 <Button variant="gradient" asChild>
