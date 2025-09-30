@@ -57,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                                 </span>
                             </div>
                             <span className="hidden lg:block text-xl font-bold text-gray-900 dark:text-gray-100">
-                                SkillShare Hub
+                                SkillSwap
                             </span>
                         </div>
                     </div>
@@ -82,7 +82,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                                 </span>
                             </div>
                             <span className="hidden md:block text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
-                                SkillShare Hub
+                                SkillSwap
                             </span>
                         </Link>
                     </div>

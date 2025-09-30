@@ -121,7 +121,7 @@ const pressItems: PressItem[] = [
     {
         id: 1,
         publication: "TechCrunch",
-        quote: "Skill Share Hub is revolutionizing online education with its innovative mentor-driven approach.",
+        quote: "Skill Swap is revolutionizing online education with its innovative mentor-driven approach.",
         author: "Sarah Wilson, Education Editor",
         logo: "https://upload.wikimedia.org/wikipedia/commons/b/b9/TechCrunch_logo.svg",
     },

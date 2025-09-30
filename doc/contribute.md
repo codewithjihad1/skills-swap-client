@@ -1,6 +1,6 @@
-# Contributing to Skill Share Hub 🚀
+# Contributing to Skill Swap 🚀
 
-Welcome to the Skill Share Hub project! This guide will help you get started with contributing to our team project.
+Welcome to the Skill Swap project! This guide will help you get started with contributing to our team project.
 
 ## 🚀 Getting Started
 

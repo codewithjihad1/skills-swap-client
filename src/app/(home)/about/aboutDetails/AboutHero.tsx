@@ -12,7 +12,7 @@ const AboutHero = () => {
     };
 
     return (
-        <section className="relative py-24 px-4 md:px-8 lg:px-16 overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <section className="relative py-16 px-4 md:px-8 lg:px-16 overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             {/* Background elements */}
             <div className="absolute inset-0 bg-gradient-to-br from-blue-100/30 via-purple-100/20 to-pink-100/30 dark:from-gray-800/50 dark:via-gray-700/30 dark:to-gray-800/50 z-0"></div>
 
@@ -81,10 +81,10 @@ const AboutHero = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
-                className="absolute bottom-1 left-0 right-0"
+                className="mt-8"
             >
                 <div className="max-w-5xl mx-auto bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl p-6 border border-gray-200/50 dark:border-gray-600/50 shadow-sm">
-                    <div className="flex flex-wrap justify-center gap-10">
+                    <div className="flex flex-wrap justify-around gap-10">
                         <div className="text-center">
                             <div className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
                                 10,000+
@@ -98,7 +98,7 @@ const AboutHero = () => {
                                 500+
                             </div>
                             <div className="text-gray-600 dark:text-gray-400">
-                                Skills Shared
+                                Skills Swap
                             </div>
                         </div>
                         <div className="text-center">
