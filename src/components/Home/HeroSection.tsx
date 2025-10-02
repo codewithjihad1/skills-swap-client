@@ -32,7 +32,7 @@ const HeroSection = () => {
                 {/* Name */}
                 <div className="absolute top-6 -right-6 sm:top-8 sm:-right-10 bg-white dark:bg-gray-800 px-3 py-2 sm:px-4 sm:py-2 rounded-lg shadow-md dark:shadow-gray-700">
                     <p className="font-semibold text-red-500 dark:text-red-400 text-sm sm:text-base">
-                        Skill Share
+                        Skill Swap
                     </p>
                     <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                         Online instructor

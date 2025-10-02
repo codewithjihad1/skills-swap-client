@@ -15,10 +15,10 @@ import {
     TrendingUp,
     Users,
 } from "lucide-react";
-import DesktopHeader from "@/components/layouts/dashboard/DesktopHeader";
-import MobileHeader from "@/components/layouts/dashboard/MobileHeader";
-import DesktopSidebar from "@/components/layouts/dashboard/DesktopSidebar";
-import MobileSidebar from "@/components/layouts/dashboard/MobileSidebar";
+import DesktopHeader from "@/app/(dashboard)/components/DesktopHeader";
+import MobileHeader from "@/app/(dashboard)/components/MobileHeader";
+import DesktopSidebar from "@/app/(dashboard)/components/DesktopSidebar";
+import MobileSidebar from "@/app/(dashboard)/components/MobileSidebar";
 import AuthProvider from "@/provider/AuthProvider";
 import { ThemeProvider } from "next-themes";
 

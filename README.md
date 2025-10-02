@@ -1,4 +1,4 @@
-# Skill Share Hub - Frontend
+# Skill Swap - Frontend
 
 A modern, responsive web application for skill sharing and learning, built with Next.js 15 and React 19.
 
