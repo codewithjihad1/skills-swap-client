@@ -202,7 +202,6 @@ userSchema.methods.getLockoutInfo = function (this: IUser) {
 };
 
 // Index for performance
-userSchema.index({ email: 1 });
 userSchema.index({ lockUntil: 1 });
 
 export default mongoose.models.User ||
