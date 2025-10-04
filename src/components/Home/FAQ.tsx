@@ -75,22 +75,18 @@ const faqData: FAQItem[] = [
 const categories = {
     general: {
         name: "General",
-        icon: "🌟",
         color: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
     },
     learning: {
         name: "Learning",
-        icon: "📚",
         color: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300",
     },
     technical: {
         name: "Technical",
-        icon: "⚙️",
         color: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300",
     },
     billing: {
         name: "Billing",
-        icon: "💳",
         color: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-300",
     },
 };
@@ -185,7 +181,7 @@ const FAQ = () => {
                                     : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 shadow-md"
                             }`}
                         >
-                            🌈 All Topics
+                            All Topics
                         </button>
                         {Object.entries(categories).map(([key, category]) => (
                             <button
@@ -197,7 +193,7 @@ const FAQ = () => {
                                         : `${category.color} hover:scale-105 shadow-md`
                                 }`}
                             >
-                                {category.icon} {category.name}
+                                {category.name}
                             </button>
                         ))}
                     </div>
@@ -250,7 +246,6 @@ const FAQ = () => {
                                                         .color
                                                 }`}
                                             >
-                                                {categories[faq.category].icon}{" "}
                                                 {categories[faq.category].name}
                                             </span>
                                             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 pr-4">

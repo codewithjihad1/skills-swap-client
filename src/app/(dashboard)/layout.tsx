@@ -14,6 +14,7 @@ import {
     Calendar,
     TrendingUp,
     Users,
+    Plus,
 } from "lucide-react";
 import DesktopHeader from "@/app/(dashboard)/components/DesktopHeader";
 import MobileHeader from "@/app/(dashboard)/components/MobileHeader";
@@ -21,6 +22,7 @@ import DesktopSidebar from "@/app/(dashboard)/components/DesktopSidebar";
 import MobileSidebar from "@/app/(dashboard)/components/MobileSidebar";
 import AuthProvider from "@/provider/AuthProvider";
 import { ThemeProvider } from "next-themes";
+import ReactQueryProvider from "@/provider/ReactQueryProvider";
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
@@ -80,7 +82,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         {
             name: "Add Skill",
             href: "/dashboard/skills/add",
-            icon: PlusCircle,
+            icon: Plus,
             color: "text-green-600 dark:text-green-400",
         },
         {
@@ -108,47 +110,52 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className="max-w-screen overflow-x-hidden" suppressHydrationWarning>
+            <body
+                className="max-w-screen overflow-x-hidden"
+                suppressHydrationWarning
+            >
                 <AuthProvider>
-                    <ThemeProvider
-                        attribute="class"
-                        defaultTheme="system"
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900">
-                            {/* Mobile Header */}
-                            <MobileHeader setSidebarOpen={setSidebarOpen} />
+                    <ReactQueryProvider>
+                        <ThemeProvider
+                            attribute="class"
+                            defaultTheme="system"
+                            enableSystem
+                            disableTransitionOnChange
+                        >
+                            <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900">
+                                {/* Mobile Header */}
+                                <MobileHeader setSidebarOpen={setSidebarOpen} />
 
-                            {/* Desktop Sidebar */}
-                            <DesktopSidebar
-                                navigationItems={navigationItems}
-                                quickActions={quickActions}
-                                isActive={isActive}
-                            />
+                                {/* Desktop Sidebar */}
+                                <DesktopSidebar
+                                    navigationItems={navigationItems}
+                                    quickActions={quickActions}
+                                    isActive={isActive}
+                                />
 
-                            {/* Mobile Sidebar Overlay */}
-                            <MobileSidebar
-                                sidebarOpen={sidebarOpen}
-                                closeSidebar={closeSidebar}
-                                navigationItems={navigationItems}
-                                isActive={isActive}
-                            />
+                                {/* Mobile Sidebar Overlay */}
+                                <MobileSidebar
+                                    sidebarOpen={sidebarOpen}
+                                    closeSidebar={closeSidebar}
+                                    navigationItems={navigationItems}
+                                    isActive={isActive}
+                                />
 
-                            {/* Main Content Area */}
-                            <div
-                                className={`lg:pl-64 flex flex-col min-h-screen`}
-                            >
-                                {/* Desktop Header */}
-                                <DesktopHeader />
+                                {/* Main Content Area */}
+                                <div
+                                    className={`lg:pl-64 flex flex-col min-h-screen`}
+                                >
+                                    {/* Desktop Header */}
+                                    <DesktopHeader />
 
-                                {/* Page Content */}
-                                <main className="flex-1 p-4 lg:p-6">
-                                    {children}
-                                </main>
+                                    {/* Page Content */}
+                                    <main className="flex-1 p-4 lg:p-6">
+                                        {children}
+                                    </main>
+                                </div>
                             </div>
-                        </div>
-                    </ThemeProvider>
+                        </ThemeProvider>
+                    </ReactQueryProvider>
                 </AuthProvider>
             </body>
         </html>

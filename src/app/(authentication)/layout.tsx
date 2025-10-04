@@ -19,7 +19,6 @@ export const metadata: Metadata = {
         "Connect with others to exchange skills and learn new talents through our innovative skills swap platform.",
 };
 
-    
 const layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <html lang="en">

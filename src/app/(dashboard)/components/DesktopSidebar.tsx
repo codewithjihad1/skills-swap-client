@@ -1,3 +1,4 @@
+import AddSkillComponent from "@/components/skills/AddSkill";
 import { ModeToggle } from "@/components/theme/toggle-theme";
 import { Button } from "@/components/ui";
 import { BookOpen, Settings, Star } from "lucide-react";
@@ -102,6 +103,21 @@ const DesktopSidebar = ({ navigationItems, quickActions, isActive }: any) => {
                     <div className="space-y-2">
                         {quickActions.map((action: any) => {
                             const Icon = action.icon;
+                            if (action.name === "Add Skill") {
+                                return (
+                                    <AddSkillComponent
+                                        key={action.href}
+                                        addSkillBtnContent={
+                                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                                                <Icon
+                                                    className={`w-4 h-4 ${action.color}`}
+                                                />
+                                                <span>{action.name}</span>
+                                            </div>
+                                        }
+                                    />
+                                );
+                            }
                             return (
                                 <Link
                                     key={action.href}
