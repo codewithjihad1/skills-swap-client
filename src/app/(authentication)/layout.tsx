@@ -2,6 +2,7 @@ import "@/app/globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Metadata } from "next/dist/lib/metadata/types/metadata-interface";
 import React from "react";
+import { ToastContainer } from "react-toastify";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -22,7 +23,10 @@ export const metadata: Metadata = {
 const layout = ({ children }: { children: React.ReactNode }) => {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body>
+                {children}
+                <ToastContainer />
+            </body>
         </html>
     );
 };

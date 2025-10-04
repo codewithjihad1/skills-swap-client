@@ -19,8 +19,8 @@ import {
     Sparkles,
     BookOpen,
     Users,
-    TrendingUp,
 } from "lucide-react";
+import { useAddSkillMutation } from "@/lib/addSkill";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -106,7 +106,9 @@ function PostSkillForm() {
     const [currentStep, setCurrentStep] = useState(1);
     const [tagInput, setTagInput] = useState("");
     const [exchangeInput, setExchangeInput] = useState("");
-    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Initialize TanStack Query mutation
+    const mutation = useAddSkillMutation();
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -245,40 +247,16 @@ function PostSkillForm() {
 
     // Submit handler
     async function onSubmit(data: z.infer<typeof FormSchema>) {
-        setIsSubmitting(true);
-        console.log("Submitted Data", data);
-
         try {
-            const res = await fetch(
-                "https://skills-swap-server.vercel.app/api/skills",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(data),
-                }
-            );
+            // Use the mutation from TanStack Query
+            await mutation.mutateAsync(data);
 
-            if (!res.ok) {
-                throw new Error("Failed to post skill");
-            }
-
-            toast.success("Skill posted successfully!", {
-                description:
-                    "Your skill is now live and available for exchange.",
-            });
-
-            // Reset form
+            // Reset form on success
             form.reset();
             setCurrentStep(1);
         } catch (error) {
-            console.error(error);
-            toast.error("Failed to post skill", {
-                description: "Please try again later.",
-            });
-        } finally {
-            setIsSubmitting(false);
+            // Error handling is done in the mutation hook
+            console.error("Error submitting skill:", error);
         }
     }
 
@@ -849,10 +827,10 @@ function PostSkillForm() {
                     ) : (
                         <Button
                             type="submit"
-                            disabled={isSubmitting}
+                            disabled={mutation.isPending}
                             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8"
                         >
-                            {isSubmitting ? (
+                            {mutation.isPending ? (
                                 <>
                                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
                                     Posting...

@@ -24,6 +24,7 @@ import AuthProvider from "@/provider/AuthProvider";
 import { ThemeProvider } from "next-themes";
 import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import { useSession } from "next-auth/react";
+import { ToastContainer } from "react-toastify";
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
@@ -155,6 +156,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                                     </main>
                                 </div>
                             </div>
+
+                            <ToastContainer />
                         </ThemeProvider>
                     </ReactQueryProvider>
                 </AuthProvider>
