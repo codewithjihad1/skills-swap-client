@@ -1,3 +1,4 @@
+import AddSkillComponent from "@/components/skills/AddSkill";
 import { Button } from "@/components/ui";
 import { Bell, PlusCircle, Search } from "lucide-react";
 import Image from "next/image";
@@ -18,10 +19,7 @@ const DesktopHeader = () => {
                     </div>
                 </div>
                 <div className="flex items-center gap-4">
-                    <Button variant="gradient" size="sm">
-                        <PlusCircle className="w-4 h-4 mr-2" />
-                        New Swap
-                    </Button>
+                    <AddSkillComponent />
                     <Button variant="ghost" size="sm" className="relative">
                         <Bell className="w-5 h-5" />
                         <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">

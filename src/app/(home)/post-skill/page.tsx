@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import AddSkillComponent from "@/components/skills/AddSkill";
 
 // ✅ Zod schema
 const FormSchema = z.object({
@@ -280,11 +281,14 @@ function InputForm() {
   );
 }
 
-export default function PostSkillPage() {
-  return (
-    <div className="p-6">
-      <h1 className="mb-4 text-2xl font-bold">Post a Skill</h1>
-      <InputForm />
-    </div>
-  );
-}
+// export default function PostSkillPage() {
+//   return (
+//     <div className="p-6">
+//       <h1 className="mb-4 text-2xl font-bold">Post a Skill</h1>
+//       <InputForm />
+//     </div>
+//   );
+// }
+// export default function PostSkillPage() {
+//   return (<AddSkillComponent />);
+// }

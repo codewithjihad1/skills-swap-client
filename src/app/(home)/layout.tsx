@@ -5,6 +5,7 @@ import Header from "@/components/layouts/Header";
 import Footer from "@/components/layouts/Footer";
 import AuthProvider from "@/provider/AuthProvider";
 import { ThemeProvider } from "next-themes";
+import ReactQueryProvider from "@/provider/ReactQueryProvider";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -34,16 +35,18 @@ export default function RootLayout({
                 suppressHydrationWarning
             >
                 <AuthProvider>
-                    <ThemeProvider
-                        attribute="class"
-                        defaultTheme="system"
-                        enableSystem
-                        disableTransitionOnChange
-                    >
-                        <Header />
-                        {children}
-                        <Footer />
-                    </ThemeProvider>
+                    <ReactQueryProvider>
+                        <ThemeProvider
+                            attribute="class"
+                            defaultTheme="system"
+                            enableSystem
+                            disableTransitionOnChange
+                        >
+                            <Header />
+                            {children}
+                            <Footer />
+                        </ThemeProvider>
+                    </ReactQueryProvider>
                 </AuthProvider>
             </body>
         </html>
