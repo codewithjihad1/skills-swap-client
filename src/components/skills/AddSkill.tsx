@@ -84,7 +84,12 @@ interface SkillFormData {
     mode: string;
 }
 
-const AddSkillComponent = () => {
+const AddSkillComponent = ({
+    addSkillBtnContent,
+}: {
+    addSkillBtnContent?: React.ReactNode;
+    postSkillPage?: boolean;
+}) => {
     const [open, setOpen] = useState(false);
     const [currentStep, setCurrentStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -206,8 +211,6 @@ const AddSkillComponent = () => {
         setIsSubmitting(true);
 
         try {
-            
-
             setShowSuccess(true);
 
             // Reset form after 2 seconds
@@ -237,10 +240,14 @@ const AddSkillComponent = () => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add New Skill
-                </Button>
+                {addSkillBtnContent ? (
+                    addSkillBtnContent
+                ) : (
+                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add New Skill
+                    </Button>
+                )}
             </DialogTrigger>
             <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>

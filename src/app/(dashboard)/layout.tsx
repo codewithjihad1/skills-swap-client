@@ -14,6 +14,7 @@ import {
     Calendar,
     TrendingUp,
     Users,
+    Plus,
 } from "lucide-react";
 import DesktopHeader from "@/app/(dashboard)/components/DesktopHeader";
 import MobileHeader from "@/app/(dashboard)/components/MobileHeader";
@@ -81,7 +82,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         {
             name: "Add Skill",
             href: "/dashboard/skills/add",
-            icon: PlusCircle,
+            icon: Plus,
             color: "text-green-600 dark:text-green-400",
         },
         {
