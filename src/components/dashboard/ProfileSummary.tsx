@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 interface ProfileSummaryProps {
     user: {
         name: string;
-        photo: string;
+        image: string;
         bio: string;
         skillsOffered: string[];
         skillsWanted: string[];
@@ -30,7 +30,7 @@ const ProfileSummary = ({ user }: ProfileSummaryProps) => {
                 <div className="relative">
                     <div className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-700">
                         <Image
-                            src={user.photo}
+                            src={user.image}
                             alt={user.name}
                             width={96}
                             height={96}
@@ -39,7 +39,7 @@ const ProfileSummary = ({ user }: ProfileSummaryProps) => {
                     </div>
                     {/* Swap Score Badge */}
                     <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-primary to-purple-600 text-white text-xs font-bold rounded-full w-8 h-8 flex items-center justify-center">
-                        {user.swapScore}
+                        {user?.swapScore}
                     </div>
                 </div>
 
@@ -53,12 +53,12 @@ const ProfileSummary = ({ user }: ProfileSummaryProps) => {
                             <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
                                 <div className="flex items-center gap-1">
                                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                                    <span>{user.rating.toFixed(1)}</span>
+                                    <span>{user?.rating?.toFixed(1)}</span>
                                 </div>
                                 <div className="flex items-center gap-1">
                                     <Award className="w-4 h-4" />
                                     <span>
-                                        {user.totalSwaps} swaps completed
+                                        {user?.totalSwaps} swaps completed
                                     </span>
                                 </div>
                             </div>
@@ -75,7 +75,7 @@ const ProfileSummary = ({ user }: ProfileSummaryProps) => {
 
                     {/* Bio */}
                     <p className="text-gray-700 dark:text-gray-300 mb-4 text-sm md:text-base">
-                        {user.bio}
+                        {user?.bio}
                     </p>
 
                     {/* Skills */}
@@ -83,22 +83,20 @@ const ProfileSummary = ({ user }: ProfileSummaryProps) => {
                         {/* Skills Offered */}
                         <div>
                             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                                Skills Offered ({user.skillsOffered.length})
+                                Skills Offered ({user?.skillsOffered?.length})
                             </h3>
                             <div className="flex flex-wrap gap-2">
-                                {user.skillsOffered
-                                    .slice(0, 3)
-                                    .map((skill, index) => (
-                                        <span
-                                            key={index}
-                                            className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full"
-                                        >
-                                            {skill}
+                                {user?.skillsOffered?.map((skill, index) => (
+                                    <span
+                                        key={index}
+                                        className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full"
+                                    >
+                                        {skill}
                                         </span>
                                     ))}
-                                {user.skillsOffered.length > 3 && (
+                                {user?.skillsOffered?.length > 3 && (
                                     <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">
-                                        +{user.skillsOffered.length - 3} more
+                                        +{user.skillsOffered?.length - 3} more
                                     </span>
                                 )}
                             </div>
@@ -107,11 +105,11 @@ const ProfileSummary = ({ user }: ProfileSummaryProps) => {
                         {/* Skills Wanted */}
                         <div>
                             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
-                                Skills Wanted ({user.skillsWanted.length})
+                                Skills Wanted ({user?.skillsWanted?.length})
                             </h3>
                             <div className="flex flex-wrap gap-2">
-                                {user.skillsWanted
-                                    .slice(0, 3)
+                                {user?.skillsWanted
+                                    ?.slice(0, 3)
                                     .map((skill, index) => (
                                         <span
                                             key={index}
@@ -120,9 +118,9 @@ const ProfileSummary = ({ user }: ProfileSummaryProps) => {
                                             {skill}
                                         </span>
                                     ))}
-                                {user.skillsWanted.length > 3 && (
+                                {user?.skillsWanted?.length > 3 && (
                                     <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">
-                                        +{user.skillsWanted.length - 3} more
+                                        +{user?.skillsWanted?.length - 3} more
                                     </span>
                                 )}
                             </div>

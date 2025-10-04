@@ -203,8 +203,37 @@ function PostSkillForm() {
     };
 
     // Go to next step
-    const nextStep = () => {
-        if (validateStep(currentStep)) {
+    const nextStep = async () => {
+        // Trigger validation for current step fields
+        let isValid = true;
+
+        if (currentStep === 1) {
+            const titleValid = await form.trigger("title");
+            const descValid = await form.trigger("description");
+            const catValid = await form.trigger("category");
+            isValid = titleValid && descValid && catValid;
+
+            if (!isValid) {
+                toast.error("Please fill in all required fields", {
+                    description: "Complete Step 1 before proceeding",
+                });
+                return;
+            }
+        } else if (currentStep === 2) {
+            const profValid = await form.trigger("proficiency");
+            const tagsValid = await form.trigger("tags");
+            isValid = profValid && tagsValid;
+
+            if (!isValid) {
+                toast.error("Please complete Step 2", {
+                    description:
+                        "Select proficiency level and add at least one tag",
+                });
+                return;
+            }
+        }
+
+        if (isValid && validateStep(currentStep)) {
             setCurrentStep((prev) => Math.min(prev + 1, 3));
         }
     };
@@ -812,7 +841,6 @@ function PostSkillForm() {
                         <Button
                             type="button"
                             onClick={nextStep}
-                            disabled={!validateStep(currentStep)}
                             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8"
                         >
                             Next
@@ -871,57 +899,6 @@ export default function PostSkillPage() {
                     <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-gray-200 dark:border-gray-700 shadow-2xl">
                         <CardContent className="p-8 md:p-10">
                             <PostSkillForm />
-                        </CardContent>
-                    </Card>
-                </motion.div>
-
-                {/* Info Cards */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                    className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6"
-                >
-                    <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-700 hover:shadow-lg transition-shadow">
-                        <CardContent className="p-6 text-center">
-                            <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-600 rounded-full mb-4">
-                                <Sparkles className="h-7 w-7 text-white" />
-                            </div>
-                            <h3 className="font-semibold text-blue-900 dark:text-blue-200 mb-2 text-lg">
-                                Share Knowledge
-                            </h3>
-                            <p className="text-sm text-blue-700 dark:text-blue-400">
-                                Teach what you know best and help others grow
-                            </p>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 border-purple-200 dark:border-purple-700 hover:shadow-lg transition-shadow">
-                        <CardContent className="p-6 text-center">
-                            <div className="inline-flex items-center justify-center w-14 h-14 bg-purple-600 rounded-full mb-4">
-                                <TrendingUp className="h-7 w-7 text-white" />
-                            </div>
-                            <h3 className="font-semibold text-purple-900 dark:text-purple-200 mb-2 text-lg">
-                                Grow Together
-                            </h3>
-                            <p className="text-sm text-purple-700 dark:text-purple-400">
-                                Learn new skills in return and expand your
-                                expertise
-                            </p>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-700 hover:shadow-lg transition-shadow">
-                        <CardContent className="p-6 text-center">
-                            <div className="inline-flex items-center justify-center w-14 h-14 bg-green-600 rounded-full mb-4">
-                                <Users className="h-7 w-7 text-white" />
-                            </div>
-                            <h3 className="font-semibold text-green-900 dark:text-green-200 mb-2 text-lg">
-                                Build Network
-                            </h3>
-                            <p className="text-sm text-green-700 dark:text-green-400">
-                                Connect with passionate learners worldwide
-                            </p>
                         </CardContent>
                     </Card>
                 </motion.div>
