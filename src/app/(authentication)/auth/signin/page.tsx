@@ -105,24 +105,26 @@ const LoginPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#0f172a] to-[#1e293b] text-white px-4">
-            <div className="grid md:grid-cols-2 w-full max-w-4xl rounded-2xl shadow-lg overflow-hidden bg-[#0b1120]/80 backdrop-blur-lg">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 to-indigo-100 dark:from-[#0f172a] dark:to-[#1e293b] text-gray-900 dark:text-white px-4 transition-colors duration-300">
+            <div className="grid md:grid-cols-2 w-full max-w-4xl rounded-2xl shadow-lg overflow-hidden bg-white/90 dark:bg-[#0b1120]/80 backdrop-blur-lg transition-colors duration-300">
                 {/* Left Side - Welcome Message */}
                 <div className="hidden md:flex flex-col items-center justify-center bg-transparent p-10">
-                    <h1 className="text-4xl font-bold mb-4">Welcome back!</h1>
-                    <p className="text-gray-400 text-center">
+                    <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-white">
+                        Welcome back!
+                    </h1>
+                    <p className="text-gray-600 dark:text-gray-400 text-center">
                         Sign in to your account and continue your skill-swapping
                         journey with us.
                     </p>
-                    <div className="mt-8 w-24 h-1 bg-blue-500 rounded-full"></div>
+                    <div className="mt-8 w-24 h-1 bg-blue-500 dark:bg-blue-600 rounded-full"></div>
                 </div>
 
                 {/* Right Side (Form) */}
                 <div className="p-8 md:p-12 flex flex-col justify-center">
-                    <h2 className="text-2xl font-semibold">
+                    <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
                         Sign in to your account
                     </h2>
-                    <p className="text-sm text-gray-400 mt-1">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                         Welcome back! Please enter your details.
                     </p>
 
@@ -135,7 +137,7 @@ const LoginPage: React.FC = () => {
 
                     {/* Error Message Display */}
                     {error && (
-                        <div className="mt-4 rounded-md bg-red-900/20 p-3 border border-red-700">
+                        <div className="mt-4 rounded-md bg-red-100 dark:bg-red-900/20 p-3 border border-red-300 dark:border-red-700">
                             <div className="flex items-center">
                                 <svg
                                     className="h-5 w-5 text-red-400 mr-2"
@@ -163,7 +165,7 @@ const LoginPage: React.FC = () => {
                         <div>
                             <label
                                 htmlFor="email"
-                                className="block text-sm font-medium text-gray-300 mb-2"
+                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                             >
                                 Email Address
                             </label>
@@ -172,7 +174,7 @@ const LoginPage: React.FC = () => {
                                 name="email"
                                 type="email"
                                 placeholder="Enter your email"
-                                className="w-full px-4 py-3 rounded-lg bg-[#1e293b] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-700 transition-all"
+                                className="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-[#1e293b] text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-300 dark:border-gray-700 transition-all"
                                 value={formData.email}
                                 onChange={handleInputChange}
                                 disabled={isLoading}
@@ -184,7 +186,7 @@ const LoginPage: React.FC = () => {
                         <div className="relative">
                             <label
                                 htmlFor="password"
-                                className="block text-sm font-medium text-gray-300 mb-2"
+                                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                             >
                                 Password
                             </label>
@@ -193,7 +195,7 @@ const LoginPage: React.FC = () => {
                                 name="password"
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Enter your password"
-                                className="w-full px-4 py-3 rounded-lg bg-[#1e293b] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-700 transition-all pr-12"
+                                className="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-[#1e293b] text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 border border-gray-300 dark:border-gray-700 transition-all pr-12"
                                 value={formData.password}
                                 onChange={handleInputChange}
                                 disabled={isLoading}
@@ -202,7 +204,7 @@ const LoginPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-9 text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                                className="absolute right-3 top-9 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
                                 disabled={isLoading}
                             >
                                 {showPassword ? "Hide" : "Show"}
@@ -210,7 +212,7 @@ const LoginPage: React.FC = () => {
                         </div>
 
                         {/* Remember Me & Forgot Password */}
-                        <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300">
                             <div className="flex items-center space-x-2">
                                 <input
                                     id="rememberMe"
@@ -231,7 +233,7 @@ const LoginPage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleForgotPassword}
-                                className="text-blue-400 hover:text-blue-300 transition-colors"
+                                className="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition-colors"
                                 disabled={isLoading}
                             >
                                 Forgot password?
@@ -276,11 +278,11 @@ const LoginPage: React.FC = () => {
 
                     {/* Social Login Divider */}
                     <div className="mt-6 flex items-center">
-                        <div className="flex-1 border-t border-gray-700"></div>
-                        <span className="px-4 text-gray-400 text-sm">
+                        <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
+                        <span className="px-4 text-gray-600 dark:text-gray-400 text-sm">
                             Or continue with
                         </span>
-                        <div className="flex-1 border-t border-gray-700"></div>
+                        <div className="flex-1 border-t border-gray-300 dark:border-gray-700"></div>
                     </div>
 
                     {/* Social Login Buttons */}
@@ -291,7 +293,7 @@ const LoginPage: React.FC = () => {
                             onClick={() =>
                                 signIn("google", { callbackUrl: "/dashboard" })
                             }
-                            className="w-full flex items-center justify-center px-4 py-3 border border-gray-600 rounded-lg bg-white text-gray-900 hover:bg-gray-100 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-white text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-100 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                             disabled={isLoading}
                         >
                             <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
@@ -337,11 +339,11 @@ const LoginPage: React.FC = () => {
 
                     {/* Sign Up Link */}
                     <div className="mt-6 text-center">
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
                             Don't have an account?{" "}
                             <Link
                                 href="/auth/signup"
-                                className="text-blue-400 hover:text-blue-300 transition-colors font-medium"
+                                className="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 transition-colors font-medium"
                             >
                                 Sign up for free
                             </Link>

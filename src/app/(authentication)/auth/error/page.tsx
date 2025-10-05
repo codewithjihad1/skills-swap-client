@@ -35,11 +35,11 @@ const AuthErrorContent = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#0f172a] to-[#1e293b] text-white px-4">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 to-indigo-100 dark:from-[#0f172a] dark:to-[#1e293b] text-gray-900 dark:text-white px-4 transition-colors duration-300">
             <div className="w-full max-w-md">
-                <div className="bg-[#0b1120]/80 backdrop-blur-lg rounded-2xl shadow-lg p-8 text-center">
+                <div className="bg-white/90 dark:bg-[#0b1120]/80 backdrop-blur-lg rounded-2xl shadow-lg p-8 text-center transition-colors duration-300">
                     {/* Error Icon */}
-                    <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-900/20 mb-6">
+                    <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 dark:bg-red-900/20 mb-6">
                         <svg
                             className="h-8 w-8 text-red-400"
                             fill="none"
@@ -56,12 +56,12 @@ const AuthErrorContent = () => {
                     </div>
 
                     {/* Header */}
-                    <h1 className="text-2xl font-semibold mb-2">
+                    <h1 className="text-2xl font-semibold mb-2 text-gray-900 dark:text-white">
                         Authentication Error
                     </h1>
 
                     {/* Error Message */}
-                    <p className="text-gray-400 mb-8">
+                    <p className="text-gray-600 dark:text-gray-400 mb-8">
                         {getErrorMessage(error)}
                     </p>
 
@@ -76,14 +76,14 @@ const AuthErrorContent = () => {
 
                         <Link
                             href="/auth/signup"
-                            className="block w-full bg-gray-600 hover:bg-gray-700 transition rounded-lg py-3 font-semibold text-center"
+                            className="block w-full bg-gray-600 hover:bg-gray-700 dark:bg-gray-600 dark:hover:bg-gray-700 transition rounded-lg py-3 font-semibold text-center text-white"
                         >
                             Create New Account
                         </Link>
 
                         <button
                             onClick={() => router.back()}
-                            className="block w-full text-gray-400 hover:text-gray-300 transition py-2"
+                            className="block w-full text-gray-600 dark:text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition py-2"
                         >
                             ← Go Back
                         </button>
@@ -98,7 +98,7 @@ const AuthErrorPage = () => {
     return (
         <Suspense
             fallback={
-                <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#0f172a] to-[#1e293b] text-white">
+                <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-50 to-indigo-100 dark:from-[#0f172a] dark:to-[#1e293b] text-gray-900 dark:text-white transition-colors duration-300">
                     <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white"></div>
                 </div>
             }
