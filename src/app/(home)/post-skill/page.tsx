@@ -52,6 +52,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { useSession } from "next-auth/react";
 
 // Zod schema matching the MongoDB schema
 const FormSchema = z.object({
@@ -106,6 +107,11 @@ function PostSkillForm() {
     const [currentStep, setCurrentStep] = useState(1);
     const [tagInput, setTagInput] = useState("");
     const [exchangeInput, setExchangeInput] = useState("");
+    const { data: session, status } = useSession();
+
+    if (status !== "authenticated" && !session) {
+        return null;
+    }
 
     // Initialize TanStack Query mutation
     const mutation = useAddSkillMutation();
@@ -249,7 +255,10 @@ function PostSkillForm() {
     async function onSubmit(data: z.infer<typeof FormSchema>) {
         try {
             // Use the mutation from TanStack Query
-            await mutation.mutateAsync(data);
+            await mutation.mutateAsync({
+                ...data,
+                offeredBy: session!.user.id,
+            });
 
             // Reset form on success
             form.reset();

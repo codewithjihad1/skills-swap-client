@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Search, Filter, BookOpen, ChevronDown, Loader2 } from "lucide-react";
 import SkillCard from "@/components/ui/components/custom-components/SkillCard";
+import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "@/axios/axiosInstance";
 
 // Types
 interface User {
@@ -41,9 +43,6 @@ interface ApiResponse {
 }
 
 export default function ExploreSkillsSection() {
-    const [skills, setSkills] = useState<Skill[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [selectedProficiency, setSelectedProficiency] = useState("All");
@@ -62,73 +61,17 @@ export default function ExploreSkillsSection() {
     ];
     const proficiencyLevels = ["All", "Beginner", "Intermediate", "Advanced"];
 
-    // Fetch skills from API
-    const fetchSkills = async (
-        page = 1,
-        category = "",
-        proficiency = "",
-        search = ""
-    ) => {
-        try {
-            setLoading(true);
-            const params = new URLSearchParams();
-            if (page > 1) params.append("page", page.toString());
-            if (category && category !== "All")
-                params.append("category", category);
-            if (proficiency && proficiency !== "All")
-                params.append("proficiency", proficiency);
-            if (search) params.append("search", search);
-
-            const response = await fetch(
-                `https://skills-swap-server.vercel.app/api/skills?${params}`
-            );
-
-            if (!response.ok) {
-                throw new Error("Failed to fetch skills");
-            }
-
-            const data: ApiResponse = await response.json();
-
-            if (page === 1) {
-                setSkills(data.skills);
-            } else {
-                setSkills((prev) => [...prev, ...data.skills]);
-            }
-
-            setTotalPages(data.pagination.pages);
-            setCurrentPage(data.pagination.page);
-        } catch (err) {
-            setError(err instanceof Error ? err.message : "An error occurred");
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Initial load
-    useEffect(() => {
-        fetchSkills();
-    }, []);
-
-    // Handle search and filters
-    useEffect(() => {
-        const delayedSearch = setTimeout(() => {
-            fetchSkills(1, selectedCategory, selectedProficiency, searchTerm);
-        }, 500);
-
-        return () => clearTimeout(delayedSearch);
-    }, [searchTerm, selectedCategory, selectedProficiency]);
-
-    // Load more skills
-    const loadMoreSkills = () => {
-        if (currentPage < totalPages) {
-            fetchSkills(
-                currentPage + 1,
-                selectedCategory,
-                selectedProficiency,
-                searchTerm
-            );
-        }
-    };
+    // get skills
+    const {
+        data: skills,
+        isLoading: loading,
+        isError: error,
+        refetch: fetchSkills,
+    } = useQuery({
+        queryKey: ["skills"],
+        queryFn: async () => await axiosInstance.get("/api/skills"),
+    });
+    console.log("🚀 ~ ExploreSkillsSection ~ skillsData:", skills);
 
     // Get proficiency color
     const getProficiencyColor = (level: string) => {
@@ -167,22 +110,13 @@ export default function ExploreSkillsSection() {
             .slice(0, 2);
     };
 
-    if (error) {
+    if (loading && !skills) {
         return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <div className="text-center">
-                    <div className="text-red-500 text-xl mb-4">⚠️</div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
-                        Error Loading Skills
-                    </h3>
-                    <p className="text-gray-600 mb-4">{error}</p>
-                    <button
-                        onClick={() => fetchSkills()}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                        Retry
-                    </button>
-                </div>
+            <div className="flex items-center justify-center py-20">
+                <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                <span className="ml-2 text-gray-600">
+                    Loading amazing skills...
+                </span>
             </div>
         );
     }
@@ -282,20 +216,10 @@ export default function ExploreSkillsSection() {
                     </div>
                 </div>
 
-                {/* Loading State */}
-                {loading && skills.length === 0 && (
-                    <div className="flex items-center justify-center py-20">
-                        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                        <span className="ml-2 text-gray-600">
-                            Loading amazing skills...
-                        </span>
-                    </div>
-                )}
-
                 {/* Skills Grid */}
-                {skills.length > 0 && (
+                {skills && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-                        {skills.map((skill) => (
+                        {skills?.data.map((skill: any) => (
                             <SkillCard
                                 key={skill._id}
                                 skill={skill}
@@ -308,7 +232,7 @@ export default function ExploreSkillsSection() {
                 )}
 
                 {/* Empty State */}
-                {skills.length === 0 && !loading && (
+                {skills && !loading && (
                     <div className="text-center py-20">
                         <div className="text-gray-400 text-6xl mb-4">🔍</div>
                         <h3 className="text-xl font-medium text-gray-900 mb-2">

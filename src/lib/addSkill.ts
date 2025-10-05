@@ -12,6 +12,7 @@ export interface SkillFormData {
     availability: string;
     location: string;
     mode: "Online" | "Offline" | "Both";
+    offeredBy: string;
 }
 
 const addSkill = async (skillData: SkillFormData) => {

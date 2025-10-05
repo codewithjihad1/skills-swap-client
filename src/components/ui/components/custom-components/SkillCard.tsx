@@ -57,7 +57,7 @@ const SkillCard = ({ skill, getCategoryColor, getProficiencyColor, getInitials }
             )}
 
             {/* Instructor */}
-            <div className="px-6 pb-4 flex items-center gap-3">
+            {/* <div className="px-6 pb-4 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium text-sm">
                     {skill.userId.avatar ? (
                         <img
@@ -75,7 +75,7 @@ const SkillCard = ({ skill, getCategoryColor, getProficiencyColor, getInitials }
                     </p>
                     <p className="text-xs text-gray-500">Skill Provider</p>
                 </div>
-            </div>
+            </div> */}
 
             {/* Action Buttons */}
             <div className="p-6 pt-0 flex gap-3">
