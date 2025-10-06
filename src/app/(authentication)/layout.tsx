@@ -2,6 +2,8 @@ import "@/app/globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Metadata } from "next/dist/lib/metadata/types/metadata-interface";
 import React from "react";
+import { ToastContainer } from "react-toastify";
+import { ThemeProvider } from "next-themes";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -19,11 +21,20 @@ export const metadata: Metadata = {
         "Connect with others to exchange skills and learn new talents through our innovative skills swap platform.",
 };
 
-    
 const layout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <html lang="en">
-            <body>{children}</body>
+        <html lang="en" suppressHydrationWarning>
+            <body>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {children}
+                    <ToastContainer />
+                </ThemeProvider>
+            </body>
         </html>
     );
 };
