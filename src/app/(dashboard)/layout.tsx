@@ -10,7 +10,6 @@ import {
     MessageCircle,
     Coins,
     Star,
-    PlusCircle,
     Calendar,
     TrendingUp,
     Users,
@@ -23,7 +22,6 @@ import MobileSidebar from "@/app/(dashboard)/components/MobileSidebar";
 import AuthProvider from "@/provider/AuthProvider";
 import { ThemeProvider } from "next-themes";
 import ReactQueryProvider from "@/provider/ReactQueryProvider";
-import { useSession } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
 
 interface DashboardLayoutProps {

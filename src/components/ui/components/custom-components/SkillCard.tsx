@@ -1,7 +1,7 @@
 import { BookOpen } from "lucide-react";
 import React from "react";
 
-const SkillCard = ({ skill, getCategoryColor, getProficiencyColor, getInitials }: any) => {
+const SkillCard = ({ skill, getCategoryColor, getProficiencyColor }: any) => {
     return (
         <div
             key={skill._id}

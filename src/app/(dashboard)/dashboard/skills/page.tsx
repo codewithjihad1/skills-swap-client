@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-    Plus,
     Search,
     Filter,
     Star,
@@ -16,7 +15,6 @@ import {
     BookOpen,
     Target,
     TrendingUp,
-    Award,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

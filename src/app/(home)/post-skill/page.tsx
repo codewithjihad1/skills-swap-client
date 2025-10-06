@@ -109,11 +109,7 @@ function PostSkillForm() {
     const [exchangeInput, setExchangeInput] = useState("");
     const { data: session, status } = useSession();
 
-    if (status !== "authenticated" && !session) {
-        return null;
-    }
-
-    // Initialize TanStack Query mutation
+    // Initialize TanStack Query mutation (must be before any conditional returns)
     const mutation = useAddSkillMutation();
 
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -254,10 +250,16 @@ function PostSkillForm() {
     // Submit handler
     async function onSubmit(data: z.infer<typeof FormSchema>) {
         try {
+            // Guard against missing session or user id
+            if (!session?.user?.id) {
+                toast.error("You must be logged in to submit a skill");
+                return;
+            }
+
             // Use the mutation from TanStack Query
             await mutation.mutateAsync({
                 ...data,
-                offeredBy: session!.user.id,
+                offeredBy: session.user.id,
             });
 
             // Reset form on success
@@ -267,6 +269,26 @@ function PostSkillForm() {
             // Error handling is done in the mutation hook
             console.error("Error submitting skill:", error);
         }
+    }
+
+    // Render loading or authentication check
+    if (status === "loading") {
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+        );
+    }
+
+    if (status !== "authenticated" || !session) {
+        return (
+            <div className="text-center py-12">
+                <h2 className="text-2xl font-semibold mb-4">Authentication Required</h2>
+                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                    Please sign in to post a skill.
+                </p>
+            </div>
+        );
     }
 
     return (

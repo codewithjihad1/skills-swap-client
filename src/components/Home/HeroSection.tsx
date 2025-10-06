@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
     return (
-        <div className="bg-gradient-to-r from-[#FCFAEF] to-[#EBF6ED] dark:bg-gradient-to-r dark:from-gray-900 dark:to-gray-800 px-4 sm:px-6 md:px-12 lg:px-20 py-12 md:py-16 flex flex-col md:flex-row items-center justify-center md:justify-between gap-10">
+        <div className="bg-gradient-to-r from-[#f2f2f2] to-[#f6f6f6] dark:bg-gradient-to-r dark:from-gray-900 dark:to-gray-800 px-4 sm:px-6 md:px-12 lg:px-20 py-12 md:py-16 flex flex-col md:flex-row items-center justify-center md:justify-between gap-10">
             {/* Left Side -  */}
             <div className="relative w-[260px] h-[260px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[360px] lg:w-[420px] lg:h-[400px]">
                 {/* Round Image */}

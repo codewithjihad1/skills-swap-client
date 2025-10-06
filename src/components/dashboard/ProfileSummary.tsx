@@ -5,20 +5,7 @@ import Image from "next/image";
 import { Star, Edit, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-interface ProfileSummaryProps {
-    user: {
-        name: string;
-        image: string;
-        bio: string;
-        skillsOffered: string[];
-        skillsWanted: string[];
-        swapScore: number;
-        totalSwaps: number;
-        rating: number;
-    };
-}
-
-const ProfileSummary = ({ user }: ProfileSummaryProps) => {
+const ProfileSummary = ({ user }: any) => {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -92,8 +79,8 @@ const ProfileSummary = ({ user }: ProfileSummaryProps) => {
                                         className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full"
                                     >
                                         {skill}
-                                        </span>
-                                    ))}
+                                    </span>
+                                ))}
                                 {user?.skillsOffered?.length > 3 && (
                                     <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">
                                         +{user.skillsOffered?.length - 3} more

@@ -1,9 +1,8 @@
 import AddSkillComponent from "@/components/skills/AddSkill";
 import { Button } from "@/components/ui";
 import UserDropDown from "@/components/user/UserDropDown";
-import { Bell, PlusCircle, Search } from "lucide-react";
+import { Bell,  Search } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import React from "react";
 
 const DesktopHeader = () => {

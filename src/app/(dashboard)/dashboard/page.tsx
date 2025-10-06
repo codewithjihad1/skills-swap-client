@@ -14,7 +14,7 @@ export default function DashboardOverview() {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedConversation, setSelectedConversation] =
         useState<string>("");
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
 
     const mockWallet = {
         totalCredits: 450,
@@ -99,7 +99,7 @@ export default function DashboardOverview() {
     ];
 
     // user session data is fetching
-    if (!session) {
+    if (!session && status === "loading") {
         return null;
     }
 
@@ -113,7 +113,7 @@ export default function DashboardOverview() {
                 {/* Welcome Header */}
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                        Welcome back, {session?.user?.name.split(" ")[0]}! 👋
+                        Welcome back, {session?.user?.name?.split(" ")[0]}! 👋
                     </h1>
                     <p className="text-gray-600 dark:text-gray-400">
                         Here's what's happening with your skills and swaps
