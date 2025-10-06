@@ -123,7 +123,7 @@ export default function ContactPage() {
         },
     });
 
-    
+
     async function onSubmit(data: ContactFormValues) {
     setIsSubmitting(true);
 
