@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui";
 import { AnimatePresence, motion } from "framer-motion";
 import { BookOpen, LogOut, Settings, Star, X } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -11,6 +12,13 @@ const MobileSidebar = ({
     navigationItems,
     isActive,
 }: any) => {
+    const { data: session } = useSession();
+
+    if (!session) {
+        return null;
+    }
+
+
     return (
         <AnimatePresence>
             {sidebarOpen && (
@@ -66,29 +74,27 @@ const MobileSidebar = ({
                             </div>
 
                             {/* User Profile Summary */}
-                            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                                <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-primary/5 to-purple-600/5 dark:from-primary/10 dark:to-purple-600/10 rounded-lg">
+                            <div className="px-4 mb-6">
+                                <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-primary/5 to-purple-600/5 dark:from-primary/10 dark:to-purple-600/10 rounded-lg border border-primary/20">
                                     <div className="relative">
-                                        <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-600">
+                                        <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-600">
                                             <Image
-                                                src="/api/placeholder/48/48"
+                                                src={session?.user?.image || "/default-avatar.png"}
                                                 alt="Profile"
-                                                width={48}
-                                                height={48}
+                                                width={40}
+                                                height={40}
                                                 className="w-full h-full object-cover"
                                             />
                                         </div>
                                         <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
                                     </div>
-                                    <div>
-                                        <p className="font-medium text-gray-900 dark:text-white">
-                                            Alex Johnson
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                            {session?.user?.name}
                                         </p>
-                                        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                                            <div className="flex items-center gap-1">
-                                                <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                                                <span>4.8</span>
-                                            </div>
+                                        <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                                            <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                                            <span>4.8</span>
                                             <span>•</span>
                                             <span>450 credits</span>
                                         </div>

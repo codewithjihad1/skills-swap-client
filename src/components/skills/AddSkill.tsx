@@ -41,6 +41,8 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useAddSkillMutation } from "@/lib/addSkill";
+import { useSession } from "next-auth/react";
 
 // Categories for skills
 const categories = [
@@ -72,16 +74,17 @@ const availabilityOptions = [
     "Flexible",
 ];
 
-interface SkillFormData {
+export interface SkillFormData {
     title: string;
     description: string;
     category: string;
-    proficiency: string;
+    proficiency: "Beginner" | "Intermediate" | "Advanced" | "Expert";
     tags: string[];
     exchangeFor: string[];
     availability: string;
     location: string;
-    mode: string;
+    mode: "Online" | "Offline" | "Both";
+    offeredBy: string
 }
 
 const AddSkillComponent = ({
@@ -94,17 +97,21 @@ const AddSkillComponent = ({
     const [currentStep, setCurrentStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const { data: session } = useSession();
+
+    const mutation = useAddSkillMutation();
 
     const [formData, setFormData] = useState<SkillFormData>({
         title: "",
         description: "",
         category: "",
-        proficiency: "",
+        proficiency: "Beginner", // Use specific literal type
         tags: [],
         exchangeFor: [],
         availability: "Flexible",
         location: "Remote",
         mode: "Online",
+        offeredBy: "",
     });
 
     const [tagInput, setTagInput] = useState("");
@@ -205,31 +212,18 @@ const AddSkillComponent = ({
     };
 
     // Submit form
-    const handleSubmit = async () => {
+    const handleSubmit = async (data: any) => {
         if (!validateStep(currentStep)) return;
-
         setIsSubmitting(true);
 
         try {
-            setShowSuccess(true);
+            const payload: SkillFormData = {
+                ...formData,
+                offeredBy: session!.user.id,
+            };
 
-            // Reset form after 2 seconds
-            setTimeout(() => {
-                setShowSuccess(false);
-                setOpen(false);
-                setCurrentStep(1);
-                setFormData({
-                    title: "",
-                    description: "",
-                    category: "",
-                    proficiency: "",
-                    tags: [],
-                    exchangeFor: [],
-                    availability: "Flexible",
-                    location: "Remote",
-                    mode: "Online",
-                });
-            }, 2000);
+            await mutation.mutateAsync(payload);
+            setShowSuccess(true);
         } catch (error) {
             console.error("Error submitting skill:", error);
         } finally {

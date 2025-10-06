@@ -92,7 +92,7 @@ const categories = {
 };
 
 const FAQ = () => {
-    const [openItems, setOpenItems] = useState<number[]>([1]); // First item open by default
+    const [openItems, setOpenItems] = useState<number[]>([1]);
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
     const [searchTerm, setSearchTerm] = useState("");
 

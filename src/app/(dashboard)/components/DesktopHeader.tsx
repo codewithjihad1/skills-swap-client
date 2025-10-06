@@ -1,10 +1,18 @@
 import AddSkillComponent from "@/components/skills/AddSkill";
 import { Button } from "@/components/ui";
-import { Bell, PlusCircle, Search } from "lucide-react";
-import Image from "next/image";
+import UserDropDown from "@/components/user/UserDropDown";
+import { Bell,  Search } from "lucide-react";
+import { useSession } from "next-auth/react";
 import React from "react";
 
 const DesktopHeader = () => {
+    const { data: session, status } = useSession();
+
+    // Show loading state while session is being fetched
+    if (status === "loading" && !session) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <header className="hidden lg:block bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
             <div className="flex items-center justify-between">
@@ -26,15 +34,7 @@ const DesktopHeader = () => {
                             5
                         </span>
                     </Button>
-                    <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-600">
-                        <Image
-                            src="/api/placeholder/32/32"
-                            alt="Profile"
-                            width={32}
-                            height={32}
-                            className="w-full h-full object-cover"
-                        />
-                    </div>
+                    <UserDropDown />
                 </div>
             </div>
         </header>
