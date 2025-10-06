@@ -73,14 +73,16 @@ const ProfileSummary = ({ user }: any) => {
                                 Skills Offered ({user?.skillsOffered?.length})
                             </h3>
                             <div className="flex flex-wrap gap-2">
-                                {user?.skillsOffered?.map((skill, index) => (
-                                    <span
-                                        key={index}
-                                        className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full"
-                                    >
-                                        {skill}
-                                    </span>
-                                ))}
+                                {user?.skillsOffered?.map(
+                                    (skill: string, index: number) => (
+                                        <span
+                                            key={index}
+                                            className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs rounded-full"
+                                        >
+                                            {skill}
+                                        </span>
+                                    )
+                                )}
                                 {user?.skillsOffered?.length > 3 && (
                                     <span className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs rounded-full">
                                         +{user.skillsOffered?.length - 3} more
@@ -97,7 +99,7 @@ const ProfileSummary = ({ user }: any) => {
                             <div className="flex flex-wrap gap-2">
                                 {user?.skillsWanted
                                     ?.slice(0, 3)
-                                    .map((skill, index) => (
+                                    .map((skill: string, index: number) => (
                                         <span
                                             key={index}
                                             className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs rounded-full"

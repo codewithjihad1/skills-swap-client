@@ -283,7 +283,9 @@ function PostSkillForm() {
     if (status !== "authenticated" || !session) {
         return (
             <div className="text-center py-12">
-                <h2 className="text-2xl font-semibold mb-4">Authentication Required</h2>
+                <h2 className="text-2xl font-semibold mb-4">
+                    Authentication Required
+                </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
                     Please sign in to post a skill.
                 </p>

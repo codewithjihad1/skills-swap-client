@@ -245,8 +245,8 @@ export default function ExploreSkillsSection() {
                     </div>
                 )}
 
-                {/* Load More Button */}
-                {currentPage < totalPages && (
+                {/* Load More Button - Commented out until pagination is implemented */}
+                {/* {currentPage < totalPages && (
                     <div className="text-center">
                         <button
                             onClick={loadMoreSkills}
@@ -263,14 +263,14 @@ export default function ExploreSkillsSection() {
                             )}
                         </button>
                     </div>
-                )}
+                )} */}
 
                 {/* Stats Section */}
                 <div className="mt-16 bg-white rounded-2xl shadow-lg p-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                         <div>
                             <div className="text-3xl font-bold text-blue-600 mb-2">
-                                {skills.length}+
+                                {skills?.data?.length || 0}+
                             </div>
                             <p className="text-gray-600">Skills Available</p>
                         </div>
