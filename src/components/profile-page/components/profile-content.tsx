@@ -28,7 +28,9 @@ export default function ProfileContent() {
     const [avatar, setAvatar] = useState("");
 
     // Fetch user profile
-    const { data: userProfile, isLoading } = useUserProfile(session?.user?.id);
+    const { data: userProfile, isLoading } = useUserProfile(
+        session?.user?.email!
+    );
 
     // Update profile mutation
     const updateProfileMutation = useUpdateProfile();

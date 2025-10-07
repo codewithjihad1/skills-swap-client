@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import ProfileSummary from "@/components/dashboard/ProfileSummary";
 import SkillWallet from "@/components/dashboard/SkillWallet";
 import ActivityOverview from "@/components/dashboard/ActivityOverview";
 import MatchSuggestions from "@/components/dashboard/MatchSuggestions";
 import InboxMessaging from "@/components/dashboard/InboxMessaging";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
+import ProfileHeader from "@/components/profile-page/components/profile-header";
 
 export default function DashboardOverview() {
     const [searchQuery, setSearchQuery] = useState("");
@@ -122,7 +122,7 @@ export default function DashboardOverview() {
                 </div>
 
                 {/* Profile Summary */}
-                <ProfileSummary user={session?.user} />
+                <ProfileHeader />
 
                 {/* Dashboard Tabs */}
                 <Tabs defaultValue="overview" className="space-y-6">

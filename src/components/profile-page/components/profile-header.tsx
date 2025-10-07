@@ -8,6 +8,7 @@ import { Camera, Calendar, Mail, MapPin, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useUserProfile } from "@/lib/api/profile";
 import { useState } from "react";
+import { truncateText } from "@/lib/utils";
 
 export default function ProfileHeader() {
     const { data: session } = useSession();
@@ -124,7 +125,9 @@ export default function ProfileHeader() {
                             </Badge>
                         </div>
                         <p className="text-gray-600 dark:text-gray-400">
-                            {userProfile?.bio || "No bio available"}
+                            {truncateText(
+                                userProfile?.bio || "No bio available"
+                            )}
                         </p>
                         <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
                             <div className="flex items-center gap-1">
