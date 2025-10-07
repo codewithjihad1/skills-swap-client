@@ -1,6 +1,7 @@
 import axiosInstance from "@/axios/axiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { email } from "zod";
 
 // Types
 export interface UserProfile {
@@ -28,9 +29,9 @@ export interface UpdateProfileData {
     avatar?: string;
 }
 
-// Get user profile by ID
-const getUserProfile = async (userId: string): Promise<UserProfile> => {
-    const { data } = await axiosInstance.get(`/api/users/${userId}`);
+// Get user profile by email
+const getUserProfile = async (email: string): Promise<UserProfile> => {
+    const { data } = await axiosInstance.get(`/api/users/email/${email}`);
     return data;
 };
 
@@ -47,11 +48,11 @@ const updateUserProfile = async (
 };
 
 // Hook to get user profile
-export const useUserProfile = (userId: string | undefined) => {
+export const useUserProfile = (email: string | undefined) => {
     return useQuery({
-        queryKey: ["userProfile", userId],
-        queryFn: () => getUserProfile(userId!),
-        enabled: !!userId, // Only run if userId exists
+        queryKey: ["userProfile", email],
+        queryFn: () => getUserProfile(email!),
+        enabled: !!email, // Only run if email exists
         staleTime: 5 * 60 * 1000, // 5 minutes
         retry: 1,
     });

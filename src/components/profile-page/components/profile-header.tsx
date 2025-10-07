@@ -18,7 +18,8 @@ export default function ProfileHeader() {
         data: userProfile,
         isLoading,
         error,
-    } = useUserProfile(session?.user?.id);
+    } = useUserProfile(session?.user?.email!);
+    console.log("🚀 ~ ProfileHeader ~ userProfile:", userProfile);
 
     if (!session) {
         return (
