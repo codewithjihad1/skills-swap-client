@@ -29,7 +29,7 @@ export default function ProfileContent() {
 
     // Fetch user profile
     const { data: userProfile, isLoading } = useUserProfile(
-        session?.user?.email!
+        session?.user?.email || undefined
     );
 
     // Update profile mutation

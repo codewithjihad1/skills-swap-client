@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Search, Filter, BookOpen, ChevronDown, Loader2 } from "lucide-react";
+import React, { useState } from "react";
+import { Search, Filter, ChevronDown, Loader2 } from "lucide-react";
 import SkillCard from "@/components/ui/components/custom-components/SkillCard";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/axios/axiosInstance";
@@ -27,27 +27,27 @@ interface Skill {
     updatedAt: string;
 }
 
-interface ApiResponse {
-    skills: Skill[];
-    pagination: {
-        page: number;
-        limit: number;
-        total: number;
-        pages: number;
-    };
-    filters: {
-        category: string | null;
-        proficiency: string | null;
-        search: string | null;
-    };
-}
+// interface ApiResponse {
+//     skills: Skill[];
+//     pagination: {
+//         page: number;
+//         limit: number;
+//         total: number;
+//         pages: number;
+//     };
+//     filters: {
+//         category: string | null;
+//         proficiency: string | null;
+//         search: string | null;
+//     };
+// }
 
 export default function ExploreSkillsSection() {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [selectedProficiency, setSelectedProficiency] = useState("All");
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
+    // const [currentPage, setCurrentPage] = useState(1);
+    // const [totalPages, setTotalPages] = useState(1);
     const [showFilters, setShowFilters] = useState(false);
 
     const categories = [
@@ -71,7 +71,6 @@ export default function ExploreSkillsSection() {
         queryKey: ["skills"],
         queryFn: async () => await axiosInstance.get("/api/skills"),
     });
-    console.log("🚀 ~ ExploreSkillsSection ~ skillsData:", skills);
 
     // Get proficiency color
     const getProficiencyColor = (level: string) => {
@@ -232,7 +231,7 @@ export default function ExploreSkillsSection() {
                 )}
 
                 {/* Empty State */}
-                {skills && !loading && (
+                {!skills && !loading && (
                     <div className="text-center py-20">
                         <div className="text-gray-400 text-6xl mb-4">🔍</div>
                         <h3 className="text-xl font-medium text-gray-900 mb-2">

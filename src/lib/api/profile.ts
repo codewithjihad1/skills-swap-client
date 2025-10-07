@@ -1,7 +1,6 @@
 import axiosInstance from "@/axios/axiosInstance";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { email } from "zod";
 
 // Types
 export interface UserProfile {
