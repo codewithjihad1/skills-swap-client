@@ -80,8 +80,8 @@ const contactInfo = [
         icon: Mail,
         title: "Email Us",
         description: "Send us an email anytime",
-        value: "contact@skillsswap.com",
-        link: "mailto:contact@skillsswap.com",
+        value: "sarkarrajkumar3460@gmail.com",
+        link: "mailto:sarkarrajkumar3460@gmail.com",
         color: "blue",
     },
     {
@@ -102,8 +102,7 @@ const contactInfo = [
     },
 ];
 
-
-export default function ContactPage() {
+export default function ContactForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
 
@@ -120,34 +119,42 @@ export default function ContactPage() {
 
     async function onSubmit(data: ContactFormValues) {
         setIsSubmitting(true);
-        console.log("Contact form submitted:", data);
 
         try {
-            // Simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+            // ✅ Real API call to your backend
+            const response = await fetch("http://localhost:5000/api/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name: data.name,
+                    email: data.email,
+                    category: data.category,
+                    message: `Subject: ${data.subject}\n\nMessage: ${data.message}`,
+                }),
+            });
 
-            // Here you would make your actual API call
-            // const response = await fetch('/api/contact', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(data),
-            // });
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.error || "Failed to send message");
+            }
 
             toast.success("Message sent successfully! 🎉", {
-                description: "We'll get back to you as soon as possible.",
+                description: "We'll get back to you within 24 hours.",
             });
 
             setIsSuccess(true);
             form.reset();
 
-            // Reset success state after 3 seconds
             setTimeout(() => {
                 setIsSuccess(false);
             }, 3000);
-        } catch (error) {
-            console.error(error);
+        } catch (error: any) {
+            console.error("Error sending message:", error);
             toast.error("Failed to send message ❌", {
-                description: "Please try again later.",
+                description: error?.message || "Please try again later.",
             });
         } finally {
             setIsSubmitting(false);
@@ -170,8 +177,8 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 py-8">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
