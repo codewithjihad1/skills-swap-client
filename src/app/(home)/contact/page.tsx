@@ -80,8 +80,8 @@ const contactInfo = [
         icon: Mail,
         title: "Email Us",
         description: "Send us an email anytime",
-        value: "sarkarrajkumar3460@gmail.com",
-        link: "mailto:sarkarrajkumar3460@gmail.com",
+        value: "contact@skillsswap.com",
+        link: "mailto:contact@skillsswap.com",
         color: "blue",
     },
     {
@@ -137,7 +137,7 @@ export default function ContactPage() {
             }
 
             toast.success("Message sent successfully! 🎉", {
-                description: "We'll get back to you within 24 hours.",
+                description: "We'll get back to you as soon as possible.",
             });
 
             setIsSuccess(true);
@@ -145,7 +145,7 @@ export default function ContactPage() {
         } catch (error) {
             console.error(error);
             toast.error("Failed to send message ❌", {
-                description: error?.message || "Please try again later.",
+                description: "Please try again later.",
             });
         } finally {
             setIsSubmitting(false);
@@ -168,8 +168,8 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 py-8">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
