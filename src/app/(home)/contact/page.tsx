@@ -11,11 +11,6 @@ import {
     MapPin,
     Send,
     MessageSquare,
-    Clock,
-    Facebook,
-    Twitter,
-    Linkedin,
-    Github,
     CheckCircle2,
     Sparkles,
 } from "lucide-react";
