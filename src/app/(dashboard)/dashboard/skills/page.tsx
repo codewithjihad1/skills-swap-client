@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-    Plus,
     Search,
     Filter,
     Star,
@@ -16,7 +15,6 @@ import {
     BookOpen,
     Target,
     TrendingUp,
-    Award,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,6 +35,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import AddSkillComponent from "@/components/skills/AddSkill";
 
 // Mock data for skills
 const mockSkillsOffered = [
@@ -195,10 +194,7 @@ const SkillsPage = () => {
                             <Filter className="h-4 w-4" />
                             Filter
                         </Button>
-                        <Button className="gap-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                            <Plus className="h-4 w-4" />
-                            Add Skill
-                        </Button>
+                        <AddSkillComponent />
                     </div>
                 </motion.div>
 

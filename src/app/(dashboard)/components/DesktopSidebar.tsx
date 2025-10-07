@@ -1,11 +1,21 @@
+"use client";
+
+import AddSkillComponent from "@/components/skills/AddSkill";
 import { ModeToggle } from "@/components/theme/toggle-theme";
 import { Button } from "@/components/ui";
 import { BookOpen, Settings, Star } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const DesktopSidebar = ({ navigationItems, quickActions, isActive }: any) => {
+    const { data: session } = useSession();
+
+    if (!session) {
+        return null;
+    }
+
     return (
         <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
             <div className="flex flex-col flex-grow bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 pt-5 pb-4 overflow-y-auto">
@@ -32,7 +42,10 @@ const DesktopSidebar = ({ navigationItems, quickActions, isActive }: any) => {
                         <div className="relative">
                             <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-600">
                                 <Image
-                                    src="/api/placeholder/40/40"
+                                    src={
+                                        session?.user?.image ||
+                                        "/default-avatar.png"
+                                    }
                                     alt="Profile"
                                     width={40}
                                     height={40}
@@ -43,7 +56,7 @@ const DesktopSidebar = ({ navigationItems, quickActions, isActive }: any) => {
                         </div>
                         <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
-                                Alex Johnson
+                                {session?.user?.name}
                             </p>
                             <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                                 <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
@@ -102,6 +115,21 @@ const DesktopSidebar = ({ navigationItems, quickActions, isActive }: any) => {
                     <div className="space-y-2">
                         {quickActions.map((action: any) => {
                             const Icon = action.icon;
+                            if (action.name === "Add Skill") {
+                                return (
+                                    <AddSkillComponent
+                                        key={action.href}
+                                        addSkillBtnContent={
+                                            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
+                                                <Icon
+                                                    className={`w-4 h-4 ${action.color}`}
+                                                />
+                                                <span>{action.name}</span>
+                                            </div>
+                                        }
+                                    />
+                                );
+                            }
                             return (
                                 <Link
                                     key={action.href}

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import OurJourney from "./aboutDetails/OurJourney";
 import AboutUsSection from "./aboutDetails/AboutUsSection";
 import TeamValues from "./aboutDetails/TeamValues";

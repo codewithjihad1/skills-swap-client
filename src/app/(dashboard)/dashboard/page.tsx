@@ -2,29 +2,19 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import ProfileSummary from "@/components/dashboard/ProfileSummary";
 import SkillWallet from "@/components/dashboard/SkillWallet";
 import ActivityOverview from "@/components/dashboard/ActivityOverview";
 import MatchSuggestions from "@/components/dashboard/MatchSuggestions";
 import InboxMessaging from "@/components/dashboard/InboxMessaging";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useSession } from "next-auth/react";
+import ProfileHeader from "@/components/profile-page/components/profile-header";
 
 export default function DashboardOverview() {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedConversation, setSelectedConversation] =
         useState<string>("");
-
-    // Mock user data
-    const mockUser = {
-        name: "Alex Johnson",
-        photo: "/api/placeholder/96/96",
-        bio: "Full-stack developer passionate about teaching React and learning UI/UX design.",
-        skillsOffered: ["React", "Node.js", "JavaScript", "TypeScript"],
-        skillsWanted: ["UI/UX Design", "Figma", "Photography"],
-        swapScore: 95,
-        totalSwaps: 24,
-        rating: 4.8,
-    };
+    const { data: session, status } = useSession();
 
     const mockWallet = {
         totalCredits: 450,
@@ -108,6 +98,11 @@ export default function DashboardOverview() {
         },
     ];
 
+    // user session data is fetching
+    if (!session && status === "loading") {
+        return null;
+    }
+
     return (
         <div className="max-w-7xl mx-auto space-y-6">
             <motion.div
@@ -118,7 +113,7 @@ export default function DashboardOverview() {
                 {/* Welcome Header */}
                 <div>
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                        Welcome back, {mockUser.name.split(" ")[0]}! 👋
+                        Welcome back, {session?.user?.name?.split(" ")[0]}! 👋
                     </h1>
                     <p className="text-gray-600 dark:text-gray-400">
                         Here's what's happening with your skills and swaps
@@ -127,7 +122,7 @@ export default function DashboardOverview() {
                 </div>
 
                 {/* Profile Summary */}
-                <ProfileSummary user={mockUser} />
+                <ProfileHeader />
 
                 {/* Dashboard Tabs */}
                 <Tabs defaultValue="overview" className="space-y-6">
