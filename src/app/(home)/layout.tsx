@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import { ToastContainer } from "react-toastify";
 import { Toaster } from "@/components/ui/sonner";
+import { SocketProvider } from "@/context/SocketContext";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -38,19 +39,21 @@ export default function RootLayout({
             >
                 <AuthProvider>
                     <ReactQueryProvider>
-                        <ThemeProvider
-                            attribute="class"
-                            defaultTheme="system"
-                            enableSystem
-                            disableTransitionOnChange
-                        >
-                            <Header />
-                            {children}
-                            <Footer />
+                        <SocketProvider>
+                            <ThemeProvider
+                                attribute="class"
+                                defaultTheme="system"
+                                enableSystem
+                                disableTransitionOnChange
+                            >
+                                <Header />
+                                {children}
+                                <Footer />
 
-                            <ToastContainer />
-                            <Toaster />
-                        </ThemeProvider>
+                                <ToastContainer />
+                                <Toaster />
+                            </ThemeProvider>
+                        </SocketProvider>
                     </ReactQueryProvider>
                 </AuthProvider>
             </body>
