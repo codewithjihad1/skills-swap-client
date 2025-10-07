@@ -102,7 +102,6 @@ const contactInfo = [
     },
 ];
 
-
 export default function ContactPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
@@ -120,18 +119,22 @@ export default function ContactPage() {
 
     async function onSubmit(data: ContactFormValues) {
         setIsSubmitting(true);
-        console.log("Contact form submitted:", data);
 
         try {
-            // Simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-
             // Here you would make your actual API call
-            // const response = await fetch('/api/contact', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(data),
-            // });
+            const response = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            if (response.status !== 200) {
+                const errorData = await response.json();
+                toast.error(`Failed to send message ❌`, {
+                    description: errorData.message || "Please try again later.",
+                });
+                return;
+            }
 
             toast.success("Message sent successfully! 🎉", {
                 description: "We'll get back to you as soon as possible.",
@@ -139,11 +142,6 @@ export default function ContactPage() {
 
             setIsSuccess(true);
             form.reset();
-
-            // Reset success state after 3 seconds
-            setTimeout(() => {
-                setIsSuccess(false);
-            }, 3000);
         } catch (error) {
             console.error(error);
             toast.error("Failed to send message ❌", {
