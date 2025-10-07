@@ -122,23 +122,23 @@ export default function ContactForm() {
 
         try {
             // ✅ Real API call to your backend
-            const response = await fetch('http://localhost:5000/api/contact', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
+            const response = await fetch("http://localhost:5000/api/contact", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     name: data.name,
                     email: data.email,
                     category: data.category,
-                    message: `Subject: ${data.subject}\n\nMessage: ${data.message}`
+                    message: `Subject: ${data.subject}\n\nMessage: ${data.message}`,
                 }),
             });
 
             const result = await response.json();
 
             if (!response.ok || !result.success) {
-                throw new Error(result.error || 'Failed to send message');
+                throw new Error(result.error || "Failed to send message");
             }
 
             toast.success("Message sent successfully! 🎉", {
@@ -151,11 +151,10 @@ export default function ContactForm() {
             setTimeout(() => {
                 setIsSuccess(false);
             }, 3000);
-
-        } catch (error) {
-            console.error('Error sending message:', error);
+        } catch (error: any) {
+            console.error("Error sending message:", error);
             toast.error("Failed to send message ❌", {
-                description: error.message || "Please try again later.",
+                description: error?.message || "Please try again later.",
             });
         } finally {
             setIsSubmitting(false);
