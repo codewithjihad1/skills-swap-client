@@ -195,7 +195,13 @@ const MessagesPage = () => {
     }, [newMessage, selectedConversationId, session?.user?.id]);
 
     const handleSendMessage = () => {
-        if (!newMessage.trim() || !selectedConversationId || !otherUser || !session?.user?.id) return;
+        if (
+            !newMessage.trim() ||
+            !selectedConversationId ||
+            !otherUser ||
+            !session?.user?.id
+        )
+            return;
 
         const messageData = {
             conversationId: selectedConversationId,
