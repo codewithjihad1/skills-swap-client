@@ -227,13 +227,11 @@ const MessagesPage = () => {
             sender: session.user.id,
             receiver: otherUser?._id,
             content: newMessage.trim(),
-            messageType: "text",
+            messageType: "text" as const,
         };
 
-        // Send via Socket.IO for real-time delivery
-        sendSocketMessage(messageData);
-
-        // Also save to database via API
+        // Only save to database via API
+        // The backend will handle Socket.IO broadcasting
         sendMessageMutation.mutate(messageData);
 
         setNewMessage("");
