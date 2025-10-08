@@ -19,9 +19,14 @@ import {
     Clock,
     XCircle,
     Send,
+    MessageCircle,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useSendMessage } from "@/lib/api/messages";
+import { toast } from "sonner";
 
 interface OutgoingRequestCardProps {
     request: any;
@@ -48,12 +53,56 @@ export function OutgoingRequestCard({
     onCancel,
     isCancelling,
 }: OutgoingRequestCardProps) {
+    const router = useRouter();
+    const { data: session } = useSession();
+    const sendMessageMutation = useSendMessage();
+
     const [showCancelDialog, setShowCancelDialog] = useState(false);
     const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+    const [isCreatingConversation, setIsCreatingConversation] = useState(false);
 
     const handleCancel = () => {
         onCancel(request._id);
         setShowCancelDialog(false);
+    };
+
+    // Create conversation and navigate to messages
+    const handleStartConversation = async () => {
+        if (!session?.user?.id || !request.skillProvider?._id) {
+            toast.error("Unable to start conversation");
+            return;
+        }
+
+        try {
+            setIsCreatingConversation(true);
+
+            // Generate conversationId by combining user IDs (alphabetically sorted)
+            const ids = [session.user.id, request.skillProvider._id].sort();
+            const conversationId = ids.join("-");
+
+            // Send initial greeting message to create the conversation
+            const initialMessage = {
+                conversationId,
+                sender: session.user.id,
+                receiver: request.skillProvider._id,
+                content: `Hi! I'm reaching out about our skill exchange - I'll teach you ${request.skillOffered?.title} and learn ${request.skillRequested?.title} from you. Let's discuss the details!`,
+                messageType: "text" as const,
+                skillContext: request.skillOffered?._id,
+            };
+
+            // Send the message via API to create the conversation
+            await sendMessageMutation.mutateAsync(initialMessage);
+
+            toast.success("Conversation started!");
+
+            // Navigate to messages page with the conversation
+            router.push(`/dashboard/messages?conversationId=${conversationId}`);
+        } catch (error) {
+            console.error("Error starting conversation:", error);
+            toast.error("Failed to start conversation. Please try again.");
+        } finally {
+            setIsCreatingConversation(false);
+        }
     };
 
     const getStatusColor = (status: string) => {
@@ -94,9 +143,7 @@ export function OutgoingRequestCard({
                             <div className="flex items-center gap-3">
                                 <Avatar className="h-12 w-12">
                                     <AvatarImage
-                                        src={
-                                            request.skillProvider?.avatar
-                                        }
+                                        src={request.skillProvider?.avatar}
                                         alt={request.skillProvider?.name}
                                     />
                                     <AvatarFallback>
@@ -216,14 +263,29 @@ export function OutgoingRequestCard({
                                 </Button>
                             )}
                             {request.status === "accepted" && (
-                                <Button
-                                    onClick={() => setShowDetailsDialog(true)}
-                                    variant="default"
-                                    className="flex-1"
-                                >
-                                    <Send className="h-4 w-4 mr-2" />
-                                    Follow Up
-                                </Button>
+                                <>
+                                    <Button
+                                        onClick={handleStartConversation}
+                                        disabled={isCreatingConversation}
+                                        variant="default"
+                                        className="flex-1"
+                                    >
+                                        <MessageCircle className="h-4 w-4 mr-2" />
+                                        {isCreatingConversation
+                                            ? "Starting..."
+                                            : "Message"}
+                                    </Button>
+                                    <Button
+                                        onClick={() =>
+                                            setShowDetailsDialog(true)
+                                        }
+                                        variant="outline"
+                                        className="flex-1"
+                                    >
+                                        <Send className="h-4 w-4 mr-2" />
+                                        View Details
+                                    </Button>
+                                </>
                             )}
                         </div>
                     </CardContent>
@@ -257,49 +319,97 @@ export function OutgoingRequestCard({
                 open={showDetailsDialog}
                 onOpenChange={setShowDetailsDialog}
             >
-                <DialogContent>
+                <DialogContent className="sm:max-w-[500px]">
                     <DialogHeader>
-                        <DialogTitle>Request Details</DialogTitle>
+                        <DialogTitle className="text-2xl">
+                            Request Accepted! 🎉
+                        </DialogTitle>
                         <DialogDescription>
-                            Your request has been accepted! You can now
-                            coordinate with {request.skillProvider?.name}{" "}
-                            through the messaging system.
+                            Great news! {request.skillProvider?.name} has
+                            accepted your skill exchange request. Time to start
+                            learning together!
                         </DialogDescription>
                     </DialogHeader>
+
                     <div className="space-y-4">
-                        <div className="p-4 bg-muted rounded-lg">
-                            <h4 className="font-medium mb-2">
-                                Exchange Details:
-                            </h4>
+                        {/* Exchange Details */}
+                        <div className="p-4 bg-muted rounded-lg border">
+                            <div className="flex items-center gap-2 mb-3">
+                                <ArrowRightLeft className="h-5 w-5 text-primary" />
+                                <h4 className="font-semibold">
+                                    Exchange Details
+                                </h4>
+                            </div>
                             <div className="space-y-2 text-sm">
                                 <p>
                                     <span className="text-muted-foreground">
                                         You're teaching:
                                     </span>{" "}
-                                    {request.skillOffered?.title}
+                                    <span className="font-medium">
+                                        {request.skillOffered?.title}
+                                    </span>
                                 </p>
                                 <p>
                                     <span className="text-muted-foreground">
                                         You're learning:
                                     </span>{" "}
-                                    {request.skillRequested?.title}
+                                    <span className="font-medium">
+                                        {request.skillRequested?.title}
+                                    </span>
                                 </p>
                             </div>
                         </div>
+
+                        {/* Response Message */}
                         {request.responseMessage && (
-                            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                                <h4 className="font-medium mb-2 text-green-700 dark:text-green-300">
-                                    Their Response:
-                                </h4>
+                            <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <MessageSquare className="h-5 w-5 text-green-600 dark:text-green-400" />
+                                    <h4 className="font-semibold text-green-700 dark:text-green-300">
+                                        Their Response
+                                    </h4>
+                                </div>
                                 <p className="text-sm text-green-600 dark:text-green-400">
-                                    {request.responseMessage}
+                                    "{request.responseMessage}"
                                 </p>
                             </div>
                         )}
+
+                        {/* Next Steps */}
+                        <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                            <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">
+                                📅 Next Steps
+                            </h4>
+                            <ul className="text-sm text-blue-600 dark:text-blue-400 space-y-1 list-disc list-inside">
+                                <li>
+                                    Start a conversation to coordinate schedules
+                                </li>
+                                <li>Discuss learning goals and expectations</li>
+                                <li>Plan your first session together</li>
+                            </ul>
+                        </div>
                     </div>
-                    <DialogFooter>
-                        <Button onClick={() => setShowDetailsDialog(false)}>
+
+                    <DialogFooter className="flex gap-2 sm:gap-2">
+                        <Button
+                            variant="outline"
+                            onClick={() => setShowDetailsDialog(false)}
+                            className="flex-1"
+                        >
                             Close
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setShowDetailsDialog(false);
+                                handleStartConversation();
+                            }}
+                            disabled={isCreatingConversation}
+                            className="flex-1"
+                        >
+                            <MessageCircle className="h-4 w-4 mr-2" />
+                            {isCreatingConversation
+                                ? "Starting..."
+                                : "Start Conversation"}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
