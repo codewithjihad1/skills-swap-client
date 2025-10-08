@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useSocket } from "@/context/SocketContext";
@@ -27,7 +27,7 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 
-const MessagesPage = () => {
+const MessagesPageContent = () => {
     const { data: session } = useSession();
     const searchParams = useSearchParams();
     const {
@@ -625,6 +625,31 @@ const MessagesPage = () => {
                 )}
             </motion.div>
         </div>
+    );
+};
+
+// Loading fallback component
+const MessagesPageLoading = () => {
+    return (
+        <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+            <div className="flex-1 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                    <p className="text-gray-500 dark:text-gray-400">
+                        Loading messages...
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// Main page component with Suspense boundary (required for useSearchParams in Next.js 15)
+const MessagesPage = () => {
+    return (
+        <Suspense fallback={<MessagesPageLoading />}>
+            <MessagesPageContent />
+        </Suspense>
     );
 };
 
