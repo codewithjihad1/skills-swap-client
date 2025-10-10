@@ -26,6 +26,7 @@ import {
 } from "@/lib/api/messages";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const MessagesPageContent = () => {
     const { data: session } = useSession();
@@ -91,7 +92,7 @@ const MessagesPageContent = () => {
                 conv.lastMessage.content.toLowerCase().includes(searchLower)
             );
         }) || [];
-
+        
     // Handle conversationId from URL query parameter (when coming from requests page)
     useEffect(() => {
         const conversationIdFromUrl = searchParams?.get("conversationId");
@@ -332,20 +333,22 @@ const MessagesPageContent = () => {
                                 >
                                     <div className="flex items-start gap-3">
                                         <div className="relative flex-shrink-0">
-                                            <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-600">
-                                                <Image
-                                                    src={
-                                                        convOtherUser?.avatar ||
-                                                        "/api/placeholder/48/48"
-                                                    }
-                                                    alt={
-                                                        convOtherUser?.name ||
-                                                        "User"
-                                                    }
-                                                    width={48}
-                                                    height={48}
-                                                    className="w-full h-full object-cover"
-                                                />
+                                            <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-600">         
+                                                <Avatar className="h-12 w-12">
+                                                    <AvatarImage
+                                                        src={
+                                                            convOtherUser?.avatar
+                                                        }
+                                                        alt={
+                                                            convOtherUser?.name
+                                                        }
+                                                    />
+                                                    <AvatarFallback>
+                                                        {convOtherUser?.name?.charAt(
+                                                            0
+                                                        ) || "U"}
+                                                    </AvatarFallback>
+                                                </Avatar>
                                             </div>
                                             {isUserOnline && (
                                                 <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>

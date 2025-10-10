@@ -108,6 +108,7 @@ const getSwapRequestStats = async (userId: string) => {
     const response = await axiosInstance.get(
         `/api/swap-requests/user/${userId}/stats`
     );
+    
     return response.data.data;
 };
 
