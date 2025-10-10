@@ -113,11 +113,15 @@ export function IncomingRequestCard({
                                     <p className="text-sm text-muted-foreground">
                                         {request.requester?.email}
                                     </p>
+                                    <Badge
+                                        className={getStatusColor(
+                                            request.status
+                                        )}
+                                    >
+                                        {request.status}
+                                    </Badge>
                                 </div>
                             </div>
-                            <Badge className={getStatusColor(request.status)}>
-                                {request.status}
-                            </Badge>
                         </div>
 
                         <div className="space-y-3 mb-4">
