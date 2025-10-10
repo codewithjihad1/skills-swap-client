@@ -98,7 +98,6 @@ const SkillsPage = () => {
             return res.data;
         },
     });
-    console.log("🚀 ~ SkillsPage ~ skillsOffered:", skillsOffered);
 
     const categories = [
         "All",

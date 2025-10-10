@@ -92,7 +92,7 @@ const DesktopSidebar = ({ navigationItems, quickActions, isActive }: any) => {
                                     }`}
                                 />
                                 <span>{item.name}</span>
-                                {item.name === "Messages" && (
+                                {/* {item.name === "Messages" && (
                                     <span className="ml-auto bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                                         3
                                     </span>
@@ -101,7 +101,7 @@ const DesktopSidebar = ({ navigationItems, quickActions, isActive }: any) => {
                                     <span className="ml-auto bg-yellow-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                                         2
                                     </span>
-                                )}
+                                )} */}
                             </Link>
                         );
                     })}
