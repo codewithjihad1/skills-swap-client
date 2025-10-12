@@ -27,6 +27,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useSendMessage } from "@/lib/api/messages";
 import { toast } from "sonner";
+import { ScheduleSessionDialog } from "@/components/sessions/ScheduleSessionDialog";
 
 interface IncomingRequestCardProps {
     request: any;
@@ -52,6 +53,7 @@ export function IncomingRequestCard({
     );
     const [responseMessage, setResponseMessage] = useState("");
     const [isCreatingConversation, setIsCreatingConversation] = useState(false);
+    const [showScheduleDialog, setShowScheduleDialog] = useState(false);
 
     const handleResponse = () => {
         if (responseType === "accept") {
@@ -338,6 +340,7 @@ export function IncomingRequestCard({
                                 <Button
                                     size="sm"
                                     className="flex-1 bg-blue-600 hover:bg-blue-700"
+                                    onClick={() => setShowScheduleDialog(true)}
                                 >
                                     <Calendar className="h-4 w-4 mr-2" />
                                     Schedule Session
@@ -358,6 +361,14 @@ export function IncomingRequestCard({
                     </CardContent>
                 </Card>
             </motion.div>
+
+            {/* Schedule Session Dialog */}
+            <ScheduleSessionDialog
+                open={showScheduleDialog}
+                onOpenChange={setShowScheduleDialog}
+                swapRequestId={request._id}
+                skillTitle={request.skillRequested?.title || "Skill Exchange"}
+            />
         </>
     );
 }
