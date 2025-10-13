@@ -57,7 +57,8 @@ const scheduleSession = async (data: ScheduleSessionData) => {
     try {
         const response = await axiosInstance.post(
             "/api/sessions/schedule",
-            data
+            data,
+            { timeout: 30000 }
         );
         return response.data;
     } catch (error) {
