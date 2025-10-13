@@ -48,6 +48,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import BookingSchedule from "@/components/modals/BookingSchedule";
 
 // Mock data for incoming requests
 const mockIncomingRequests = [
@@ -176,7 +177,7 @@ const SkillRequestsPage = () => {
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [selectedStatus, setSelectedStatus] = useState("all");
     const [activeTab, setActiveTab] = useState("incoming");
-
+    const [open, setOpen] = useState(false);
     const stats = {
         totalIncoming: 12,
         pendingIncoming: 8,
@@ -631,52 +632,57 @@ const SkillRequestsPage = () => {
 
                                                 {request.status ===
                                                     "pending" && (
-                                                    <div className="flex gap-2 pt-2">
-                                                        <Button
-                                                            size="sm"
-                                                            className="flex-1 bg-green-600 hover:bg-green-700"
-                                                        >
-                                                            <Check className="h-4 w-4 mr-2" />
-                                                            Accept
-                                                        </Button>
-                                                        <Button
-                                                            size="sm"
-                                                            variant="outline"
-                                                            className="flex-1"
-                                                        >
-                                                            <MessageCircle className="h-4 w-4 mr-2" />
-                                                            Negotiate
-                                                        </Button>
-                                                        <Button
-                                                            size="sm"
-                                                            variant="destructive"
-                                                            className="flex-1"
-                                                        >
-                                                            <X className="h-4 w-4 mr-2" />
-                                                            Decline
-                                                        </Button>
-                                                    </div>
-                                                )}
+                                                        <div className="flex gap-2 pt-2">
+                                                            <Button
+                                                                size="sm"
+                                                                className="flex-1 bg-green-600 hover:bg-green-700"
+                                                            >
+                                                                <Check className="h-4 w-4 mr-2" />
+                                                                Accept
+                                                            </Button>
+                                                            <Button
+                                                                size="sm"
+                                                                variant="outline"
+                                                                className="flex-1"
+                                                            >
+                                                                <MessageCircle className="h-4 w-4 mr-2" />
+                                                                Negotiate
+                                                            </Button>
+                                                            <Button
+                                                                size="sm"
+                                                                variant="destructive"
+                                                                className="flex-1"
+                                                            >
+                                                                <X className="h-4 w-4 mr-2" />
+                                                                Decline
+                                                            </Button>
+                                                        </div>
+                                                    )}
 
                                                 {request.status ===
                                                     "accepted" && (
-                                                    <div className="flex gap-2 pt-2">
-                                                        <Button
-                                                            size="sm"
-                                                            className="flex-1 bg-blue-600 hover:bg-blue-700"
-                                                        >
-                                                            <Calendar className="h-4 w-4 mr-2" />
-                                                            Schedule Session
-                                                        </Button>
-                                                        <Button
-                                                            size="sm"
-                                                            variant="outline"
-                                                        >
-                                                            <MessageCircle className="h-4 w-4 mr-2" />
-                                                            Message
-                                                        </Button>
-                                                    </div>
-                                                )}
+                                                        <div className="flex gap-2 pt-2">
+                                                            <div className="flex-1">
+                                                       <Button
+                                                             size="sm"
+                                                         className=" bg-blue-600 hover:bg-blue-700 text-white w-full"
+                                                                    onClick={() => setOpen(true)}
+                                                                >
+                                                                    <Calendar className="h-4 w-4 mr-2" />
+                                                                    Schedule Session
+                                                                </Button>
+                                                                <BookingSchedule open={open} setOpen={setOpen} />
+
+                                                            </div>
+                                                            <Button
+                                                                size="sm"
+                                                                variant="outline"
+                                                            >
+                                                                <MessageCircle className="h-4 w-4 mr-2" />
+                                                                Message
+                                                            </Button>
+                                                        </div>
+                                                    )}
                                             </CardContent>
                                         </Card>
                                     </motion.div>
@@ -833,56 +839,56 @@ const SkillRequestsPage = () => {
                                                 <div className="flex gap-2 pt-2">
                                                     {request.status ===
                                                         "pending" && (
-                                                        <>
+                                                            <>
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="outline"
+                                                                    className="flex-1"
+                                                                >
+                                                                    <MessageCircle className="h-4 w-4 mr-2" />
+                                                                    Follow Up
+                                                                </Button>
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="destructive"
+                                                                >
+                                                                    <X className="h-4 w-4 mr-2" />
+                                                                    Cancel
+                                                                </Button>
+                                                            </>
+                                                        )}
+
+                                                    {request.status ===
+                                                        "accepted" && (
+                                                            <>
+                                                                <Button
+                                                                    size="sm"
+                                                                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                                                                >
+                                                                    <Calendar className="h-4 w-4 mr-2" />
+                                                                    View Session
+                                                                </Button>
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="outline"
+                                                                >
+                                                                    <MessageCircle className="h-4 w-4 mr-2" />
+                                                                    Message
+                                                                </Button>
+                                                            </>
+                                                        )}
+
+                                                    {request.status ===
+                                                        "declined" && (
                                                             <Button
                                                                 size="sm"
                                                                 variant="outline"
                                                                 className="flex-1"
                                                             >
-                                                                <MessageCircle className="h-4 w-4 mr-2" />
-                                                                Follow Up
+                                                                <Send className="h-4 w-4 mr-2" />
+                                                                Send New Request
                                                             </Button>
-                                                            <Button
-                                                                size="sm"
-                                                                variant="destructive"
-                                                            >
-                                                                <X className="h-4 w-4 mr-2" />
-                                                                Cancel
-                                                            </Button>
-                                                        </>
-                                                    )}
-
-                                                    {request.status ===
-                                                        "accepted" && (
-                                                        <>
-                                                            <Button
-                                                                size="sm"
-                                                                className="flex-1 bg-blue-600 hover:bg-blue-700"
-                                                            >
-                                                                <Calendar className="h-4 w-4 mr-2" />
-                                                                View Session
-                                                            </Button>
-                                                            <Button
-                                                                size="sm"
-                                                                variant="outline"
-                                                            >
-                                                                <MessageCircle className="h-4 w-4 mr-2" />
-                                                                Message
-                                                            </Button>
-                                                        </>
-                                                    )}
-
-                                                    {request.status ===
-                                                        "declined" && (
-                                                        <Button
-                                                            size="sm"
-                                                            variant="outline"
-                                                            className="flex-1"
-                                                        >
-                                                            <Send className="h-4 w-4 mr-2" />
-                                                            Send New Request
-                                                        </Button>
-                                                    )}
+                                                        )}
                                                 </div>
                                             </CardContent>
                                         </Card>
