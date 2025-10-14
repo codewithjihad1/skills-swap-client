@@ -20,7 +20,6 @@ export default function ProfileHeader() {
         isLoading,
         error,
     } = useUserProfile(session?.user?.email || undefined);
-    console.log("🚀 ~ ProfileHeader ~ userProfile:", userProfile);
 
     if (!session) {
         return (

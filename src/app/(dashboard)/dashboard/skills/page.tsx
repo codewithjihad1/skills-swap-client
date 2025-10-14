@@ -5,28 +5,14 @@ import { motion } from "framer-motion";
 import {
     Search,
     Filter,
-    Star,
-    Clock,
-    Users,
-    Edit,
-    Trash2,
-    Eye,
-    MoreVertical,
     BookOpen,
     Target,
-    TrendingUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
     Select,
     SelectContent,
@@ -36,55 +22,11 @@ import {
 } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AddSkillComponent from "@/components/skills/AddSkill";
-
-// Mock data for skills
-const mockSkillsOffered = [
-    {
-        id: 1,
-        title: "React Development",
-        category: "Programming",
-        level: "Expert",
-        rating: 4.8,
-        students: 24,
-        sessions: 15,
-        earnings: 350,
-        description:
-            "Advanced React concepts including hooks, context, and performance optimization",
-        status: "active",
-        tags: ["React", "JavaScript", "Frontend"],
-        image: "/api/placeholder/60/60",
-    },
-    {
-        id: 2,
-        title: "UI/UX Design",
-        category: "Design",
-        level: "Intermediate",
-        rating: 4.6,
-        students: 18,
-        sessions: 12,
-        earnings: 280,
-        description:
-            "User interface and experience design principles with Figma",
-        status: "active",
-        tags: ["Design", "Figma", "Prototyping"],
-        image: "/api/placeholder/60/60",
-    },
-    {
-        id: 3,
-        title: "Python Programming",
-        category: "Programming",
-        level: "Advanced",
-        rating: 4.9,
-        students: 32,
-        sessions: 20,
-        earnings: 450,
-        description:
-            "Python fundamentals to advanced concepts including data structures",
-        status: "paused",
-        tags: ["Python", "Backend", "Data Science"],
-        image: "/api/placeholder/60/60",
-    },
-];
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import axiosInstance from "@/axios/axiosInstance";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import SkillCard from "./components/SkillCard";
 
 const mockSkillsWanted = [
     {
@@ -132,15 +74,30 @@ const SkillsPage = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [activeTab, setActiveTab] = useState("offered");
+    const { data: session } = useSession();
 
-    const stats = {
-        totalOffered: 8,
-        totalWanted: 5,
-        activeStudents: 74,
-        totalEarnings: 1280,
-        averageRating: 4.7,
-        completedSessions: 47,
-    };
+    // const stats = {
+    //     totalOffered: 8,
+    //     totalWanted: 5,
+    //     activeStudents: 74,
+    //     totalEarnings: 1280,
+    //     averageRating: 4.7,
+    //     completedSessions: 47,
+    // };
+
+    // get skills by user id from session
+    const {
+        data: skillsOffered,
+        isLoading: skillsLoading,
+    }: { data: any; isLoading: boolean } = useQuery({
+        queryKey: ["userSkills", session?.user?.id],
+        queryFn: async () => {
+            const res = await axiosInstance.get(
+                `/api/skills/user/${session?.user?.id}`
+            );
+            return res.data;
+        },
+    });
 
     const categories = [
         "All",
@@ -166,6 +123,11 @@ const SkillsPage = () => {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0 },
     };
+
+    // Loading state
+    if (skillsLoading && skillsOffered?.length > 0) {
+        return <LoadingSpinner />;
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 p-6">
@@ -368,147 +330,14 @@ const SkillsPage = () => {
                         {/* Skills Offered Tab */}
                         <TabsContent value="offered" className="mt-6">
                             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                                {mockSkillsOffered.map((skill, index) => (
-                                    <motion.div
-                                        key={skill.id}
-                                        initial={{ opacity: 0, scale: 0.9 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        transition={{ delay: index * 0.1 }}
-                                    >
-                                        <Card className="group hover:shadow-lg transition-all duration-300 border-gray-200 dark:border-gray-700 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm">
-                                            <CardHeader className="pb-3">
-                                                <div className="flex items-start justify-between">
-                                                    <div className="flex items-center gap-3">
-                                                        <Avatar className="h-12 w-12">
-                                                            <AvatarImage
-                                                                src={
-                                                                    skill.image
-                                                                }
-                                                                alt={
-                                                                    skill.title
-                                                                }
-                                                            />
-                                                            <AvatarFallback>
-                                                                {skill.title.slice(
-                                                                    0,
-                                                                    2
-                                                                )}
-                                                            </AvatarFallback>
-                                                        </Avatar>
-                                                        <div>
-                                                            <CardTitle className="text-lg group-hover:text-blue-600 transition-colors">
-                                                                {skill.title}
-                                                            </CardTitle>
-                                                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                                {skill.category}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    <DropdownMenu>
-                                                        <DropdownMenuTrigger
-                                                            asChild
-                                                        >
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="sm"
-                                                            >
-                                                                <MoreVertical className="h-4 w-4" />
-                                                            </Button>
-                                                        </DropdownMenuTrigger>
-                                                        <DropdownMenuContent>
-                                                            <DropdownMenuItem>
-                                                                <Eye className="h-4 w-4 mr-2" />
-                                                                View Details
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem>
-                                                                <Edit className="h-4 w-4 mr-2" />
-                                                                Edit
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem className="text-red-600">
-                                                                <Trash2 className="h-4 w-4 mr-2" />
-                                                                Delete
-                                                            </DropdownMenuItem>
-                                                        </DropdownMenuContent>
-                                                    </DropdownMenu>
-                                                </div>
-
-                                                <div className="flex items-center gap-2 mt-2">
-                                                    <Badge
-                                                        variant={
-                                                            skill.status ===
-                                                            "active"
-                                                                ? "default"
-                                                                : "secondary"
-                                                        }
-                                                        className={
-                                                            skill.status ===
-                                                            "active"
-                                                                ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                                                                : ""
-                                                        }
-                                                    >
-                                                        {skill.status}
-                                                    </Badge>
-                                                    <Badge variant="outline">
-                                                        {skill.level}
-                                                    </Badge>
-                                                </div>
-                                            </CardHeader>
-
-                                            <CardContent className="space-y-4">
-                                                <p className="text-sm text-gray-600 dark:text-gray-300">
-                                                    {skill.description}
-                                                </p>
-
-                                                <div className="flex flex-wrap gap-1">
-                                                    {skill.tags.map((tag) => (
-                                                        <Badge
-                                                            key={tag}
-                                                            variant="secondary"
-                                                            className="text-xs"
-                                                        >
-                                                            {tag}
-                                                        </Badge>
-                                                    ))}
-                                                </div>
-
-                                                <div className="grid grid-cols-2 gap-4 pt-3 border-t border-gray-200 dark:border-gray-700">
-                                                    <div className="flex items-center gap-2">
-                                                        <Star className="h-4 w-4 text-yellow-500" />
-                                                        <span className="text-sm font-medium">
-                                                            {skill.rating}
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <Users className="h-4 w-4 text-blue-500" />
-                                                        <span className="text-sm">
-                                                            {skill.students}{" "}
-                                                            students
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <Clock className="h-4 w-4 text-green-500" />
-                                                        <span className="text-sm">
-                                                            {skill.sessions}{" "}
-                                                            sessions
-                                                        </span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <TrendingUp className="h-4 w-4 text-purple-500" />
-                                                        <span className="text-sm font-medium">
-                                                            ${skill.earnings}
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                <Button className="w-full mt-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
-                                                    Manage Skill
-                                                </Button>
-                                            </CardContent>
-                                        </Card>
-                                    </motion.div>
-                                ))}
+                                {skillsOffered?.map(
+                                    (skill: any, index: number) => (
+                                        <SkillCard
+                                            key={skill.id}
+                                            skillData={skill}
+                                        />
+                                    )
+                                )}
                             </div>
                         </TabsContent>
 

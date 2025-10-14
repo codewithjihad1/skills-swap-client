@@ -14,8 +14,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useSocket } from "@/context/SocketContext";
 import {
     useConversations,
@@ -25,9 +26,11 @@ import {
 } from "@/lib/api/messages";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const MessagesPage = () => {
+const MessagesPageContent = () => {
     const { data: session } = useSession();
+    const searchParams = useSearchParams();
     const {
         socket,
         isConnected,
@@ -58,35 +61,52 @@ const MessagesPage = () => {
 
     // Get selected conversation details
     const selectedConversation = conversations?.find(
-        (c) => c._id === selectedConversationId
+        (c) => c?._id === selectedConversationId
     );
     const messages = messagesData?.messages || [];
 
     // Get the other user in the conversation
     const otherUser =
         messages.length > 0
-            ? messages[0].sender._id === session?.user?.id
+            ? messages[0].sender?._id === session?.user?.id
                 ? messages[0].receiver
                 : messages[0].sender
             : null;
 
     const isOtherUserOnline = otherUser
-        ? onlineUsers.includes(otherUser._id)
+        ? onlineUsers.includes(otherUser?._id)
         : false;
 
     // Filter conversations
     const filteredConversations =
         conversations?.filter((conv) => {
+            if (!session?.user?.id) return false;
+
             const otherUser =
-                conv.lastMessage.sender._id === session?.user?.id
+                conv.lastMessage.sender?._id === session.user.id
                     ? conv.lastMessage.receiver
                     : conv.lastMessage.sender;
             const searchLower = searchQuery.toLowerCase();
             return (
-                otherUser.name.toLowerCase().includes(searchLower) ||
+                otherUser?.name.toLowerCase().includes(searchLower) ||
                 conv.lastMessage.content.toLowerCase().includes(searchLower)
             );
         }) || [];
+        
+    // Handle conversationId from URL query parameter (when coming from requests page)
+    useEffect(() => {
+        const conversationIdFromUrl = searchParams?.get("conversationId");
+        if (conversationIdFromUrl && conversations) {
+            // Check if conversation exists
+            const conversationExists = conversations.some(
+                (conv) => conv?._id === conversationIdFromUrl
+            );
+            if (conversationExists) {
+                setSelectedConversationId(conversationIdFromUrl);
+                toast.success("Conversation loaded!");
+            }
+        }
+    }, [searchParams, conversations]);
 
     // Join/leave conversation rooms
     useEffect(() => {
@@ -206,15 +226,13 @@ const MessagesPage = () => {
         const messageData = {
             conversationId: selectedConversationId,
             sender: session.user.id,
-            receiver: otherUser._id,
+            receiver: otherUser?._id,
             content: newMessage.trim(),
-            messageType: "text",
+            messageType: "text" as const,
         };
 
-        // Send via Socket.IO for real-time delivery
-        sendSocketMessage(messageData);
-
-        // Also save to database via API
+        // Only save to database via API
+        // The backend will handle Socket.IO broadcasting
         sendMessageMutation.mutate(messageData);
 
         setNewMessage("");
@@ -290,42 +308,47 @@ const MessagesPage = () => {
                     ) : (
                         filteredConversations.map((conversation) => {
                             const convOtherUser =
-                                conversation.lastMessage.sender._id ===
+                                conversation.lastMessage.sender?._id ===
                                 session?.user?.id
                                     ? conversation.lastMessage.receiver
                                     : conversation.lastMessage.sender;
                             const isUserOnline = onlineUsers.includes(
-                                convOtherUser._id
+                                convOtherUser?._id
                             );
 
                             return (
                                 <div
-                                    key={conversation._id}
+                                    key={conversation?._id}
                                     onClick={() =>
                                         setSelectedConversationId(
-                                            conversation._id
+                                            conversation?._id
                                         )
                                     }
                                     className={`p-4 border-b border-gray-100 dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ${
                                         selectedConversationId ===
-                                        conversation._id
+                                        conversation?._id
                                             ? "bg-primary/5 dark:bg-primary/10 border-r-2 border-primary"
                                             : ""
                                     }`}
                                 >
                                     <div className="flex items-start gap-3">
                                         <div className="relative flex-shrink-0">
-                                            <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-600">
-                                                <Image
-                                                    src={
-                                                        convOtherUser.avatar ||
-                                                        "/api/placeholder/48/48"
-                                                    }
-                                                    alt={convOtherUser.name}
-                                                    width={48}
-                                                    height={48}
-                                                    className="w-full h-full object-cover"
-                                                />
+                                            <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-600">         
+                                                <Avatar className="h-12 w-12">
+                                                    <AvatarImage
+                                                        src={
+                                                            convOtherUser?.avatar
+                                                        }
+                                                        alt={
+                                                            convOtherUser?.name
+                                                        }
+                                                    />
+                                                    <AvatarFallback>
+                                                        {convOtherUser?.name?.charAt(
+                                                            0
+                                                        ) || "U"}
+                                                    </AvatarFallback>
+                                                </Avatar>
                                             </div>
                                             {isUserOnline && (
                                                 <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"></div>
@@ -335,7 +358,7 @@ const MessagesPage = () => {
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center justify-between mb-1">
                                                 <h4 className="font-medium text-gray-900 dark:text-white truncate">
-                                                    {convOtherUser.name}
+                                                    {convOtherUser?.name}
                                                 </h4>
                                                 <span className="text-xs text-gray-500 dark:text-gray-400">
                                                     {formatDistanceToNow(
@@ -361,7 +384,7 @@ const MessagesPage = () => {
                                             <div className="flex items-center justify-between">
                                                 <p className="text-sm text-gray-600 dark:text-gray-400 truncate">
                                                     {conversation.lastMessage
-                                                        .sender._id ===
+                                                        .sender?._id ===
                                                     session?.user?.id
                                                         ? "You: "
                                                         : ""}
@@ -408,7 +431,7 @@ const MessagesPage = () => {
                                                     otherUser.avatar ||
                                                     "/api/placeholder/40/40"
                                                 }
-                                                alt={otherUser.name}
+                                                alt={otherUser?.name}
                                                 width={40}
                                                 height={40}
                                                 className="w-full h-full object-cover"
@@ -420,7 +443,7 @@ const MessagesPage = () => {
                                     </div>
                                     <div>
                                         <h4 className="font-medium text-gray-900 dark:text-white">
-                                            {otherUser.name}
+                                            {otherUser?.name}
                                         </h4>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">
                                             {isOtherUserOnline ? (
@@ -473,11 +496,11 @@ const MessagesPage = () => {
                                 <div className="space-y-4">
                                     {messages.map((message) => {
                                         const isMyMessage =
-                                            message.sender._id ===
+                                            message.sender?._id ===
                                             session?.user?.id;
                                         return (
                                             <div
-                                                key={message._id}
+                                                key={message?._id}
                                                 className={`flex ${
                                                     isMyMessage
                                                         ? "justify-end"
@@ -605,6 +628,31 @@ const MessagesPage = () => {
                 )}
             </motion.div>
         </div>
+    );
+};
+
+// Loading fallback component
+const MessagesPageLoading = () => {
+    return (
+        <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
+            <div className="flex-1 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                    <p className="text-gray-500 dark:text-gray-400">
+                        Loading messages...
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// Main page component with Suspense boundary (required for useSearchParams in Next.js 15)
+const MessagesPage = () => {
+    return (
+        <Suspense fallback={<MessagesPageLoading />}>
+            <MessagesPageContent />
+        </Suspense>
     );
 };
 
