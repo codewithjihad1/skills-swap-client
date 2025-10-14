@@ -1,4 +1,5 @@
 // src/hooks/useNotifications.ts - COMPLETELY FIXED VERSION
+
 import { useState, useEffect, useCallback } from 'react';
 
 export interface Notification {
