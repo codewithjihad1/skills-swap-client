@@ -5,12 +5,17 @@ import { Button } from "@/components/ui/button";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const BookingSchedule = ({ open, setOpen }) => {
+interface BookingScheduleProps {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
+
+const BookingSchedule = ({ open, setOpen }: BookingScheduleProps) => {
   const [title, setTitle] = React.useState("");
   const [desc, setDesc] = React.useState("");
-  const [date, setDate] = React.useState(new Date());
-  const [startTime, setStartTime] = React.useState(new Date());
-  const [endTime, setEndTime] = React.useState(new Date());
+  const [date, setDate] = React.useState<Date | null>(new Date());
+  const [startTime, setStartTime] = React.useState<Date | null>(new Date());
+  const [endTime, setEndTime] = React.useState<Date | null>(new Date());
 
   const handleCreate = async () => {
     try {
@@ -53,10 +58,14 @@ const BookingSchedule = ({ open, setOpen }) => {
           className="w-full textarea textarea-bordered"
         />
         <div className="flex gap-2">
-          <DatePicker selected={date} onChange={setDate} className="input input-bordered w-full" />
+          <DatePicker
+            selected={date}
+            onChange={(date: Date | null) => setDate(date)}
+            className="input input-bordered w-full"
+          />
           <DatePicker
             selected={startTime}
-            onChange={setStartTime}
+            onChange={(date: Date | null) => setStartTime(date)}
             showTimeSelect
             showTimeSelectOnly
             timeIntervals={15}
@@ -66,7 +75,7 @@ const BookingSchedule = ({ open, setOpen }) => {
           />
           <DatePicker
             selected={endTime}
-            onChange={setEndTime}
+            onChange={(date: Date | null) => setEndTime(date)}
             showTimeSelect
             showTimeSelectOnly
             timeIntervals={15}
