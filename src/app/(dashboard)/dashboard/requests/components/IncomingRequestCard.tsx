@@ -15,6 +15,7 @@ import {
     User,
     Check,
     X,
+    Headset,
 } from "lucide-react";
 import { useState } from "react";
 import {
@@ -44,6 +45,7 @@ export function IncomingRequestCard({
     onAccept,
     onReject,
 }: IncomingRequestCardProps) {
+    console.log("🚀 ~ IncomingRequestCard ~ request:", request)
     const { data: session } = useSession();
     const router = useRouter();
     const sendMessageMutation = useSendMessage();
@@ -97,7 +99,6 @@ export function IncomingRequestCard({
         }
     };
 
-    // Handle Conversation initiation
     // Create conversation and navigate to messages
     const handleStartConversation = async () => {
         if (!session?.user?.id || !request.requester?._id) {
@@ -356,6 +357,30 @@ export function IncomingRequestCard({
                                         ? "Starting..."
                                         : "Message"}
                                 </Button>
+                            </div>
+                        )}
+
+                        {request.status === "scheduled" && (
+                            <div className="flex gap-2 pt-2">
+                                <Button
+                                    size="sm"
+                                    className="flex-1 bg-blue-600 hover:bg-blue-700"
+                                    onClick={() => setShowScheduleDialog(true)}
+                                >
+                                    <Headset className="h-4 w-4 mr-2" />
+                                    Join Session
+                                </Button>
+                                {/* <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={handleStartConversation}
+                                    disabled={isCreatingConversation}
+                                >
+                                    <MessageCircle className="h-4 w-4 mr-2" />
+                                    {isCreatingConversation
+                                        ? "Starting..."
+                                        : "Message"}
+                                </Button> */}
                             </div>
                         )}
                     </CardContent>
