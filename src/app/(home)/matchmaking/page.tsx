@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 interface User {
     id: number;
@@ -27,46 +28,46 @@ interface MatchStep {
 const sampleUsers: User[] = [
     {
         id: 1,
-        name: "Alex Chen",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+        name: "Arif Hossain",
+        avatar: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=150&h=150&fit=crop&crop=face",
         skillOffered: "React Development",
         skillWanted: "UI/UX Design",
         level: "Advanced",
         rating: 4.9,
-        location: "San Francisco, CA",
+        location: "Dhaka, Bangladesh",
         isOnline: true,
     },
     {
         id: 2,
-        name: "Sarah Johnson",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+        name: "Mitu Akter",
+        avatar: "https://i.ibb.co.com/XfQhSwk8/Borkha-Unlimited-Hijab1-jpg.webp",
         skillOffered: "UI/UX Design",
         skillWanted: "React Development",
         level: "Intermediate",
         rating: 4.8,
-        location: "New York, NY",
+        location: "Chittagong, Bangladesh",
         isOnline: true,
     },
     {
         id: 3,
-        name: "Mike Rodriguez",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-        skillOffered: "Python",
+        name: "Sabbir Ahmed",
+        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
+        skillOffered: "UI/UX Design",
         skillWanted: "DevOps",
         level: "Advanced",
         rating: 4.7,
-        location: "Austin, TX",
+        location: "Khulna, Bangladesh",
         isOnline: false,
     },
     {
         id: 4,
-        name: "Emily Davis",
-        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-        skillOffered: "DevOps",
+        name: "Nusrat Jahan",
+        avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop&crop=face",
+        skillOffered: "UI/UX Design",
         skillWanted: "Python",
         level: "Intermediate",
         rating: 4.9,
-        location: "Seattle, WA",
+        location: "Sylhet, Bangladesh",
         isOnline: true,
     },
 ];
@@ -105,6 +106,7 @@ const matchSteps: MatchStep[] = [
 ];
 
 const Matchmaking = () => {
+    const { data: session, status } = useSession();
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const [matches, setMatches] = useState<User[]>([]);
@@ -195,6 +197,11 @@ const Matchmaking = () => {
             transition: { duration: 0.3 },
         },
     };
+
+    // User session is available
+    if (status === "loading" && !session) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <section className="py-16 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20 overflow-hidden">
@@ -359,17 +366,21 @@ const Matchmaking = () => {
                         >
                             <div className="flex items-center space-x-4 mb-6">
                                 <motion.img
-                                    src={sampleUsers[0].avatar}
-                                    alt={sampleUsers[0].name}
+                                    src={
+                                        session?.user?.image || ""
+                                    }
+                                    alt={
+                                        session?.user?.name || "profile picture"
+                                    }
                                     className="w-16 h-16 rounded-full border-4 border-primary/20"
                                     whileHover={{ scale: 1.1, rotate: 5 }}
                                 />
                                 <div>
                                     <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-                                        {sampleUsers[0].name}
+                                        {session?.user?.name || "Unknown User"}
                                     </h4>
                                     <p className="text-gray-600 dark:text-gray-400">
-                                        {sampleUsers[0].location}
+                                        {session?.user?.location || "Dhaka, Bangladesh"}
                                     </p>
                                     <div className="flex items-center space-x-1">
                                         <div className="flex text-yellow-400">
@@ -396,7 +407,7 @@ const Matchmaking = () => {
                                             ))}
                                         </div>
                                         <span className="text-sm text-gray-600 dark:text-gray-400">
-                                            {sampleUsers[0].rating}
+                                            {session?.user?.rating || "N/A"}
                                         </span>
                                     </div>
                                 </div>
@@ -408,7 +419,7 @@ const Matchmaking = () => {
                                         🚀 I can teach:
                                     </span>
                                     <span className="px-3 py-1 bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">
-                                        {sampleUsers[0].skillOffered}
+                                        {session?.user?.skillOffered || "JavaScript"}
                                     </span>
                                 </div>
 
@@ -417,7 +428,7 @@ const Matchmaking = () => {
                                         🎯 I want to learn:
                                     </span>
                                     <span className="px-3 py-1 bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">
-                                        {sampleUsers[0].skillWanted}
+                                        {session?.user?.skillWanted || "UI/UX Design"}
                                     </span>
                                 </div>
                             </div>
@@ -609,7 +620,7 @@ const Matchmaking = () => {
                                         whileTap={{ scale: 0.95 }}
                                         onClick={startMatching}
                                     >
-                                        Start Matching Demo
+                                        Start Matching
                                     </motion.button>
                                 </motion.div>
                             )}
