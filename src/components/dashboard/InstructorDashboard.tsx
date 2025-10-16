@@ -13,20 +13,34 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useQuery } from "@tanstack/react-query";
+import LoadingSpinner from "../ui/LoadingSpinner";
+import axiosInstance from "@/axios/axiosInstance";
 
 export default function InstructorDashboard() {
     const { data: session } = useSession();
     const [activeTab, setActiveTab] = useState("overview");
 
     // Mock data for instructor
-    const stats = {
-        totalStudents: 156,
-        activeCourses: 8,
-        completionRate: 87,
-        averageRating: 4.8,
-        totalEarnings: 12450,
-        thisMonthEarnings: 2340,
-    };
+    // const stats = {
+    //     totalStudents: 156,
+    //     activeCourses: 8,
+    //     completionRate: 87,
+    //     averageRating: 4.8,
+    //     totalEarnings: 12450,
+    //     thisMonthEarnings: 2340,
+    // };
+
+    const { data: stats, isLoading: statsLoading } = useQuery({
+        queryKey: ["instructor-stats"],
+        queryFn: async () => {
+            const response = await axiosInstance.get(
+                `/api/stats/instructor/${session?.user?.id}`
+            );
+            console.log("🚀 ~ InstructorDashboard ~ response:", response);
+            return response?.data?.stats;
+        },
+    });
 
     const upcomingClasses = [
         {
@@ -76,6 +90,10 @@ export default function InstructorDashboard() {
         },
     ];
 
+    if (statsLoading) {
+        return <LoadingSpinner />;
+    }
+
     const StatCard = ({
         title,
         value,
@@ -121,7 +139,7 @@ export default function InstructorDashboard() {
                     <div className="flex items-center justify-between">
                         <div>
                             <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                                Instructor Dashboard 👨‍🏫
+                                Instructor Dashboard
                             </h1>
                             <p className="text-gray-600 dark:text-gray-400">
                                 Welcome back, {session?.user?.name}! Manage your

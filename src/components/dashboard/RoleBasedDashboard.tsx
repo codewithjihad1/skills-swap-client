@@ -9,7 +9,6 @@ import AdminDashboard from "@/components/dashboard/AdminDashboard";
 
 export default function RoleBasedDashboard() {
     const { data: session, status } = useSession();
-    console.log("🚀 ~ RoleBasedDashboard ~ session:", session)
     const router = useRouter();
 
     useEffect(() => {

@@ -17,7 +17,6 @@ const DesktopSidebar = ({ navigationItems, quickActions, isActive }: any) => {
     }
 
     const userRole = session?.user?.role || "user";
-    console.log("User Role:", session?.user);
 
     const getRoleBadge = () => {
         switch (userRole) {
