@@ -30,6 +30,7 @@ import AuthProvider from "@/provider/AuthProvider";
 import { ThemeProvider } from "next-themes";
 import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import { ToastContainer } from "react-toastify";
+import { Toaster } from "sonner";
 import { SocketProvider } from "@/context/SocketContext";
 
 interface DashboardLayoutProps {
@@ -282,6 +283,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                                 </div>
 
                                 <ToastContainer />
+                                <Toaster position="top-right" richColors />
                             </ThemeProvider>
                         </SocketProvider>
                     </ReactQueryProvider>
