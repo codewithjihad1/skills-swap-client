@@ -81,6 +81,8 @@ export const authOptions: NextAuthOptions = {
                         id: user._id.toString(),
                         email: user.email,
                         name: user.name,
+                        image: user.image,
+                        role: user.role || "user",
                         isVerified: user.isVerified,
                     };
                 } catch (error) {
@@ -141,6 +143,7 @@ export const authOptions: NextAuthOptions = {
                             name: user.name || profile?.name || "Unknown User",
                             email: user.email,
                             image: user.image,
+                            role: "user", // Default role for new social users
                             isVerified: true, // Social accounts are considered verified
                             provider: account.provider,
                             providerId: account.providerAccountId,
@@ -167,6 +170,7 @@ export const authOptions: NextAuthOptions = {
                     // Update the user object with our database user info
                     user.id = existingUser._id.toString();
                     (user as any).isVerified = existingUser.isVerified;
+                    (user as any).role = existingUser.role || "user";
                 }
 
                 return true;
@@ -178,6 +182,7 @@ export const authOptions: NextAuthOptions = {
         async jwt({ token, user, account }) {
             if (user) {
                 token.id = user.id;
+                token.role = (user as any).role || "user";
                 token.isVerified = (
                     user as { isVerified?: boolean }
                 ).isVerified;
@@ -192,6 +197,7 @@ export const authOptions: NextAuthOptions = {
         async session({ session, token }) {
             if (session.user && token.sub) {
                 session.user.id = token.sub;
+                (session.user as any).role = token.role || "user";
                 (session.user as any).isVerified = token.isVerified;
                 (session.user as any).provider = token.provider;
             }

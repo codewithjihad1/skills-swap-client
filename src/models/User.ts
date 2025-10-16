@@ -8,6 +8,8 @@ export const LOCKOUT_CONFIG = {
     EXTENDED_LOCKOUT_DURATION: 24 * 60 * 60 * 1000, // 24 hours in milliseconds
 };
 
+export type UserRole = "user" | "instructor" | "admin";
+
 export interface IUser extends Document {
     _id: mongoose.Types.ObjectId;
     name: string;
@@ -16,6 +18,7 @@ export interface IUser extends Document {
     image?: string; // Profile image from social providers
     provider?: string; // Social provider (google, github)
     providerId?: string; // ID from social provider
+    role: UserRole; // User role for access control
     emailVerified?: Date;
     isVerified: boolean;
     verificationToken?: string;
@@ -69,6 +72,12 @@ const userSchema = new Schema(
         },
         providerId: {
             type: String, // ID from the social provider
+        },
+        role: {
+            type: String,
+            enum: ["user", "instructor", "admin"],
+            default: "user",
+            required: true,
         },
         emailVerified: {
             type: Date,
