@@ -13,6 +13,7 @@ import {
     Edit,
     Eye,
 } from "lucide-react";
+import { MdPublic, MdPublicOff } from "react-icons/md";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { courseService, Course } from "@/lib/api/courseService";
@@ -373,7 +374,11 @@ export default function InstructorCoursesPage() {
                                                 : "Publish"
                                         }
                                     >
-                                        {course.published ? "📤" : "📥"}
+                                        {course.published ? (
+                                            <MdPublicOff />
+                                        ) : (
+                                            <MdPublic />
+                                        )}
                                     </button>
                                     <button
                                         onClick={() =>
