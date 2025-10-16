@@ -1,14 +1,14 @@
 // app/courses/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import CourseCard from "@/components/CourseCard";
 import { getCourses } from "@/services/courseService";
 import { Course, CourseFilters } from "@/types/course";
 import { Search, Filter, Loader2 } from "lucide-react";
 
-export default function CoursesPage() {
+function CoursesPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -259,5 +259,19 @@ export default function CoursesPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function CoursesPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center min-h-screen">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        </div>
+      }
+    >
+      <CoursesPageContent />
+    </Suspense>
   );
 }
