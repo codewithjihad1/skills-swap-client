@@ -1,32 +1,31 @@
 "use client";
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
-import { Star, Clock, Users, BookOpen, CheckCircle, Play, Heart } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
+import Image from "next/image";
+import { Star, Clock, Users, BookOpen, CheckCircle, Play, Heart } from "lucide-react";
 
-const fetchCourse = async (courseId) => {
+const fetchCourse = async (courseId: string) => {
   const res = await fetch(`http://localhost:5000/api/courses/${courseId}`);
   if (!res.ok) throw new Error("Failed to fetch course data");
   const data = await res.json();
-  return data.course;
+  return data.course as any;
 };
 
 export default function CoursePage() {
-  const { courseId } = useParams();
+  const { courseId } = useParams() as { courseId: string };
   const [activeTab, setActiveTab] = useState("overview");
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  const { data: course, isLoading, error } = useQuery({
+  const { data: course, isLoading, error } = useQuery<any, Error>({
     queryKey: ["course", courseId],
     queryFn: () => fetchCourse(courseId),
     enabled: !!courseId,
   });
 
-  if (isLoading)
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-
-  if (error)
-    return <div className="min-h-screen flex items-center justify-center text-red-500">Error loading course!</div>;
+  if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (error || !course) return <div className="min-h-screen flex items-center justify-center text-red-500">Error loading course!</div>;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -59,8 +58,8 @@ export default function CoursePage() {
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-6">
               {course.tags && course.tags.length > 0 ? (
-                course.tags.map((tag, i) => (
-                  <span key={i} className="border border-white   bg-opacity-20  px-3 py-1 rounded-full text-sm">{tag}</span>
+                course.tags.map((tag: string, i: number) => (
+                  <span key={i} className="border border-white bg-opacity-20 px-3 py-1 rounded-full text-sm">{tag}</span>
                 ))
               ) : (
                 <span className="text-white text-sm">No tags</span>
@@ -69,20 +68,22 @@ export default function CoursePage() {
 
             {/* Buttons */}
             <div className="flex gap-3">
-              <button className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition">Enroll Now</button>
+              <Link href={`/courses/${courseId}/checkout`} className="bg-yellow-400 text-black px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition">
+                Enroll Now
+              </Link>
               <button
                 onClick={() => setIsWishlisted(!isWishlisted)}
-                className=" bg-opacity-20 text-white px-4 py-3 rounded-lg font-semibold hover:bg-opacity-30 transition flex items-center gap-2"
+                className="bg-opacity-20 text-white px-4 py-3 rounded-lg font-semibold hover:bg-opacity-30 transition flex items-center gap-2"
               >
                 <Heart size={20} className={isWishlisted ? "fill-current" : ""} /> Wishlist
               </button>
             </div>
           </div>
 
-          {/* Thumbnail Video */}
+          {/* Thumbnail */}
           <div className="relative">
             <div className="rounded-2xl overflow-hidden shadow-2xl">
-              <img src={course.thumbnail} alt={course.title} className="w-full h-96 object-cover" />
+              <Image src={course.thumbnail} alt={course.title} width={600} height={400} className="w-full h-96 object-cover" />
               <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center hover:bg-opacity-40 transition cursor-pointer">
                 <Play size={64} className="text-white fill-white" />
               </div>
@@ -118,9 +119,7 @@ export default function CoursePage() {
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`flex-1 py-3 text-center font-semibold transition ${
-                activeTab === tab ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-600 hover:text-gray-900"
-              }`}
+              className={`flex-1 py-3 text-center font-semibold transition ${activeTab === tab ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-600 hover:text-gray-900"}`}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>
@@ -128,13 +127,12 @@ export default function CoursePage() {
         </div>
 
         <div className="mt-6">
-          {/* Overview */}
           {activeTab === "overview" && (
             <div>
               <h3 className="text-2xl font-bold mb-4">What you'll learn</h3>
               {course.learningOutcomes && course.learningOutcomes.length > 0 ? (
                 <div className="grid md:grid-cols-2 gap-4">
-                  {course.learningOutcomes.map((item, i) => (
+                  {course.learningOutcomes.map((item: string, i: number) => (
                     <div key={i} className="flex gap-3 items-start">
                       <CheckCircle className="text-green-500 mt-1" size={20} />
                       <p className="text-gray-700">{item}</p>
@@ -147,13 +145,12 @@ export default function CoursePage() {
             </div>
           )}
 
-          {/* Syllabus */}
           {activeTab === "syllabus" && (
             <div>
               <h3 className="text-2xl font-bold mb-4">Course Syllabus</h3>
               {course.syllabus && course.syllabus.length > 0 ? (
                 <div className="space-y-4">
-                  {course.syllabus.map((week, i) => (
+                  {course.syllabus.map((week: any, i: number) => (
                     <div key={i} className="border border-gray-200 rounded-lg p-6 hover:border-blue-300 hover:shadow-md transition">
                       <div className="flex items-start justify-between mb-3">
                         <h4 className="text-lg font-bold text-gray-900">Week {week.week}: {week.title}</h4>
@@ -161,7 +158,7 @@ export default function CoursePage() {
                       </div>
                       <div className="flex flex-wrap gap-2">
                         {week.topics && week.topics.length > 0 ? (
-                          week.topics.map((topic, j) => (
+                          week.topics.map((topic: string, j: number) => (
                             <span key={j} className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">{topic}</span>
                           ))
                         ) : (
@@ -177,13 +174,12 @@ export default function CoursePage() {
             </div>
           )}
 
-          {/* Requirements */}
           {activeTab === "requirements" && (
             <div>
               <h3 className="text-2xl font-bold mb-4 text-gray-900">Prerequisites</h3>
               {course.prerequisites && course.prerequisites.length > 0 ? (
                 <ul className="list-disc list-inside text-gray-700">
-                  {course.prerequisites.map((req, i) => <li key={i}>{req}</li>)}
+                  {course.prerequisites.map((req: string, i: number) => <li key={i}>{req}</li>)}
                 </ul>
               ) : (
                 <p className="text-gray-500">No prerequisites listed.</p>
@@ -198,7 +194,7 @@ export default function CoursePage() {
         <div className="max-w-6xl mx-auto px-4 py-12 bg-white rounded-xl shadow-lg mt-8">
           <h3 className="text-2xl font-bold mb-6 text-gray-900">Your Instructor</h3>
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-            <img src={course.instructor.avatar} alt={course.instructor.name} className="w-32 h-32 rounded-full object-cover" />
+            <Image src={course.instructor.avatar} alt={course.instructor.name} width={128} height={128} className="w-32 h-32 rounded-full object-cover" />
             <div className="flex-1">
               <h4 className="text-xl font-bold text-gray-900">{course.instructor.name}</h4>
               <p className="text-gray-600 mb-3">{course.instructor.bio}</p>
