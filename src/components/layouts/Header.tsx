@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
     const navigation = [
         { name: "Home", href: "/" },
         { name: "Explore Skills", href: "/explore-skills" },
-        { name: "Courses", href: "/courses" },
+        { name: "Post A Skill", href: "/post-skill" },
         { name: "Matchmaking", href: "/matchmaking" },
         { name: "About Us", href: "/about" },
         { name: "Contact", href: "/contact" },

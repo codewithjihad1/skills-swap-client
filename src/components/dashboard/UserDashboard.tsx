@@ -1,167 +1,67 @@
-"use client";
-
-import { useState } from "react";
-import { motion } from "framer-motion";
-import SkillWallet from "@/components/dashboard/SkillWallet";
-import ActivityOverview from "@/components/dashboard/ActivityOverview";
-import MatchSuggestions from "@/components/dashboard/MatchSuggestions";
-import InboxMessaging from "@/components/dashboard/InboxMessaging";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+﻿"use client";
+import React from "react";
 import { useSession } from "next-auth/react";
-import ProfileHeader from "@/components/profile-page/components/profile-header";
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Book, Users, CheckCircle, Star, TrendingUp } from "lucide-react";
 
-export default function UserDashboard() {
-    const [searchQuery, setSearchQuery] = useState("");
-    const [selectedConversation, setSelectedConversation] =
-        useState<string>("");
-    const { data: session, status } = useSession();
-
-    const mockWallet = {
-        totalCredits: 450,
-        earnedThisMonth: 120,
-        spentThisMonth: 85,
-        pendingCredits: 25,
+const UserDashboard = () => {
+    const { data: session } = useSession();
+    const stats = {
+        enrolledCourses: 5,
+        completedCourses: 2,
+        inProgressCourses: 3,
+        totalHoursLearned: 48,
+        certificates: 2,
+        averageProgress: 65,
     };
-
-    const mockTransactions = [
-        {
-            id: "1",
-            type: "earned" as const,
-            amount: 50,
-            description: "React Tutorial Session",
-            date: "2 hours ago",
-            skillName: "React",
-        },
-    ];
-
-    const mockActivities = {
-        recentSwaps: [
-            {
-                id: "1",
-                partnerName: "Sarah Chen",
-                skillName: "React Hooks",
-                status: "completed" as const,
-                date: "2 days ago",
-                type: "teaching" as const,
-            },
-        ],
-        upcomingSessions: [
-            {
-                id: "1",
-                partnerName: "David Kim",
-                skillName: "Node.js Basics",
-                dateTime: "Tomorrow at 3:00 PM",
-                duration: "1.5 hours",
-                type: "learning" as const,
-            },
-        ],
-        notifications: [
-            {
-                id: "1",
-                type: "request" as const,
-                message: "New swap request from Alex",
-                time: "5 minutes ago",
-                read: false,
-            },
-        ],
-    };
-
-    const mockMatches = {
-        recommended: [
-            {
-                id: "1",
-                name: "Alex Rodriguez",
-                photo: "/api/placeholder/100/100",
-                skillOffered: "Python",
-                skillNeeded: "JavaScript",
-                matchScore: 95,
-                rating: 4.8,
-                totalSwaps: 12,
-                availability: "online" as const,
-                distance: "2.5 km away",
-            },
-        ],
-        searchResults: [],
-    };
-
-    const mockConversations = [
-        {
-            id: "1",
-            partnerName: "Sarah Chen",
-            partnerPhoto: "/api/placeholder/50/50",
-            lastMessage: "Thanks for the session!",
-            lastMessageTime: "2m ago",
-            unreadCount: 2,
-            isOnline: true,
-            skillContext: "React Development",
-        },
-    ];
-
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-            <div className="container mx-auto px-4 py-8">
-                {/* Header with Role Badge */}
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-8"
-                >
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                                Welcome back, {session?.user?.name || "User"}!
-                                👋
-                            </h1>
-                            <p className="text-gray-600 dark:text-gray-400">
-                                Your skills exchange dashboard
-                            </p>
-                        </div>
-                        <div className="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full font-semibold">
-                            User Account
-                        </div>
-                    </div>
-                </motion.div>
-
-                {/* Profile Header */}
-                {session?.user && <ProfileHeader />}
-
-                {/* Main Dashboard Content */}
-                <Tabs defaultValue="overview" className="space-y-6">
-                    <TabsList className="grid w-full grid-cols-4 gap-4">
-                        <TabsTrigger value="overview">Overview</TabsTrigger>
-                        <TabsTrigger value="wallet">Skill Wallet</TabsTrigger>
-                        <TabsTrigger value="matches">Matches</TabsTrigger>
-                        <TabsTrigger value="messages">Messages</TabsTrigger>
-                    </TabsList>
-
-                    <TabsContent value="overview" className="space-y-6">
-                        <ActivityOverview activities={mockActivities} />
-                    </TabsContent>
-
-                    <TabsContent value="wallet" className="space-y-6">
-                        <SkillWallet
-                            balance={mockWallet}
-                            recentTransactions={mockTransactions}
-                        />
-                    </TabsContent>
-
-                    <TabsContent value="matches" className="space-y-6">
-                        <MatchSuggestions
-                            matches={mockMatches}
-                            searchQuery={searchQuery}
-                            onSearch={setSearchQuery}
-                        />
-                    </TabsContent>
-
-                    <TabsContent value="messages" className="space-y-6">
-                        <InboxMessaging
-                            conversations={mockConversations}
-                            selectedConversation={selectedConversation}
-                            onSelectConversation={setSelectedConversation}
-                        />
-                    </TabsContent>
-                </Tabs>
+        <div className="p-6 space-y-6">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white">
+                <h1 className="text-3xl font-bold mb-2">
+                    Welcome back, {session?.user?.name || "Student"}!
+                </h1>
+                <p className="text-blue-100">
+                    Continue your learning journey and achieve your goals.
+                </p>
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">
+                            Enrolled Courses
+                        </CardTitle>
+                        <Book className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">
+                            {stats.enrolledCourses}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
+                            {stats.inProgressCourses} in progress
+                        </p>
+                    </CardContent>
+                </Card>
+            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Continue Learning</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="space-y-4">
+                        <p className="text-sm text-muted-foreground">
+                            Your courses in progress will appear here.
+                        </p>
+                        <Link
+                            href="/courses"
+                            className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-600 text-white px-4 py-2 hover:bg-blue-700"
+                        >
+                            Browse Courses
+                        </Link>
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
-}
+};
+export default UserDashboard;

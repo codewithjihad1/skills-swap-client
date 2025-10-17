@@ -73,7 +73,7 @@ function CoursesContent() {
     };
 
     const handlePageChange = (page: number) => {
-        setFilters((prev) => ({ ...prev, page }));
+        setFilters((prev: CourseFilters) => ({ ...prev, page }));
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 

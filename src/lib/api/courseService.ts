@@ -1,151 +1,137 @@
-import axios from "axios";
+﻿import axios from "axios";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-
-// Create axios instance
-const courseAPI = axios.create({
-    baseURL: `${API_BASE_URL}/api/courses`,
-    headers: {
-        "Content-Type": "application/json",
-    },
-});
-
-// Add auth token to requests (implement when auth is ready)
-courseAPI.interceptors.request.use((config) => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-});
 
 export interface Course {
     _id: string;
     title: string;
     description: string;
-    instructor: {
-        _id: string;
-        name: string;
-        email: string;
-        avatar?: string;
-        bio?: string;
-    };
+    instructor: { _id: string; name: string; email: string };
     category: string;
     level: "beginner" | "intermediate" | "advanced";
-    duration: number;
-    thumbnail?: string;
     price: number;
-    currency: string;
-    tags: string[];
-    syllabus?: Array<{
-        week: number;
-        title: string;
-        topics: string[];
-        duration: number;
-    }>;
-    prerequisites?: string[];
-    learningOutcomes?: string[];
+    duration: number;
     published: boolean;
-    publishedAt?: string;
+    tags: string[];
+    learningOutcomes: string[];
+    prerequisites: string[];
+    syllabus: { module: string; lessons: string[] }[];
+    rating: { average: number; count: number };
     enrollmentCount: number;
-    rating: {
-        average: number;
-        count: number;
-    };
-    language: string;
+    thumbnail?: string;
     createdAt: string;
-    lastUpdated: string;
+    updatedAt: string;
 }
 
 export interface CourseFilters {
     page?: number;
     limit?: number;
     category?: string;
-    level?: string;
+    level?: "beginner" | "intermediate" | "advanced";
     search?: string;
-    sortBy?: string;
+    instructor?: string;
+    published?: boolean;
+    minPrice?: number;
+    maxPrice?: number;
+    sortBy?: "createdAt" | "title" | "price" | "rating.average";
     order?: "asc" | "desc";
 }
 
-export interface CoursesResponse {
+export interface GetCoursesResponse {
     success: boolean;
-    count: number;
-    totalCourses: number;
-    currentPage: number;
-    totalPages: number;
     courses: Course[];
+    totalCourses: number;
+    totalPages: number;
+    currentPage: number;
 }
 
-export interface SingleCourseResponse {
+export interface GetCourseResponse {
     success: boolean;
     course: Course;
 }
 
-export interface CourseResponse {
+export interface CreateCourseResponse {
+    success: boolean;
+    course: Course;
+    message: string;
+}
+
+export interface UpdateCourseResponse {
+    success: boolean;
+    course: Course;
+    message: string;
+}
+
+export interface DeleteCourseResponse {
     success: boolean;
     message: string;
-    course: Course;
 }
 
 export const courseService = {
-    // Get all courses with filters
     getAllCourses: async (
         filters: CourseFilters = {}
-    ): Promise<CoursesResponse> => {
-        const response = await courseAPI.get("/", { params: filters });
+    ): Promise<GetCoursesResponse> => {
+        const params = new URLSearchParams();
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value !== undefined && value !== "") {
+                params.append(key, value.toString());
+            }
+        });
+        const response = await axios.get(
+            `${API_BASE_URL}/api/courses?${params.toString()}`
+        );
         return response.data;
     },
-
-    // Get single course
-    getCourseById: async (courseId: string): Promise<SingleCourseResponse> => {
-        const response = await courseAPI.get(`/${courseId}`);
+    getCourseById: async (id: string): Promise<GetCourseResponse> => {
+        const response = await axios.get(`${API_BASE_URL}/api/courses/${id}`);
         return response.data;
     },
-
-    // Get courses by instructor
     getInstructorCourses: async (
         instructorId: string,
-        includeUnpublished = false
-    ): Promise<CoursesResponse> => {
-        const response = await courseAPI.get(`/instructor/${instructorId}`, {
-            params: { includeUnpublished },
+        filters: CourseFilters = {}
+    ): Promise<GetCoursesResponse> => {
+        const params = new URLSearchParams();
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value !== undefined && value !== "") {
+                params.append(key, value.toString());
+            }
         });
+        const response = await axios.get(
+            `${API_BASE_URL}/api/courses/instructor/${instructorId}?${params.toString()}`
+        );
         return response.data;
     },
-
-    // Create new course
     createCourse: async (
         courseData: Partial<Course>
-    ): Promise<CourseResponse> => {
-        const response = await courseAPI.post("/", courseData);
+    ): Promise<CreateCourseResponse> => {
+        const response = await axios.post(
+            `${API_BASE_URL}/api/courses`,
+            courseData
+        );
         return response.data;
     },
-
-    // Update course
     updateCourse: async (
-        courseId: string,
-        updates: Partial<Course>
-    ): Promise<CourseResponse> => {
-        const response = await courseAPI.put(`/${courseId}`, updates);
+        id: string,
+        courseData: Partial<Course>
+    ): Promise<UpdateCourseResponse> => {
+        const response = await axios.put(
+            `${API_BASE_URL}/api/courses/${id}`,
+            courseData
+        );
         return response.data;
     },
-
-    // Publish/unpublish course
-    togglePublish: async (
-        courseId: string,
-        publishStatus: boolean
-    ): Promise<CourseResponse> => {
-        const response = await courseAPI.patch(`/${courseId}/publish`, {
-            published: publishStatus,
-        });
+    togglePublish: async (id: string): Promise<UpdateCourseResponse> => {
+        const response = await axios.patch(
+            `${API_BASE_URL}/api/courses/${id}/publish`
+        );
         return response.data;
     },
-
-    // Delete course
-    deleteCourse: async (
-        courseId: string
-    ): Promise<{ success: boolean; message: string }> => {
-        const response = await courseAPI.delete(`/${courseId}`);
+    deleteCourse: async (id: string): Promise<DeleteCourseResponse> => {
+        const response = await axios.delete(
+            `${API_BASE_URL}/api/courses/${id}`
+        );
         return response.data;
     },
 };
+
+export default courseService;

@@ -18,30 +18,7 @@ const MobileSidebar = ({
         return null;
     }
 
-    const userRole = (session?.user as any)?.role || "user";
 
-    const getRoleBadge = () => {
-        switch (userRole) {
-            case "admin":
-                return (
-                    <span className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 font-semibold">
-                        Admin
-                    </span>
-                );
-            case "instructor":
-                return (
-                    <span className="text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 font-semibold">
-                        Instructor
-                    </span>
-                );
-            default:
-                return (
-                    <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-semibold">
-                        User
-                    </span>
-                );
-        }
-    };
     return (
         <AnimatePresence>
             {sidebarOpen && (
@@ -97,15 +74,12 @@ const MobileSidebar = ({
                             </div>
 
                             {/* User Profile Summary */}
-                            <div className="px-4 mb-6 mt-4">
+                            <div className="px-4 mb-6">
                                 <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-primary/5 to-purple-600/5 dark:from-primary/10 dark:to-purple-600/10 rounded-lg border border-primary/20">
                                     <div className="relative">
                                         <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-600">
                                             <Image
-                                                src={
-                                                    session?.user?.image ||
-                                                    "/default-avatar.png"
-                                                }
+                                                src={session?.user?.image || "/default-avatar.png"}
                                                 alt="Profile"
                                                 width={40}
                                                 height={40}
@@ -118,8 +92,11 @@ const MobileSidebar = ({
                                         <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                                             {session?.user?.name}
                                         </p>
-                                        <div className="flex items-center gap-1 mt-1">
-                                            {getRoleBadge()}
+                                        <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                                            <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                                            <span>4.8</span>
+                                            <span>•</span>
+                                            <span>450 credits</span>
                                         </div>
                                     </div>
                                 </div>
