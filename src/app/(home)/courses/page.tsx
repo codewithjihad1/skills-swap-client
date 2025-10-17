@@ -284,19 +284,7 @@ function CoursesContent() {
     );
 }
 
-export default function CoursesPage() {
-    return (
-        <Suspense
-            fallback={
-                <div className="flex justify-center items-center min-h-screen">
-                    <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
-                </div>
-            }
-        >
-            <CoursesPageContent />
-        </Suspense>
-    );
-}
+
 
 export default function CoursesPage() {
   return (
