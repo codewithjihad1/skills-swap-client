@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { Link, Phone } from "lucide-react";
 
 const fetchCourse = async (courseId: string) => {
   const res = await fetch(`http://localhost:5000/api/courses/${courseId}`, {
@@ -51,12 +52,14 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
-      <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden border">
+    <div className="min-h-screen  py-10 px-4">
+      <div className="max-w-6xl mx-auto bg-white  shadow-lg overflow-hidden border">
         {/* Header */}
         <div className="border-b py-4 px-6">
-          <h1 className="text-2xl font-semibold text-gray-800">My Cart</h1>
-
+          <div>
+           <h1 className="text-2xl font-semibold text-gray-800">My Cart</h1>
+         </div>
+          
           {/* Progress Bar */}
           <div className="flex items-center justify-center mt-4 space-x-8">
             <div className="flex items-center space-x-2 text-green-600 font-medium">
@@ -126,7 +129,7 @@ export default function CheckoutPage() {
                   <span>bKash</span>
                 </div>
                 <Image
-                  src="/bkash.png"
+                  src="/bKash-Logo.png"
                   alt="bKash"
                   width={80}
                   height={30}
@@ -140,7 +143,7 @@ export default function CheckoutPage() {
                   <span>Nagad</span>
                 </div>
                 <Image
-                  src="/nagad.png"
+                  src="/NagadLogo.png"
                   alt="Nagad"
                   width={80}
                   height={30}
@@ -150,8 +153,8 @@ export default function CheckoutPage() {
             </div>
 
             <div className="mt-6 bg-white border rounded-lg p-4 text-sm text-gray-600">
-              <p>
-                📞 Need help? Call our support at{" "}
+              <p className="flex items-center  space-x-2">
+                 <Phone /> Need help? Call our support at{" "}
                 <span className="font-bold text-green-600">16910</span>
               </p>
             </div>
