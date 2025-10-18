@@ -54,7 +54,7 @@ export default function InstructorCoursesPage() {
             // Fetch courses including unpublished ones for instructor dashboard
             const response = await courseService.getInstructorCourses(
                 instructorId,
-                true // includeUnpublished
+                {} // All courses for the instructor
             );
 
             setCourses(response.courses);
@@ -71,7 +71,7 @@ export default function InstructorCoursesPage() {
         currentStatus: boolean
     ) => {
         try {
-            await courseService.togglePublish(courseId, !currentStatus);
+            await courseService.togglePublish(courseId);
             toast.success(
                 `Course ${
                     !currentStatus ? "published" : "unpublished"

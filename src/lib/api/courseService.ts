@@ -10,6 +10,7 @@ export interface Course {
     category: string;
     level: "beginner" | "intermediate" | "advanced";
     price: number;
+    currency?: string;
     duration: number;
     published: boolean;
     tags: string[];
@@ -19,6 +20,7 @@ export interface Course {
     rating: { average: number; count: number };
     enrollmentCount: number;
     thumbnail?: string;
+    language?: string;
     createdAt: string;
     updatedAt: string;
 }

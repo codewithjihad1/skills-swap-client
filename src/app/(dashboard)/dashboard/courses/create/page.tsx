@@ -49,12 +49,10 @@ const courseSchema = z.object({
     syllabus: z
         .array(
             z.object({
-                week: z.number().min(1),
-                title: z.string().min(1, "Week title is required"),
-                topics: z
+                module: z.string().min(1, "Module title is required"),
+                lessons: z
                     .array(z.string())
-                    .min(1, "At least one topic is required"),
-                duration: z.number().min(1, "Duration must be at least 1 hour"),
+                    .min(1, "At least one lesson is required"),
             })
         )
         .optional(),
@@ -170,10 +168,8 @@ export default function CreateCoursePage() {
 
     const handleAddSyllabusWeek = () => {
         appendSyllabus({
-            week: syllabusFields.length + 1,
-            title: "",
-            topics: [""],
-            duration: 1,
+            module: "",
+            lessons: [""],
         });
     };
 
@@ -200,8 +196,8 @@ export default function CreateCoursePage() {
                     (o) => o.trim() !== ""
                 ),
                 syllabus: data.syllabus?.map((s) => ({
-                    ...s,
-                    topics: s.topics.filter((t) => t.trim() !== ""),
+                    module: s.module,
+                    lessons: s.lessons.filter((l) => l.trim() !== ""),
                 })),
             };
 
@@ -585,7 +581,7 @@ export default function CreateCoursePage() {
                             >
                                 <div className="flex items-center justify-between">
                                     <h4 className="font-semibold text-gray-900 dark:text-white">
-                                        Week {index + 1}
+                                        Module {index + 1}
                                     </h4>
                                     <button
                                         type="button"
@@ -598,32 +594,21 @@ export default function CreateCoursePage() {
 
                                 <input
                                     {...register(
-                                        `syllabus.${index}.title` as const
+                                        `syllabus.${index}.module` as const
                                     )}
-                                    placeholder="Week title (e.g., HTML Fundamentals)"
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent dark:bg-gray-800"
-                                />
-
-                                <input
-                                    {...register(
-                                        `syllabus.${index}.duration` as const,
-                                        { valueAsNumber: true }
-                                    )}
-                                    type="number"
-                                    min="1"
-                                    placeholder="Duration (hours)"
+                                    placeholder="Module name (e.g., HTML Fundamentals)"
                                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent dark:bg-gray-800"
                                 />
 
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        Topics (comma-separated)
+                                        Lessons (comma-separated)
                                     </label>
                                     <input
                                         {...register(
-                                            `syllabus.${index}.topics.0` as const
+                                            `syllabus.${index}.lessons.0` as const
                                         )}
-                                        placeholder="Topic 1, Topic 2, Topic 3"
+                                        placeholder="Lesson 1, Lesson 2, Lesson 3"
                                         className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-600 focus:border-transparent dark:bg-gray-800"
                                     />
                                 </div>
@@ -635,7 +620,7 @@ export default function CreateCoursePage() {
                             className="flex items-center gap-2 text-purple-600 hover:text-purple-700"
                         >
                             <Plus className="h-4 w-4" />
-                            Add Week
+                            Add Module
                         </button>
                     </CardContent>
                 </Card>
@@ -652,7 +637,7 @@ export default function CreateCoursePage() {
                                 <p>
                                     To publish your course, you must add:
                                     <br />
-                                    • Complete syllabus with weekly breakdown
+                                    • Complete syllabus with module breakdown
                                     <br />• Learning outcomes (what students
                                     will learn)
                                 </p>
