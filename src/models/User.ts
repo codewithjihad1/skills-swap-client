@@ -14,6 +14,7 @@ export interface IUser extends Document {
     email: string;
     password?: string; // Optional for social login users
     image?: string; // Profile image from social providers
+    role: "user" | "instructor" | "admin"; // User role for RBAC
     provider?: string; // Social provider (google, github)
     providerId?: string; // ID from social provider
     emailVerified?: Date;
@@ -25,6 +26,7 @@ export interface IUser extends Document {
     lockUntil?: Date;
     totalFailedAttempts: number; // Track total failed attempts for escalation
     lastLoginAttempt?: Date;
+    lastSuccessfulLogin?: Date; // Track last successful login
     createdAt: Date;
     updatedAt: Date;
     isAccountLocked: boolean;
@@ -60,6 +62,12 @@ const userSchema = new Schema(
             type: String,
             required: true,
             trim: true,
+        },
+        role: {
+            type: String,
+            enum: ["user", "instructor", "admin"],
+            default: "user",
+            required: true,
         },
         image: {
             type: String, // Profile image URL from social providers
@@ -98,6 +106,9 @@ const userSchema = new Schema(
             default: 0,
         },
         lastLoginAttempt: {
+            type: Date,
+        },
+        lastSuccessfulLogin: {
             type: Date,
         },
     },
@@ -172,7 +183,10 @@ userSchema.methods.incLoginAttempts = function (this: IUser) {
 userSchema.methods.resetLoginAttempts = function (this: IUser) {
     return this.updateOne({
         $unset: { loginAttempts: 1, lockUntil: 1 },
-        $set: { lastLoginAttempt: new Date() },
+        $set: {
+            lastLoginAttempt: new Date(),
+            lastSuccessfulLogin: new Date(),
+        },
     });
 };
 
@@ -203,6 +217,9 @@ userSchema.methods.getLockoutInfo = function (this: IUser) {
 
 // Index for performance
 userSchema.index({ lockUntil: 1 });
+userSchema.index({ email: 1 });
+userSchema.index({ role: 1 });
+userSchema.index({ provider: 1, providerId: 1 });
 
 export default mongoose.models.User ||
     mongoose.model<IUser>("User", userSchema);

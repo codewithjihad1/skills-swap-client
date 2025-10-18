@@ -15,6 +15,8 @@ if (!mongoose.connection.readyState) {
 export const authOptions: NextAuthOptions = {
     session: {
         strategy: "jwt" as const,
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+        updateAge: 24 * 60 * 60, // 24 hours
     },
     providers: [
         CredentialsProvider({
@@ -179,7 +181,8 @@ export const authOptions: NextAuthOptions = {
                 return false;
             }
         },
-        async jwt({ token, user, account }) {
+        async jwt({ token, user, account, trigger, session }) {
+            // Initial sign in
             if (user) {
                 token.id = user.id;
                 token.role = (user as any).role || "user";
@@ -192,6 +195,24 @@ export const authOptions: NextAuthOptions = {
                     token.provider = account.provider;
                 }
             }
+
+            // Handle session updates (when user role changes, etc.)
+            if (trigger === "update" && session) {
+                // Fetch fresh user data from database
+                try {
+                    const dbUser = await User.findById(token.sub);
+                    if (dbUser) {
+                        token.role = dbUser.role || "user";
+                        token.isVerified = dbUser.isVerified;
+                        token.name = dbUser.name;
+                        token.email = dbUser.email;
+                        token.picture = dbUser.image;
+                    }
+                } catch (error) {
+                    console.error("Error refreshing token:", error);
+                }
+            }
+
             return token;
         },
         async session({ session, token }) {
