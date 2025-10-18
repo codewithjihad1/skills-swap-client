@@ -217,7 +217,7 @@ userSchema.methods.getLockoutInfo = function (this: IUser) {
 
 // Index for performance
 userSchema.index({ lockUntil: 1 });
-userSchema.index({ email: 1 });
+// userSchema.index({ email: 1 });
 userSchema.index({ role: 1 });
 userSchema.index({ provider: 1, providerId: 1 });
 
