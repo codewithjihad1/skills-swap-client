@@ -83,11 +83,8 @@ const DesktopSidebar = ({ navigationItems, quickActions, isActive }: any) => {
                             <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                                 {session?.user?.name}
                             </p>
-                            <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
-                                <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                                <span>4.8</span>
-                                <span>•</span>
-                                <span>450 credits</span>
+                            <div className="flex items-center gap-1 mt-1">
+                                {getRoleBadge()}
                             </div>
                         </div>
                     </div>
