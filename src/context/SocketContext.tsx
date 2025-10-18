@@ -117,7 +117,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
         });
 
         newSocket.on("connect", () => {
-            console.log("✅ Socket connected:", newSocket.id);
+            // console.log("✅ Socket connected:", newSocket.id);
             setIsConnected(true);
             newSocket.emit("user:join", session.user.id);
         });

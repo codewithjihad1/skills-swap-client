@@ -1,25 +1,47 @@
-import axios from "axios";
-import { Course, CourseFilters, GetCoursesResponse } from "@/types/course";
+// services/courseService.ts
+import { CourseFilters, CoursesResponse } from '@/types/course';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
-export const getCourses = async (
-    filters: CourseFilters = {}
-): Promise<GetCoursesResponse> => {
-    const params = new URLSearchParams();
-    Object.entries(filters).forEach(([key, value]) => {
-        if (value !== undefined && value !== "") {
-            params.append(key, value.toString());
-        }
-    });
+export const getCourses = async (filters: CourseFilters = {}): Promise<CoursesResponse> => {
+  const { page, limit, category, level, search, sortBy, order } = filters;
 
-    const response = await axios.get(
-        `${API_BASE_URL}/api/courses?${params.toString()}`
-    );
-    return response.data;
+  const params = new URLSearchParams();
+  if (page) params.append('page', page.toString());
+  if (limit) params.append('limit', limit.toString());
+  if (category) params.append('category', category);
+  if (level) params.append('level', level);
+  if (search) params.append('search', search);
+  if (sortBy) params.append('sortBy', sortBy);
+  if (order) params.append('order', order);
+
+  const response = await fetch(`${API_BASE_URL}/api/courses?${params.toString()}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch courses');
+  }
+
+  return response.json();
 };
 
-export const getCourseById = async (id: string): Promise<Course> => {
-    const response = await axios.get(`${API_BASE_URL}/api/courses/${id}`);
-    return response.data.course;
+export const getCourseById = async (id: string) => {
+  const response = await fetch(`${API_BASE_URL}/api/courses/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch course');
+  }
+
+  return response.json();
 };

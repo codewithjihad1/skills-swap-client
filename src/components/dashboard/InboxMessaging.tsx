@@ -52,7 +52,6 @@ const InboxMessaging = ({
     const handleSendMessage = () => {
         if (newMessage.trim()) {
             // Here you would handle sending the message
-            console.log("Sending message:", newMessage);
             setNewMessage("");
         }
     };

@@ -45,7 +45,6 @@ export function IncomingRequestCard({
     onAccept,
     onReject,
 }: IncomingRequestCardProps) {
-    console.log("🚀 ~ IncomingRequestCard ~ request:", request)
     const { data: session } = useSession();
     const router = useRouter();
     const sendMessageMutation = useSendMessage();

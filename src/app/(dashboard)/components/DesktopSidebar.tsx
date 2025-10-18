@@ -16,6 +16,31 @@ const DesktopSidebar = ({ navigationItems, quickActions, isActive }: any) => {
         return null;
     }
 
+    const userRole = session?.user?.role || "user";
+
+    const getRoleBadge = () => {
+        switch (userRole) {
+            case "admin":
+                return (
+                    <span className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 font-semibold">
+                        Admin
+                    </span>
+                );
+            case "instructor":
+                return (
+                    <span className="text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 font-semibold">
+                        Instructor
+                    </span>
+                );
+            default:
+                return (
+                    <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 font-semibold">
+                        User
+                    </span>
+                );
+        }
+    };
+
     return (
         <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
             <div className="flex flex-col flex-grow bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 pt-5 pb-4 overflow-y-auto">
