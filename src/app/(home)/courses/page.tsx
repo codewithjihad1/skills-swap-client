@@ -8,8 +8,8 @@ import { Course, CourseFilters } from "@/types/course";
 import { Search, Filter, Loader2 } from "lucide-react";
 
 function CoursesContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
     const [courses, setCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
@@ -217,8 +217,8 @@ function CoursesContent() {
                 {/* Courses Grid */}
                 {!loading && !error && courses.length > 0 && (
                     <>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                            {courses.map((course) => (
+                        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+                            {courses?.map((course) => (
                                 <CourseCard key={course._id} course={course} />
                             ))}
                         </div>
@@ -284,12 +284,10 @@ function CoursesContent() {
     );
 }
 
-
-
 export default function CoursesPage() {
-  return (
-    <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
-      <CoursesContent />
-    </Suspense>
-  );
+    return (
+        <Suspense fallback={<div className="p-10 text-center">Loading...</div>}>
+            <CoursesContent />
+        </Suspense>
+    );
 }
