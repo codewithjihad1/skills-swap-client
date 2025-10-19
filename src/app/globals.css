@@ -1,3 +1,6 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -9,8 +12,12 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Professional Blue Theme */
-  --color-primary: #2563eb;
+  /* Professional green Theme */
+  --color-primary: #21BF73;
+  --color-secondary: #007a3f;
+  --color-accent: #B0EACD;
+
+
   /* Professional Blue */
   --color-primary-dark: #1d4ed8;
   /* Darker Blue for hover */
@@ -60,6 +67,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
 }
 
 /* Line clamp utility for truncating text */

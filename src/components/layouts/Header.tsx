@@ -8,6 +8,7 @@ import { signOut, useSession } from "next-auth/react";
 import { ModeToggle } from "../theme/toggle-theme";
 import { Button } from "@/components/ui/button";
 import UserDropDown from "../user/UserDropDown";
+import { RiArrowRightSLine } from "react-icons/ri";
 
 interface User {
     id: string;
@@ -52,7 +53,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                 <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         <div className="flex items-center space-x-2">
-                            <div className="w-8 h-8 bg-gradient-to-l from-primary to-purple-600 rounded-lg flex items-center justify-center">
+                            <div className="w-8 h-8 bg-gradient-to-l from-primary to-green-600 rounded-lg flex items-center justify-center">
                                 <span className="text-white font-bold text-lg">
                                     S
                                 </span>
@@ -77,52 +78,55 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                             href="/"
                             className="flex items-center space-x-2 group"
                         >
-                            <div className="w-8 h-8 bg-gradient-to-l from-primary to-purple-600 rounded-lg flex items-center justify-center group-hover:bg-blue-700 transition-colors duration-200">
+                            <div className="w-8 h-8 bg-gradient-to-l from-primary to-green-600 rounded-lg flex items-center justify-center group-hover:bg-primary transition-colors duration-200">
                                 <span className="text-white font-bold text-lg">
                                     S
                                 </span>
                             </div>
-                            <span className="hidden md:block text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200">
+                            <span className="hidden lg:block text-xl font-bold text-primary dark:text-gray-100">
                                 SkillSwap
                             </span>
                         </Link>
                     </div>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center space-x-8">
-                        {navigation.map((item) => (
-                            <Link
-                                key={item.name}
-                                href={item.href}
-                                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                                    isActiveLink(item.href)
-                                        ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
-                                        : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-slate-800"
-                                }`}
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
-                    </div>
+                    <div className="hidden md:flex items-center">
+                        <div>
+                            {navigation.map((item) => (
+                                <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                                        isActiveLink(item.href)
+                                            ? "text-primary"
+                                            : "text-gray-900 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
+                                    }`}
+                                >
+                                    {item.name}
+                                </Link>
+                            ))}
+                        </div>
 
-                    {/* Theme Toggle and User Section */}
-                    <div className="hidden md:flex items-center space-x-4">
-                        {/* Theme Toggle */}
-                        <ModeToggle />
+                        {/* Theme Toggle and User Section */}
+                        <div className="hidden md:flex items-center ml-2 space-x-4">
+                            {/* Theme Toggle */}
+                            <ModeToggle />
 
-                        {/* User Section */}
-                        {session?.user ? (
-                            <UserDropDown />
-                        ) : (
-                            <div className="flex items-center space-x-4">
-                                <Button variant="secondary" asChild>
-                                    <Link href="/auth/signin">Sign In</Link>
-                                </Button>
-                                <Button variant="gradient" asChild>
-                                    <Link href="/auth/signup">Get Started</Link>
-                                </Button>
-                            </div>
-                        )}
+                            {/* User Section */}
+                            {session?.user ? (
+                                <UserDropDown />
+                            ) : (
+                                <div className="flex items-center space-x-4">
+                                    <Link
+                                        href="/auth/signin"
+                                        className="flex items-center bg-primary text-white hover:bg-secondary shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer rounded-full px-6 py-2 transition-all duration-300"
+                                    >
+                                        <span className="text-lg">Login</span>
+                                        <RiArrowRightSLine size={20} />
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     {/* Mobile menu button */}

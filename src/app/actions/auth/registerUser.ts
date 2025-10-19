@@ -14,11 +14,12 @@ interface RegisterUserPayload {
     name: string;
     email: string;
     password: string;
+    role?: "user" | "instructor";
 }
 
 export const registerUser = async (payload: RegisterUserPayload) => {
     try {
-        const { name, email, password } = payload;
+        const { name, email, password, role = "user" } = payload;
 
         // Validate input
         if (!name || !email || !password) {
@@ -47,6 +48,7 @@ export const registerUser = async (payload: RegisterUserPayload) => {
             name: name.trim(),
             email: email.toLowerCase().trim(),
             password: hashedPassword,
+            role: role,
             verificationToken,
             isVerified: false,
             loginAttempts: 0,

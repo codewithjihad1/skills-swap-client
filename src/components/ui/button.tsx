@@ -10,21 +10,21 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 default:
-                    "bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]",
+                    "bg-primary text-white hover:bg-secondary shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
                 gradient:
-                    "bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white hover:from-blue-700 hover:via-purple-700 hover:to-blue-800 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:via-transparent before:to-white/20 before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700",
+                    "bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white hover:from-blue-700 hover:via-purple-700 hover:to-blue-800 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/20 before:via-transparent before:to-white/20 before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700 cursor-pointer",
                 destructive:
-                    "bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]",
+                    "bg-red-600 text-white hover:bg-red-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
                 outline:
-                    "border-2 border-blue-600 bg-transparent text-blue-600 hover:bg-blue-600 hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-slate-900 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]",
+                    "border-2 border-primary bg-transparent text-primary hover:bg-primary hover:text-whirk:border-primary dark:text-primary dark:hover:bg-primary dark:hover:text-slate-900 shadow-md hover:shadow-lg transform hover:scale-[1.02]te da active:scale-[0.98] cursor-pointer outline-none",
                 secondary:
-                    "bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-slate-800 dark:text-gray-100 dark:hover:bg-slate-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]",
-                ghost: "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-800 dark:hover:text-gray-100",
-                link: "text-blue-600 underline-offset-4 hover:underline dark:text-blue-400",
+                    "bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-slate-800 dark:text-gray-100 dark:hover:bg-slate-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
+                ghost: "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-slate-800 dark:hover:text-gray-100 cursor-pointer",
+                link: "text-blue-600 underline-offset-4 hover:underline dark:text-blue-400 cursor-pointer",
                 success:
-                    "bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]",
+                    "bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
                 warning:
-                    "bg-yellow-600 text-white hover:bg-yellow-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]",
+                    "bg-yellow-600 text-white hover:bg-yellow-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
             },
             size: {
                 sm: "h-8 px-3 text-xs rounded-md gap-1.5",
