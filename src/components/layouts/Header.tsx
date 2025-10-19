@@ -8,6 +8,7 @@ import { signOut, useSession } from "next-auth/react";
 import { ModeToggle } from "../theme/toggle-theme";
 import { Button } from "@/components/ui/button";
 import UserDropDown from "../user/UserDropDown";
+import { RiArrowRightSLine } from "react-icons/ri";
 
 interface User {
     id: string;
@@ -116,11 +117,13 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                                 <UserDropDown />
                             ) : (
                                 <div className="flex items-center space-x-4">
-                                    <Button asChild>
-                                        <Link href="/auth/signin">
-                                            Get Started
-                                        </Link>
-                                    </Button>
+                                    <Link
+                                        href="/auth/signin"
+                                        className="flex items-center bg-primary text-white hover:bg-secondary shadow-md hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer rounded-full px-6 py-2 transition-all duration-300"
+                                    >
+                                        <span className="text-lg">Login</span>
+                                        <RiArrowRightSLine size={20} />
+                                    </Link>
                                 </div>
                             )}
                         </div>
