@@ -20,10 +20,23 @@
 
   /* Professional Blue */
   --color-primary-dark: #1d4ed8;
+  /* Darker Blue for hover */
   --color-primary-light: #dbeafe;
+  /* Light Blue for backgrounds */
+  --color-secondary: #059669;
+  /* Professional Green */
+  --color-accent: #7c3aed;
+  /* Professional Purple */
 
+  /* Consistent Blue Variants */
+  --color-primary-2: #1e40af;
+  --color-secondary-2: #f59e0b;
+  --color-accent-2: #3b82f6;
 
-
+  /* Professional Dark Blue */
+  --color-primary-3: #1e40af;
+  --color-secondary-3: #ea580c;
+  --color-accent-3: #9333ea;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
