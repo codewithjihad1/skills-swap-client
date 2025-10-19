@@ -1,8 +1,7 @@
-// components/CourseCard.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { Course } from "@/types/course";
-import { Star, Clock, Users, BookOpen } from "lucide-react";
+import {  Users } from "lucide-react";
 
 interface CourseCardProps {
     course: Course;
@@ -76,7 +75,8 @@ export default function CourseCard({ course }: CourseCardProps) {
                 {/* Price and CTA */}
                 <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-200">
                     <div className="text-2xl font-bold text-primary">
-                        {course.currency === "USD" ? "$" : course.currency}
+                        {/* {course.currency === "USD" ? "$" : course.currency} */} 
+                        ৳ {" "}
                         {course.price.toFixed(2)}
                     </div>
                     <Link
