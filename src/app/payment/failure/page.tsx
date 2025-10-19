@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { XCircle, RotateCcw, Home } from "lucide-react";
+import { XCircle, RotateCcw, Home, Loader2 } from "lucide-react";
 import Link from "next/link";
 
-export default function PaymentFailurePage() {
+function PaymentFailureContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const paymentID = searchParams.get("paymentID");
@@ -94,5 +94,19 @@ export default function PaymentFailurePage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function PaymentFailurePage() {
+    return (
+        <Suspense
+            fallback={
+                <div className="min-h-screen flex items-center justify-center">
+                    <Loader2 className="w-8 h-8 animate-spin text-green-600" />
+                </div>
+            }
+        >
+            <PaymentFailureContent />
+        </Suspense>
     );
 }

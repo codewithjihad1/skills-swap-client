@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Ban, ArrowLeft, Home } from "lucide-react";
+import { Ban, ArrowLeft, Home, Loader2 } from "lucide-react";
 import Link from "next/link";
 
-export default function PaymentCancelPage() {
+function PaymentCancelContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const paymentID = searchParams.get("paymentID");
@@ -93,5 +93,19 @@ export default function PaymentCancelPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function PaymentCancelPage() {
+    return (
+        <Suspense
+            fallback={
+                <div className="min-h-screen flex items-center justify-center">
+                    <Loader2 className="w-8 h-8 animate-spin text-green-600" />
+                </div>
+            }
+        >
+            <PaymentCancelContent />
+        </Suspense>
     );
 }
