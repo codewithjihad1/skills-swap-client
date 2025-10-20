@@ -1,10 +1,8 @@
-import { Facebook, Linkedin, MapPinHouse, Navigation, Youtube } from "lucide-react";
+import { MapPinHouse, Navigation} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const Footer: React.FC = () => {
-    const currentYear = new Date().getFullYear();
-
     return (
      <footer className="bg-accent text-gray-900 mt-auto">
   <div className="max-w-7xl mx-auto px-6 lg:px-16 sm:px-14 py-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">

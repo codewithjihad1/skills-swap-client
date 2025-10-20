@@ -240,4 +240,24 @@ body {
       box-shadow: 0 4px 20px 0 rgba(37, 99, 235, 0.4);
     }
   }
+
+  /* Gradient Animation for Hero */
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
 }
