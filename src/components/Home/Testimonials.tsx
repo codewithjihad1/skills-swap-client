@@ -1,315 +1,365 @@
 "use client";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-    Navigation,
-    Pagination,
-    Autoplay,
-    EffectCoverflow,
-} from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import Image from "next/image";
+import { useState } from "react";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "swiper/css/effect-coverflow";
-import Image from "next/image";
 
 interface Testimonial {
-    id: number;
-    name: string;
-    role: string;
-    company: string;
-    content: string;
-    avatar: string;
-    rating: number;
-    skills: string[];
+  id: number;
+  name: string;
+  role: string;
+  content: string;
+  avatar: string;
+  rating: number;
 }
 
 const testimonials: Testimonial[] = [
-    {
-        id: 1,
-        name: "Sarah Johnson",
-        role: "Frontend Developer",
-        company: "TechCorp",
-        content:
-            "Skill Swap completely transformed my career! I learned React and landed my dream job within 3 months. The community is incredibly supportive and the mentors are top-notch.",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
-        rating: 5,
-        skills: ["React", "JavaScript", "CSS"],
-    },
-    {
-        id: 2,
-        name: "Michael Chen",
-        role: "UX Designer",
-        company: "DesignStudio",
-        content:
-            "The design courses here are exceptional. I went from a complete beginner to designing for major clients. The hands-on projects and feedback really accelerated my learning.",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
-        rating: 5,
-        skills: ["UI/UX Design", "Figma", "Prototyping"],
-    },
-    {
-        id: 3,
-        name: "Emily Rodriguez",
-        role: "Data Scientist",
-        company: "DataTech Inc",
-        content:
-            "I love how practical and industry-focused the courses are. The Python and machine learning tracks helped me transition from marketing to data science seamlessly.",
-        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
-        rating: 5,
-        skills: ["Python", "Machine Learning", "Data Analysis"],
-    },
-    {
-        id: 4,
-        name: "David Kim",
-        role: "DevOps Engineer",
-        company: "CloudTech",
-        content:
-            "The mentorship program is outstanding. My mentor guided me through complex DevOps concepts and helped me land a senior position. Highly recommend!",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
-        rating: 5,
-        skills: ["Docker", "Kubernetes", "AWS"],
-    },
-    {
-        id: 5,
-        name: "Lisa Thompson",
-        role: "Mobile Developer",
-        company: "AppVentures",
-        content:
-            "From zero to publishing my first app in the store! The mobile development track is comprehensive and the community challenges kept me motivated throughout.",
-        avatar: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=150&h=150&fit=crop&crop=face",
-        rating: 5,
-        skills: ["React Native", "Flutter", "iOS Development"],
-    },
-    {
-        id: 6,
-        name: "James Wilson",
-        role: "Backend Developer",
-        company: "ServerTech",
-        content:
-            "The backend development courses are incredibly thorough. I learned Node.js, databases, and API design. Now I'm building scalable applications for enterprise clients.",
-        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-        rating: 5,
-        skills: ["Node.js", "MongoDB", "API Development"],
-    },
+  {
+    id: 1,
+    name: "Jayanta Mondal",
+    role: "MERN Stack Web Development",
+    content:
+      "According to me this is the best course among MERN stack courses in Bangladesh. I personally follow Rabbil sir. His lectures seem easy to me and complex concepts become clear after repeating few times",
+    avatar:
+      "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=400&h=400&fit=crop&crop=face",
+    rating: 5,
+  },
+  {
+    id: 2,
+    name: "Sarah Johnson",
+    role: "Frontend Developer",
+    content:
+      "Skill Swap completely transformed my career! I learned React and landed my dream job within 3 months. The community is incredibly supportive and the mentors are top-notch.",
+    avatar:
+ "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=80&h=80&fit=crop&crop=face",
+    rating: 5,
+  },
+  {
+    id: 3,
+    name: "Michael Chen",
+    role: "UX Designer",
+    content:
+      "The design courses here are exceptional. I went from a complete beginner to designing for major clients. The hands-on projects and feedback really accelerated my learning.",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+    rating: 5,
+  },
+];
+
+const avatarImages = [
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=80&h=80&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=80&h=80&fit=crop&crop=face",
 ];
 
 const Testimonials = () => {
-    const renderStars = (rating: number) => {
-        return Array.from({ length: 5 }, (_, index) => (
-            <svg
-                key={index}
-                className={`w-5 h-5 ${
-                    index < rating
-                        ? "text-yellow-400"
-                        : "text-gray-300 dark:text-gray-600"
-                }`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-            >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-            </svg>
-        ));
-    };
+  const [swiperInstance, setSwiperInstance] = useState<any>(null);
+  const [mobileSwiperInstance, setMobileSwiperInstance] = useState<any>(null);
 
-    return (
-        <section className="py-16 bg-gray-50 dark:bg-gray-900">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Section Header */}
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                        What Our Students Say
-                    </h2>
-                    <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-                        Join thousands of learners who have transformed their
-                        careers through our skill-sharing platform. Here's what
-                        they have to say about their journey.
-                    </p>
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  return (
+    <>
+      {/* Desktop View - Hidden on mobile */}
+      <section className="hidden md:block min-h-screen bg-gradient-to-br from-emerald-400 via-green-500 to-teal-500 py-8 sm:py-8 md:py-16 px-4 sm:px-6 md:px-8 flex items-center">
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+            {/* Left Section - Bengali Content */}
+            <div className="text-white space-y-6 sm:space-y-8 order-2 lg:order-1">
+              {/* Bengali Badge */}
+              <div className="inline-block">
+                <span className="text-sm sm:text-base font-medium bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30">
+                  Testimonials
+                </span>
+              </div>
+
+              {/* Bengali Heading */}
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                What Our <br className="hidden sm:block" /> Students Say
+              </h2>
+
+              {/* Avatar Group */}
+              <div className="flex items-center space-x-4">
+                <div className="flex -space-x-3">
+                  {avatarImages.map((img, idx) => (
+                    <div key={idx} className="relative">
+                      <Image
+                        src={img}
+                        alt={`student ${idx + 1}`}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-emerald-400 object-cover"
+                        width={48}
+                        height={48}
+                      />
+                    </div>
+                  ))}
                 </div>
-
-                {/* Swiper Testimonials */}
-                <div className="relative">
-                    <Swiper
-                        modules={[
-                            Navigation,
-                            Pagination,
-                            Autoplay,
-                            EffectCoverflow,
-                        ]}
-                        spaceBetween={24}
-                        slidesPerView={1}
-                        navigation={{
-                            nextEl: ".swiper-button-next-custom",
-                            prevEl: ".swiper-button-prev-custom",
-                        }}
-                        pagination={{
-                            clickable: true,
-                            dynamicBullets: true,
-                            el: ".swiper-pagination-custom",
-                        }}
-                        autoplay={{
-                            delay: 4000,
-                            disableOnInteraction: false,
-                            pauseOnMouseEnter: true,
-                        }}
-                        breakpoints={{
-                            640: {
-                                slidesPerView: 1,
-                                spaceBetween: 20,
-                            },
-                            768: {
-                                slidesPerView: 2,
-                                spaceBetween: 24,
-                            },
-                            1024: {
-                                slidesPerView: 3,
-                                spaceBetween: 24,
-                            },
-                            1280: {
-                                slidesPerView: 4,
-                                spaceBetween: 24,
-                            },
-                        }}
-                        loop={true}
-                        centeredSlides={false}
-                        className="testimonials-swiper"
-                    >
-                        {testimonials.map((testimonial) => (
-                            <SwiperSlide key={testimonial.id}>
-                                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 md:p-8 h-full flex flex-col">
-                                    {/* Avatar */}
-                                    <div className="flex justify-center mb-4">
-                                        <Image
-                                            src={testimonial?.avatar}
-                                            alt={testimonial.name}
-                                            className="w-16 h-16 rounded-full object-cover border-4 border-primary/20"
-                                            width={64}
-                                            height={64}
-                                        />
-                                    </div>
-
-                                    {/* Rating */}
-                                    <div className="flex justify-center mb-4">
-                                        {renderStars(testimonial.rating)}
-                                    </div>
-
-                                    {/* Testimonial Text */}
-                                    <blockquote className="text-sm md:text-base text-gray-700 dark:text-gray-300 mb-6 leading-relaxed text-center flex-grow line-clamp-4">
-                                        "{testimonial.content}"
-                                    </blockquote>
-
-                                    {/* Author Info */}
-                                    <div className="text-center mb-4">
-                                        <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
-                                            {testimonial.name}
-                                        </h4>
-                                        <p className="text-primary font-medium text-sm">
-                                            {testimonial.role}
-                                        </p>
-                                        <p className="text-gray-600 dark:text-gray-400 text-sm">
-                                            {testimonial.company}
-                                        </p>
-                                    </div>
-
-                                    {/* Skills */}
-                                    <div className="flex flex-wrap justify-center gap-1 mt-auto">
-                                        {testimonial.skills
-                                            .slice(0, 3)
-                                            .map((skill, index) => (
-                                                <span
-                                                    key={index}
-                                                    className="px-2 py-1 text-xs bg-primary/10 text-primary rounded-full border border-primary/20"
-                                                >
-                                                    {skill}
-                                                </span>
-                                            ))}
-                                        {testimonial.skills.length > 3 && (
-                                            <span className="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full">
-                                                +{testimonial.skills.length - 3}
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-
-                    {/* Custom Navigation Buttons */}
-                    <button className="swiper-button-prev-custom absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-primary/5 transition-all duration-200 z-10">
-                        <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M15 19l-7-7 7-7"
-                            />
-                        </svg>
-                    </button>
-
-                    <button className="swiper-button-next-custom absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-primary/5 transition-all duration-200 z-10">
-                        <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 5l7 7-7 7"
-                            />
-                        </svg>
-                    </button>
-
-                    {/* Custom Pagination */}
-                    <div className="swiper-pagination-custom flex justify-center mt-8"></div>
+                <div className="bg-white text-emerald-600 font-bold text-lg w-12 h-12 rounded-full flex items-center justify-center border-2 border-emerald-400">
+                  ৬+
                 </div>
+              </div>
 
-                {/* Stats Section */}
-                <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
-                    <div className="text-center">
-                        <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-                            10K+
-                        </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
-                            Happy Students
-                        </div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-                            500+
-                        </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
-                            Expert Mentors
-                        </div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-                            95%
-                        </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
-                            Success Rate
-                        </div>
-                    </div>
-                    <div className="text-center">
-                        <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
-                            4.9/5
-                        </div>
-                        <div className="text-sm text-gray-600 dark:text-gray-400">
-                            Average Rating
-                        </div>
-                    </div>
-                </div>
+              {/* Navigation Arrows */}
+              <div className="flex gap-3 pt-4">
+                <button
+                  onClick={() => swiperInstance?.slidePrev()}
+                  className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 border border-white/30 hover:scale-105"
+                  aria-label="পূর্ববর্তী টেস্টিমোনিয়াল"
+                >
+                  <svg
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => swiperInstance?.slideNext()}
+                  className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 border border-white/30 hover:scale-105"
+                  aria-label="পরবর্তী টেস্টিমোনিয়াল"
+                >
+                  <svg
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
-        </section>
-    );
+
+            {/* Right Section - Testimonial Card */}
+            <div className="relative order-1 lg:order-2">
+              <Swiper
+                modules={[Navigation, Autoplay]}
+                spaceBetween={30}
+                slidesPerView={1}
+                onSwiper={setSwiperInstance}
+                autoplay={{
+                  delay: 5000,
+                  disableOnInteraction: false,
+                  pauseOnMouseEnter: true,
+                }}
+                loop={true}
+                className="testimonial-swiper"
+              >
+                {testimonials.map((testimonial) => (
+                  <SwiperSlide key={testimonial.id}>
+                    <div className="relative">
+                      {/* Text Content Card - Separate White Card */}
+                      <div className="bg-white rounded-2xl z-30 shadow-xl p-6 w-7/12 relative mt-16 sm:mt-20 lg:mt-24">
+                        <div className="space-y-4">
+                          {/* Name */}
+                          <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                            {testimonial.name}
+                          </h3>
+
+                          {/* Course/Role Title */}
+                          <p className="text-emerald-600 font-semibold text-lg sm:text-xl">
+                            {testimonial.role}
+                          </p>
+
+                          {/* Testimonial Text */}
+                          <p className="text-gray-700 leading-relaxed text-base">
+                            "{testimonial.content}"
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Profile Image Card - Separate Card Positioned Above */}
+                      <div className="absolute -top-24 right-4 z-20">
+                        <div className="bg-white rounded-2xl shadow-xl">
+                          <div className="relative">
+                            <Image
+                              src={testimonial.avatar}
+                              alt={testimonial.name}
+                              className="w-80 h-80 rounded-xl"
+                              width={160}
+                              height={160}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mobile View - Hidden on desktop */}
+      <section className="md:hidden bg-gradient-to-br from-emerald-400 to-emerald-500 py-8 px-4 min-h-screen flex items-center justify-center">
+        <div className="w-full max-w-2xl mx-auto">
+          {/* Header Section */}
+          <div className="pl-8 mb-6 text-left">
+            <h2 className="text-2xl font-bold text-white mb-6">
+              what our <br /> students say
+            </h2>
+
+            {/* Avatar Group */}
+            <div className="flex  mb-8">
+              <div className="flex -space-x-3 mr-4">
+                {avatarImages.map((img, idx) => (
+                  <div key={idx} className="relative">
+                    <Image
+                      src={img}
+                      alt={`শিক্ষার্থী ${idx + 1}`}
+                      className="w-8 h-8 rounded-full border-2 border-emerald-400 object-cover"
+                      width={32}
+                      height={32}
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="bg-white text-emerald-600 font-bold text-sm w-8 h-8 rounded-full flex items-center justify-center border-2 border-emerald-400">
+                ৬+
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="relative">
+            <Swiper
+              modules={[Pagination, Autoplay]}
+              spaceBetween={30}
+              slidesPerView={1}
+              onSwiper={setMobileSwiperInstance}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+              pagination={{
+                clickable: true,
+                el: '.mobile-pagination',
+                bulletClass: 'w-2 h-2 rounded-full bg-white/40 mx-1 cursor-pointer transition-all duration-300',
+                bulletActiveClass: 'bg-white w-4',
+              }}
+              loop={true}
+              className="mb-4"
+            >
+              {testimonials.map((testimonial) => (
+                <SwiperSlide key={testimonial.id}>
+                  <div className="text-center relative">
+                    {/* Profile Image - FULLY CIRCULAR with white background */}
+                    <div className="flex justify-center mb-4">
+                      <div className="relative z-20">
+                        <div className="bg-white rounded-full shadow-lg p-2">
+                          <Image
+                            src={testimonial.avatar}
+                            alt={testimonial.name}
+                            className="w-48 h-48 rounded-full object-cover"
+                            width={192}
+                            height={192}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content Card - Extended higher for image overlap */}
+                    <div className="bg-white rounded-2xl shadow-xl pt-16 pb-6 px-6 mx-2 -mt-12 relative z-10">
+                      <div className="space-y-3 text-left">
+                        {/* Name */}
+                        <h3 className="text-xl font-bold text-gray-900">
+                          {testimonial.name}
+                        </h3>
+
+                        {/* Course/Role Title */}
+                        <p className="text-emerald-600 font-semibold text-sm">
+                          {testimonial.role}
+                        </p>
+
+                        {/* Testimonial Text */}
+                        <p className="text-gray-700 leading-relaxed text-sm">
+                          "{testimonial.content}"
+                        </p>
+                        {/* Star Rating REMOVED */}
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* Navigation Arrows - Positioned on right side */}
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-30 flex flex-col gap-3">
+              <button
+                onClick={() => mobileSwiperInstance?.slidePrev()}
+                className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-all duration-300 border border-gray-200 shadow-lg"
+                aria-label="Previous Testimonial"
+              >
+                <svg
+                  className="w-5 h-5 text-emerald-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <button
+                onClick={() => mobileSwiperInstance?.slideNext()}
+                className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-gray-100 transition-all duration-300 border border-gray-200 shadow-lg"
+                aria-label="Next Testimonial"
+              >
+                <svg
+                  className="w-5 h-5 text-emerald-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* Pagination Dots - More dots (6-7) */}
+            <div className="mobile-pagination flex justify-center space-x-2 mb-6">
+              {/* Custom pagination dots will be injected here by Swiper */}
+            </div>
+
+          
+          </div>
+        </div>
+      </section>
+    </>
+  );
 };
 
 export default Testimonials;

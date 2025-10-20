@@ -1,3 +1,5 @@
+// src/app/(home)/courses/[courseId]/page.tsx
+
 "use client";
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
