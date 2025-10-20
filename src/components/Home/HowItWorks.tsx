@@ -15,6 +15,7 @@ import {
     ArrowRight,
     Sparkles,
 } from "lucide-react";
+import Link from "next/link";
 
 const HowItWorks = () => {
     const [showVideo, setShowVideo] = useState(false);
@@ -226,9 +227,12 @@ const HowItWorks = () => {
                                 size="lg"
                                 variant="outline"
                                 className="h-12 px-6 border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold transition-all group"
+                                asChild
                             >
-                                Get Started
-                                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                <Link href="/auth/signup">
+                                    Get Started
+                                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                </Link>
                             </Button>
                         </div>
                     </motion.div>
