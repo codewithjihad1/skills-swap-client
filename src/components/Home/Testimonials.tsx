@@ -3,7 +3,9 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 // Import Swiper styles
 import "swiper/css";
@@ -96,6 +98,23 @@ const Testimonials = () => {
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
   const [mobileSwiperInstance, setMobileSwiperInstance] = useState<any>(null);
 
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, amount: 0.2 });
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] as const },
+    },
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.12 } },
+  };
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -129,25 +148,47 @@ const Testimonials = () => {
                 What Our <br className="hidden sm:block" /> Students Say
               </h2>
 
-              {/* Avatar Group */}
-              <div className="flex items-center space-x-4">
-                <div className="flex -space-x-3">
-                  {avatarImages.map((img, idx) => (
-                    <div key={idx} className="relative">
-                      <Image
-                        src={img}
-                        alt={`student ${idx + 1}`}
-                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-amber-400 object-cover"
-                        width={48}
-                        height={48}
-                      />
-                    </div>
-                  ))}
+              {/* Avatar Row */}
+              <motion.div
+                ref={ref}
+                className="flex items-center gap-4 mb-8"
+                variants={containerVariants}
+                initial="hidden"
+                animate={isInView ? "visible" : "hidden"}
+              >
+                <div className="flex -space-x-4">
+                  {testimonials.slice(0, 6).map((testimonial, index) => {
+                    const initials = testimonial.name
+                      .split(" ")
+                      .map((s) => s.charAt(0))
+                      .slice(0, 2)
+                      .join("")
+                      .toUpperCase();
+
+                    return (
+                      <motion.div
+                        key={testimonial.id}
+                        variants={itemVariants}
+                        whileHover={{ scale: 1.06, zIndex: 10 }}
+                        className="relative"
+                      >
+                        <Avatar className="w-12 h-12 border-4 border-white shadow-lg">
+                          <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                          <AvatarFallback className="bg-accent text-primary font-bold">
+                            {initials}
+                          </AvatarFallback>
+                        </Avatar>
+                      </motion.div>
+                    );
+                  })}
+                  <motion.div
+                    variants={itemVariants}
+                    className="w-12 h-12 rounded-full bg-white border-4 border-white shadow-lg flex items-center justify-center"
+                  >
+                    <span className="text-sm font-bold text-primary">6+</span>
+                  </motion.div>
                 </div>
-                <div className="bg-white text-emerald-600 font-bold text-lg w-12 h-12 rounded-full flex items-center justify-center border-2 border-emerald-400">
-                  6+
-                </div>
-              </div>
+              </motion.div>
 
               {/* Navigation Arrows */}
               <div className="flex gap-3 pt-4">
