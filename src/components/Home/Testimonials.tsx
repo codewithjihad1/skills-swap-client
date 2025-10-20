@@ -214,7 +214,7 @@ const Testimonials = () => {
       </section>
 
       {/* Mobile View - Hidden on desktop */}
-      <section className="md:hidden bg-gradient-to-br from-emerald-400 to-emerald-500 py-8 px-4 min-h-screen flex items-center justify-center">
+      <section className="md:hidden bg-gradient-to-br from-emerald-400 to-emerald-500 py-8 px-4  flex items-center justify-center">
         <div className="w-full max-w-2xl mx-auto">
           {/* Header Section */}
           <div className="pl-8 mb-6 text-left">
