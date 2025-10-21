@@ -59,7 +59,7 @@ const SkillCard = ({
     return (
         <div
             key={skill._id}
-            className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-100"
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group border-2 border-[#B0EACD]/30 hover:border-[#21BF73]/50"
         >
             {/* Header */}
             <div className="p-6 pb-4">
@@ -67,7 +67,7 @@ const SkillCard = ({
                     <div
                         className={`${getCategoryColor(
                             skill.category
-                        )} text-white px-3 py-1 rounded-full text-xs font-medium`}
+                        )} text-white px-3 py-1 rounded-full text-xs font-medium shadow-sm`}
                     >
                         {skill.category}
                     </div>
@@ -80,11 +80,11 @@ const SkillCard = ({
                     </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 group-hover:text-[#21BF73] transition-colors">
                     {skill.title}
                 </h3>
 
-                <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3 leading-relaxed">
                     {skill.description}
                 </p>
             </div>
@@ -98,13 +98,13 @@ const SkillCard = ({
                             .map((tag: string, index: number) => (
                                 <span
                                     key={index}
-                                    className="bg-gray-100 text-gray-700 px-2 py-1 rounded-md text-xs font-medium"
+                                    className="bg-[#B0EACD]/20 text-[#007a3f] px-2 py-1 rounded-md text-xs font-medium border border-[#B0EACD]/50"
                                 >
                                     {tag}
                                 </span>
                             ))}
                         {skill.tags.length > 3 && (
-                            <span className="text-gray-500 text-xs">
+                            <span className="text-gray-500 dark:text-gray-400 text-xs">
                                 +{skill.tags.length - 3} more
                             </span>
                         )}
@@ -112,39 +112,18 @@ const SkillCard = ({
                 </div>
             )}
 
-            {/* Instructor */}
-            {/* <div className="px-6 pb-4 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-medium text-sm">
-                    {skill.userId.avatar ? (
-                        <img
-                            src={skill.userId.avatar}
-                            alt={skill.userId.name}
-                            className="w-full h-full rounded-full object-cover"
-                        />
-                    ) : (
-                        getInitials(skill.userId.name)
-                    )}
-                </div>
-                <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">
-                        {skill.userId.name}
-                    </p>
-                    <p className="text-xs text-gray-500">Skill Provider</p>
-                </div>
-            </div> */}
-
             {/* Action Buttons */}
             <div className="p-6 pt-0 flex gap-3">
                 <button
                     onClick={handleConnect}
                     disabled={createSwapRequestMutation.isPending}
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-xl font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 bg-gradient-to-r from-[#21BF73] to-[#007a3f] text-white py-3 px-4 rounded-xl font-medium hover:from-[#007a3f] hover:to-[#21BF73] transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-[#21BF73]/30"
                 >
                     {createSwapRequestMutation.isPending
                         ? "Sending..."
                         : "Connect"}
                 </button>
-                <button className="px-4 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors duration-300 text-gray-600 hover:text-gray-900">
+                <button className="px-4 py-3 border-2 border-[#B0EACD] rounded-xl hover:bg-[#B0EACD]/10 transition-colors duration-300 text-[#007a3f] hover:text-[#21BF73] hover:border-[#21BF73]">
                     <BookOpen className="w-4 h-4" />
                 </button>
             </div>
@@ -152,18 +131,18 @@ const SkillCard = ({
             {/* Simple Request Modal (You can enhance this with a proper modal component) */}
             {showRequestModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl p-6 max-w-md w-full">
-                        <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full border-2 border-[#21BF73]/30 shadow-2xl">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                             Send Swap Request
                         </h3>
-                        <p className="text-gray-600 mb-4">
+                        <p className="text-gray-600 dark:text-gray-400 mb-4">
                             Send a request to learn{" "}
-                            <strong>{skill.title}</strong>
+                            <strong className="text-[#21BF73]">{skill.title}</strong>
                         </p>
                         <textarea
                             id="request-message"
                             placeholder="Add a message (optional)..."
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none mb-4"
+                            className="w-full px-4 py-3 border-2 border-[#B0EACD]/50 rounded-lg focus:ring-2 focus:ring-[#21BF73] focus:border-[#21BF73] outline-none mb-4 dark:bg-gray-700 dark:text-white"
                             rows={3}
                         />
                         <div className="flex gap-3">
@@ -176,13 +155,13 @@ const SkillCard = ({
                                     )?.value;
                                     handleSendRequest(message);
                                 }}
-                                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all"
+                                className="flex-1 bg-gradient-to-r from-[#21BF73] to-[#007a3f] text-white py-2 px-4 rounded-lg font-medium hover:from-[#007a3f] hover:to-[#21BF73] transition-all shadow-lg shadow-[#21BF73]/30"
                             >
                                 Send Request
                             </button>
                             <button
                                 onClick={() => setShowRequestModal(false)}
-                                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-gray-600"
+                                className="px-4 py-2 border-2 border-[#B0EACD] rounded-lg hover:bg-[#B0EACD]/10 transition-colors text-[#007a3f] hover:border-[#21BF73]"
                             >
                                 Cancel
                             </button>
