@@ -2,6 +2,24 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import {
+    Shield,
+    Users,
+    GraduationCap,
+    Target,
+    Star,
+    Globe,
+    Rocket,
+    Award,
+    Lock,
+    CheckCircle2,
+    Zap,
+    TrendingUp,
+    Building2,
+    Briefcase,
+} from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface Partner {
     id: number;
@@ -30,118 +48,115 @@ interface PressItem {
 const partners: Partner[] = [
     {
         id: 1,
-        name: "Google",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+        name: "bKash",
+        logo: "https://i.ibb.co.com/5X7y207v/6e5d2b88dad9432355d0271425cbac.webp",
         type: "partner",
-        description: "Official Google Cloud Partner",
+        description: "Digital Payment Partner",
     },
     {
         id: 2,
-        name: "Microsoft",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+        name: "Grameenphone",
+        logo: "https://i.ibb.co.com/mFztJjbd/png-clipart-logo-grameenphone-bangladesh-telenor-airtel-logo-text-logo.png",
         type: "partner",
-        description: "Microsoft Learn Partner",
+        description: "Telecom Partner",
     },
     {
         id: 3,
-        name: "AWS",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg",
+        name: "Robi Axiata",
+        logo: "https://i.ibb.co.com/dwy5gLC6/png-transparent-mobile-logo-robi-axiata-limited-axiata-group-mobile-phones-bangladesh-airtel-banglad.png",
         type: "partner",
-        description: "AWS Training Partner",
+        description: "Technology Partner",
     },
     {
         id: 4,
-        name: "Meta",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg",
+        name: "BRAC",
+        logo: "https://i.ibb.co.com/WpPCMMc0/png-clipart-logo-bangladesh-brac-bank-limited-aarong-environmental-protection-day-purple-violet.png",
         type: "partner",
-        description: "Meta Blueprint Partner",
+        description: "Education Partner",
     },
     {
         id: 5,
-        name: "IBM",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
-        type: "partner",
-        description: "IBM SkillsBuild Partner",
+        name: "Bangladesh Bank",
+        logo: "https://i.ibb.co.com/KprkHVSN/png-transparent-bangladesh-bank-central-bank-bangladesh-development-bank-bank-leaf-investment-logo.png",
+        type: "certification",
+        description: "Financial Compliance",
     },
     {
         id: 6,
-        name: "Adobe",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/7/7b/Adobe_Systems_logo_and_wordmark.svg",
+        name: "BASIS",
+        logo: "https://i.ibb.co.com/23L4f4SX/668b673940a1f-Basis-logo.jpg",
         type: "certification",
-        description: "Adobe Certified Expert Partner",
+        description: "IT Industry Association",
     },
 ];
 
 const metrics: Metric[] = [
     {
         id: 1,
-        value: "500K+",
+        value: "50K+",
         label: "Active Learners",
-        icon: "👥",
-        description: "Students worldwide learning with us",
+        icon: "users",
+        description: "Students across Bangladesh",
     },
     {
         id: 2,
-        value: "15K+",
+        value: "5K+",
         label: "Expert Mentors",
-        icon: "🎓",
+        icon: "graduation",
         description: "Industry professionals teaching",
     },
     {
         id: 3,
-        value: "98%",
+        value: "95%",
         label: "Success Rate",
-        icon: "🎯",
+        icon: "target",
         description: "Students achieving their goals",
     },
     {
         id: 4,
-        value: "4.9/5",
+        value: "4.8/5",
         label: "Average Rating",
-        icon: "⭐",
-        description: "Based on 100K+ reviews",
+        icon: "star",
+        description: "Based on 10K+ reviews",
     },
     {
         id: 5,
-        value: "190+",
-        label: "Countries",
-        icon: "🌍",
-        description: "Global community reach",
+        value: "64",
+        label: "Districts",
+        icon: "globe",
+        description: "Coverage across Bangladesh",
     },
     {
         id: 6,
         value: "24/7",
         label: "Support",
-        icon: "🚀",
+        icon: "rocket",
         description: "Always here to help you",
     },
 ];
 
-const pressItems: PressItem[] = [
-    {
-        id: 1,
-        publication: "TechCrunch",
-        quote: "Skill Swap is revolutionizing online education with its innovative mentor-driven approach.",
-        author: "Sarah Wilson, Education Editor",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/b/b9/TechCrunch_logo.svg",
-    },
-    {
-        id: 2,
-        publication: "Forbes",
-        quote: "One of the most effective platforms for professional skill development in 2025.",
-        author: "Michael Chen, Technology Reporter",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/0/0c/Forbes_logo.svg",
-    },
-    {
-        id: 3,
-        publication: "Wired",
-        quote: "Setting new standards for personalized learning experiences in the digital age.",
-        author: "Emma Davis, Senior Writer",
-        logo: "https://upload.wikimedia.org/wikipedia/commons/c/c5/Wired_logo.svg",
-    },
-];
-
 const TrustCommunity = () => {
+    // Get icon component based on string
+    const getIcon = (iconName: string) => {
+        const iconProps = { className: "w-8 h-8" };
+        switch (iconName) {
+            case "users":
+                return <Users {...iconProps} />;
+            case "graduation":
+                return <GraduationCap {...iconProps} />;
+            case "target":
+                return <Target {...iconProps} />;
+            case "star":
+                return <Star {...iconProps} />;
+            case "globe":
+                return <Globe {...iconProps} />;
+            case "rocket":
+                return <Rocket {...iconProps} />;
+            default:
+                return <Award {...iconProps} />;
+        }
+    };
+
     // Animation variants
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -258,45 +273,45 @@ const TrustCommunity = () => {
 
     return (
         <motion.section
-            className="py-16 bg-white dark:bg-gray-900 overflow-hidden"
+            className="py-16 bg-gradient-to-br from-white via-[#B0EACD]/10 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden relative"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.1 }}
         >
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Animated Background Pattern */}
+            <div className="absolute inset-0 opacity-20 pointer-events-none">
+                <div className="absolute top-20 left-20 w-72 h-72 bg-[#21BF73]/20 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#007a3f]/20 rounded-full blur-3xl animate-pulse delay-1000" />
+                <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#B0EACD]/30 rounded-full blur-3xl animate-pulse delay-500" />
+            </div>
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Header Section */}
                 <motion.div
                     className="text-center mb-16"
                     variants={itemVariants}
                 >
                     <motion.div
-                        className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full mb-6"
+                        className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#21BF73] to-[#007a3f] rounded-full mb-6 shadow-lg shadow-[#21BF73]/30"
                         whileHover={{ scale: 1.1, rotate: 360 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <svg
-                            className="w-8 h-8 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                            />
-                        </svg>
+                        <Shield className="w-8 h-8 text-white" />
                     </motion.div>
 
                     <motion.h2
-                        className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4"
+                        className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
                         viewport={{ once: true }}
                     >
-                        Trusted by Industry Leaders
+                        <span className="bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                            Trusted by{" "}
+                        </span>
+                        <span className="bg-gradient-to-r from-[#21BF73] to-[#007a3f] bg-clip-text text-transparent">
+                            Bangladesh's Leaders
+                        </span>
                     </motion.h2>
 
                     <motion.p
@@ -306,15 +321,15 @@ const TrustCommunity = () => {
                         transition={{ duration: 0.6, delay: 0.4 }}
                         viewport={{ once: true }}
                     >
-                        Join a global community of learners backed by top tech
-                        companies, featured in leading publications, and trusted
-                        by professionals worldwide.
+                        Join a thriving community of learners backed by top
+                        Bangladeshi companies, featured in leading publications,
+                        and trusted by professionals nationwide.
                     </motion.p>
                 </motion.div>
 
                 {/* Community Metrics */}
                 <motion.div
-                    className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-16"
+                    className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-16"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
@@ -331,52 +346,49 @@ const TrustCommunity = () => {
                             }}
                             className="text-center"
                         >
-                            <motion.div
-                                className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-600 h-full flex flex-col justify-between"
-                                whileHover={{
-                                    boxShadow:
-                                        "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-                                    transition: { duration: 0.3 },
-                                }}
-                            >
-                                <motion.div
-                                    className="text-4xl mb-3"
-                                    animate={{
-                                        rotate: [0, 5, -5, 0],
-                                        scale: [1, 1.1, 1],
-                                    }}
-                                    transition={{
-                                        duration: 2,
-                                        delay: index * 0.2,
-                                        repeat: Infinity,
-                                        repeatDelay: 3,
-                                    }}
-                                >
-                                    {metric.icon}
-                                </motion.div>
+                            <Card className="bg-gradient-to-br from-white to-[#B0EACD]/10 dark:from-gray-800 dark:to-gray-700 border-2 border-[#B0EACD]/30 hover:border-[#21BF73]/50 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                                <CardContent className="p-6 flex flex-col justify-between h-full">
+                                    <motion.div
+                                        className="flex items-center justify-center w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-[#21BF73] to-[#007a3f] rounded-full shadow-lg shadow-[#21BF73]/30"
+                                        animate={{
+                                            rotate: [0, 5, -5, 0],
+                                            scale: [1, 1.05, 1],
+                                        }}
+                                        transition={{
+                                            duration: 2,
+                                            delay: index * 0.2,
+                                            repeat: Infinity,
+                                            repeatDelay: 3,
+                                        }}
+                                    >
+                                        <span className="text-white">
+                                            {getIcon(metric.icon)}
+                                        </span>
+                                    </motion.div>
 
-                                <motion.div
-                                    className="text-2xl md:text-3xl font-bold text-primary mb-1"
-                                    initial={{ scale: 0 }}
-                                    whileInView={{ scale: 1 }}
-                                    transition={{
-                                        duration: 0.6,
-                                        delay: index * 0.1,
-                                        type: "spring",
-                                        stiffness: 200,
-                                    }}
-                                    viewport={{ once: true }}
-                                >
-                                    {metric.value}
-                                </motion.div>
+                                    <motion.div
+                                        className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#21BF73] to-[#007a3f] bg-clip-text text-transparent mb-1"
+                                        initial={{ scale: 0 }}
+                                        whileInView={{ scale: 1 }}
+                                        transition={{
+                                            duration: 0.6,
+                                            delay: index * 0.1,
+                                            type: "spring",
+                                            stiffness: 200,
+                                        }}
+                                        viewport={{ once: true }}
+                                    >
+                                        {metric.value}
+                                    </motion.div>
 
-                                <div className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                                    {metric.label}
-                                </div>
-                                <div className="text-xs text-gray-600 dark:text-gray-400">
-                                    {metric.description}
-                                </div>
-                            </motion.div>
+                                    <div className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                                        {metric.label}
+                                    </div>
+                                    <div className="text-xs text-gray-600 dark:text-gray-400">
+                                        {metric.description}
+                                    </div>
+                                </CardContent>
+                            </Card>
                         </motion.div>
                     ))}
                 </motion.div>
@@ -393,17 +405,20 @@ const TrustCommunity = () => {
                         className="text-center mb-8"
                         variants={itemVariants}
                     >
+                        <Badge className="px-4 py-2 bg-gradient-to-r from-[#21BF73] to-[#007a3f] text-white border-none text-sm mb-4">
+                            <Building2 className="w-4 h-4 mr-2" />
+                            Our Partners
+                        </Badge>
                         <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                            Partnered with Industry Giants
+                            Partnered with Leading Bangladeshi Companies
                         </h3>
                         <p className="text-gray-600 dark:text-gray-400">
-                            Official training partners and certification
-                            providers
+                            Trusted by top organizations across Bangladesh
                         </p>
                     </motion.div>
 
                     <motion.div
-                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8"
+                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6"
                         variants={containerVariants}
                     >
                         {partners.map((partner, index) => (
@@ -413,134 +428,42 @@ const TrustCommunity = () => {
                                 whileHover="hover"
                                 className="group"
                             >
-                                <motion.div
-                                    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-md border border-gray-200 dark:border-gray-700 h-full flex flex-col justify-between"
-                                    whileHover={{
-                                        borderColor: "rgba(37, 99, 235, 0.3)",
-                                        boxShadow:
-                                            "0 10px 25px -5px rgba(37, 99, 235, 0.1)",
-                                    }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    <div className="h-12 flex items-center justify-center mb-4">
-                                        <motion.img
-                                            src={partner.logo}
-                                            alt={partner.name}
-                                            className="max-h-8 max-w-full object-contain filter dark:invert opacity-70 group-hover:opacity-100"
-                                            whileHover={{ scale: 1.1 }}
-                                            transition={{ duration: 0.3 }}
-                                            onError={(e) => {
-                                                const target =
-                                                    e.target as HTMLImageElement;
-                                                target.style.display = "none";
-                                                target.nextElementSibling?.classList.remove(
-                                                    "hidden"
-                                                );
+                                <Card className="bg-white dark:bg-gray-800 border-2 border-[#B0EACD]/30 hover:border-[#21BF73]/50 shadow-md hover:shadow-xl transition-all duration-300 h-full">
+                                    <CardContent className="p-6 flex flex-col justify-between h-full">
+                                        <div className="h-12 flex items-center justify-center mb-4">
+                                            <motion.img
+                                                src={partner.logo}
+                                                alt={partner.name}
+                                                className="max-h-8 max-w-full object-contain filter dark:brightness-0 dark:invert opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                                                whileHover={{ scale: 1.1 }}
+                                                transition={{ duration: 0.3 }}
+                                                onError={(e) => {
+                                                    const target =
+                                                        e.target as HTMLImageElement;
+                                                    target.style.display =
+                                                        "none";
+                                                    target.nextElementSibling?.classList.remove(
+                                                        "hidden"
+                                                    );
+                                                }}
+                                            />
+                                            <div className="hidden text-lg font-bold text-gray-700 dark:text-gray-300">
+                                                {partner.name}
+                                            </div>
+                                        </div>
+                                        <motion.p
+                                            className="text-xs text-center text-gray-500 dark:text-gray-400 group-hover:text-[#21BF73] transition-colors duration-300 font-medium"
+                                            initial={{ opacity: 0 }}
+                                            whileInView={{ opacity: 1 }}
+                                            transition={{
+                                                delay: index * 0.1 + 0.5,
                                             }}
-                                        />
-                                        <div className="hidden text-lg font-bold text-gray-700 dark:text-gray-300">
-                                            {partner.name}
-                                        </div>
-                                    </div>
-                                    <motion.p
-                                        className="text-xs text-center text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors duration-300"
-                                        initial={{ opacity: 0 }}
-                                        whileInView={{ opacity: 1 }}
-                                        transition={{
-                                            delay: index * 0.1 + 0.5,
-                                        }}
-                                        viewport={{ once: true }}
-                                    >
-                                        {partner.description}
-                                    </motion.p>
-                                </motion.div>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                </motion.div>
-
-                {/* Press Mentions */}
-                <motion.div
-                    className="mb-16"
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.2 }}
-                    variants={containerVariants}
-                >
-                    <motion.div
-                        className="text-center mb-8"
-                        variants={itemVariants}
-                    >
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                            Featured in Leading Publications
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400">
-                            Recognition from top media outlets
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        className="grid md:grid-cols-3 gap-8"
-                        variants={containerVariants}
-                    >
-                        {pressItems.map((item, index) => (
-                            <motion.div
-                                key={item.id}
-                                variants={pressCardVariants}
-                                whileHover="hover"
-                            >
-                                <motion.div
-                                    className="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-600 h-full flex flex-col"
-                                    whileHover={{
-                                        boxShadow:
-                                            "0 25px 50px -12px rgba(0, 0, 0, 0.15)",
-                                    }}
-                                >
-                                    <motion.div
-                                        className="flex items-center mb-4"
-                                        initial={{ x: -20, opacity: 0 }}
-                                        whileInView={{ x: 0, opacity: 1 }}
-                                        transition={{
-                                            delay: index * 0.2 + 0.3,
-                                        }}
-                                        viewport={{ once: true }}
-                                    >
-                                        <Image
-                                            src={item.logo}
-                                            alt={item.publication}
-                                            width={120}
-                                            height={60}
-                                            className="h-6 max-w-24 object-contain filter dark:invert opacity-70"
-                                        />
-                                        <div className="hidden text-lg font-bold text-gray-700 dark:text-gray-300">
-                                            {item.publication}
-                                        </div>
-                                    </motion.div>
-
-                                    <motion.blockquote
-                                        className="text-gray-700 dark:text-gray-300 italic mb-4 flex-grow"
-                                        initial={{ opacity: 0 }}
-                                        whileInView={{ opacity: 1 }}
-                                        transition={{
-                                            delay: index * 0.2 + 0.5,
-                                        }}
-                                        viewport={{ once: true }}
-                                    >
-                                        "{item.quote}"
-                                    </motion.blockquote>
-
-                                    <motion.div
-                                        className="text-sm text-gray-500 dark:text-gray-400"
-                                        initial={{ y: 10, opacity: 0 }}
-                                        whileInView={{ y: 0, opacity: 1 }}
-                                        transition={{
-                                            delay: index * 0.2 + 0.7,
-                                        }}
-                                        viewport={{ once: true }}
-                                    >
-                                        — {item.author}
-                                    </motion.div>
-                                </motion.div>
+                                            viewport={{ once: true }}
+                                        >
+                                            {partner.description}
+                                        </motion.p>
+                                    </CardContent>
+                                </Card>
                             </motion.div>
                         ))}
                     </motion.div>
@@ -555,62 +478,54 @@ const TrustCommunity = () => {
                     variants={containerVariants}
                 >
                     <motion.h3
-                        className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8"
+                        className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2"
                         variants={itemVariants}
                     >
                         Your Data is Safe & Secure
                     </motion.h3>
+                    <motion.p
+                        className="text-gray-600 dark:text-gray-400 mb-8"
+                        variants={itemVariants}
+                    >
+                        Industry-standard security and compliance
+                    </motion.p>
 
                     <motion.div
-                        className="flex flex-wrap justify-center items-center gap-8"
+                        className="flex flex-wrap justify-center items-center gap-4"
                         variants={containerVariants}
                     >
                         {[
                             {
-                                icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+                                icon: Shield,
                                 label: "SSL Encrypted",
-                                color: "green",
                             },
                             {
-                                icon: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z",
+                                icon: Lock,
                                 label: "GDPR Compliant",
-                                color: "blue",
                             },
                             {
-                                icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
-                                label: "SOC 2 Certified",
-                                color: "purple",
+                                icon: CheckCircle2,
+                                label: "Verified Secure",
                             },
                             {
-                                icon: "M13 10V3L4 14h7v7l9-11h-7z",
+                                icon: Zap,
                                 label: "99.9% Uptime",
-                                color: "orange",
                             },
                         ].map((badge, index) => (
                             <motion.div
                                 key={badge.label}
                                 variants={badgeVariants}
                                 whileHover="hover"
-                                className={`flex items-center space-x-2 bg-${badge.color}-50 dark:bg-${badge.color}-900/20 px-4 py-2 rounded-full border border-${badge.color}-200 dark:border-${badge.color}-800 cursor-pointer`}
                             >
-                                <svg
-                                    className={`w-5 h-5 text-${badge.color}-600`}
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                                <Badge
+                                    variant="outline"
+                                    className="flex items-center space-x-2 bg-[#B0EACD]/10 hover:bg-[#B0EACD]/20 px-4 py-2 border-2 border-[#B0EACD]/50 hover:border-[#21BF73] cursor-pointer transition-all duration-300"
                                 >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth={2}
-                                        d={badge.icon}
-                                    />
-                                </svg>
-                                <span
-                                    className={`text-sm font-medium text-${badge.color}-700 dark:text-${badge.color}-300`}
-                                >
-                                    {badge.label}
-                                </span>
+                                    <badge.icon className="w-5 h-5 text-[#21BF73]" />
+                                    <span className="text-sm font-medium text-[#007a3f] dark:text-[#B0EACD]">
+                                        {badge.label}
+                                    </span>
+                                </Badge>
                             </motion.div>
                         ))}
                     </motion.div>
