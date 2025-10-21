@@ -7,14 +7,12 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { Phone, Loader2, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
+import axiosInstance from "@/axios/axiosInstance";
 
 const fetchCourse = async (courseId: string) => {
-    const res = await fetch(`http://localhost:5000/api/courses/${courseId}`, {
-        cache: "no-store",
-    });
-    if (!res.ok) throw new Error("Failed to fetch course data");
-    const data = await res.json();
-    return data.course;
+    const res = await axiosInstance.get(`/api/courses/${courseId}`);
+    if (res.status !== 200) throw new Error("Failed to fetch course data");
+    return res.data.course;
 };
 
 export default function CheckoutPage() {
@@ -61,29 +59,23 @@ export default function CheckoutPage() {
 
         try {
             // Initiate payment
-            const response = await fetch(
-                "http://localhost:5000/api/payments/initiate",
+            const response = await axiosInstance.post(
+                "/api/payments/initiate",
                 {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        userId:
-                            (session.user as any)._id ||
-                            (session.user as any).id,
-                        userEmail: session.user.email,
-                        courseId: courseId,
-                        courseName: course.title,
-                        amount: course.price,
-                        paymentMethod: selectedPayment,
-                    }),
+                    userId:
+                        (session.user as any)._id ||
+                        (session.user as any).id,
+                    userEmail: session.user.email,
+                    courseId: courseId,
+                    courseName: course.title,
+                    amount: course.price,
+                    paymentMethod: selectedPayment,
                 }
             );
 
-            const data = await response.json();
+            const data = await response.data;
 
-            if (!response.ok || !data.success) {
+            if (!response.status || !data.success) {
                 throw new Error(data.message || "Failed to initiate payment");
             }
 
