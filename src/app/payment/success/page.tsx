@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { CheckCircle2, Loader2, Download, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import axiosInstance from "@/axios/axiosInstance";
 
 function PaymentSuccessContent() {
     const searchParams = useSearchParams();
@@ -26,23 +27,16 @@ function PaymentSuccessContent() {
 
             try {
                 // Complete the payment
-                const response = await fetch(
-                    "http://localhost:5000/api/payments/complete",
+                const response = await axiosInstance.post(
+                    "/api/payments/complete",
                     {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            paymentID,
-                            orderId,
-                        }),
+                        paymentID,
+                        orderId,
                     }
                 );
 
-                const data = await response.json();
-
-                if (!response.ok || !data.success) {
+                const data = await response.data;
+                if (response.status !== 200 || !data.success) {
                     throw new Error(
                         data.message || "Payment verification failed"
                     );

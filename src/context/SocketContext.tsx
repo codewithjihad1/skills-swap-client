@@ -108,7 +108,7 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
         if (!session?.user?.id) return;
 
         const socketUrl =
-            process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:5000";
+            process.env.NEXT_PUBLIC_SOCKET_URL;
         const newSocket = io(socketUrl, {
             transports: ["websocket", "polling"],
             reconnection: true,
