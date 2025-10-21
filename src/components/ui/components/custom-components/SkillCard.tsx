@@ -137,7 +137,9 @@ const SkillCard = ({
                         </h3>
                         <p className="text-gray-600 dark:text-gray-400 mb-4">
                             Send a request to learn{" "}
-                            <strong className="text-[#21BF73]">{skill.title}</strong>
+                            <strong className="text-[#21BF73]">
+                                {skill.title}
+                            </strong>
                         </p>
                         <textarea
                             id="request-message"
