@@ -1,6 +1,7 @@
-// src/hooks/useNotifications.ts - COMPLETELY FIXED VERSION
+// src/hooks/useNotifications.ts
 
-import { useState, useEffect, useCallback } from 'react';
+import axiosInstance from "@/axios/axiosInstance";
+import { useState, useEffect, useCallback } from "react";
 
 export interface Notification {
     _id: string;
@@ -11,7 +12,14 @@ export interface Notification {
         email: string;
         avatar?: string;
     };
-    type: "message" | "skill_request" | "skill_accepted" | "skill_rejected" | "swap_completed" | "review_received" | "system";
+    type:
+        | "message"
+        | "skill_request"
+        | "skill_accepted"
+        | "skill_rejected"
+        | "swap_completed"
+        | "review_received"
+        | "system";
     title: string;
     message: string;
     link?: string;
@@ -34,81 +42,67 @@ interface UseNotificationsReturn {
     refetch: () => void;
 }
 
-// ✅ SIMPLE FETCH API - No axios issues
-const API_BASE_URL = 'http://localhost:5000/api';
-
 const notificationAPI = {
     getNotifications: async (userId: string): Promise<any> => {
         try {
-            console.log('🔍 Fetching notifications for user:', userId);
-            const response = await fetch(`${API_BASE_URL}/notifications/user/${userId}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.json();
+            console.log("🔍 Fetching notifications for user:", userId);
+            const response = await axiosInstance.get(
+                `/notifications/user/${userId}`
+            );
+            return response.data;
         } catch (error) {
-            console.error('❌ Error fetching notifications:', error);
+            console.error("❌ Error fetching notifications:", error);
             throw error;
         }
     },
 
     getUnreadCount: async (userId: string): Promise<any> => {
         try {
-            const response = await fetch(`${API_BASE_URL}/notifications/user/${userId}/unread/count`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.json();
+            const response = await axiosInstance.get(
+                `/notifications/user/${userId}/unread/count`
+            );
+            return response.data;
         } catch (error) {
-            console.error('❌ Error fetching unread count:', error);
-            return { success: false, unreadCount: 0 };
+            console.error("❌ Error fetching unread count:", error);
+            throw error;
         }
     },
 
     markAsRead: async (notificationId: string): Promise<any> => {
         try {
-            const response = await fetch(`${API_BASE_URL}/notifications/${notificationId}/read`, {
-                method: 'PATCH'
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.json();
+            const response = await axiosInstance.patch(
+                `/notifications/${notificationId}/read`
+            );
+            return response.data;
         } catch (error) {
-            console.error('❌ Error marking as read:', error);
+            console.error("❌ Error marking as read:", error);
             throw error;
         }
     },
 
     markAllAsRead: async (userId: string): Promise<any> => {
         try {
-            const response = await fetch(`${API_BASE_URL}/notifications/user/${userId}/read-all`, {
-                method: 'PATCH'
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.json();
+            const response = await axiosInstance.patch(
+                `/notifications/user/${userId}/read-all`
+            );
+            return response.data;
         } catch (error) {
-            console.error('❌ Error marking all as read:', error);
+            console.error("❌ Error marking all as read:", error);
             throw error;
         }
     },
 
     deleteNotification: async (notificationId: string): Promise<any> => {
         try {
-            const response = await fetch(`${API_BASE_URL}/notifications/${notificationId}`, {
-                method: 'DELETE'
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.json();
+            const response = await axiosInstance.delete(
+                `/notifications/${notificationId}`
+            );
+            return response.data;
         } catch (error) {
-            console.error('❌ Error deleting notification:', error);
+            console.error("❌ Error deleting notification:", error);
             throw error;
         }
-    }
+    },
 };
 
 export const useNotifications = (userId?: string): UseNotificationsReturn => {
@@ -119,30 +113,34 @@ export const useNotifications = (userId?: string): UseNotificationsReturn => {
 
     const fetchNotifications = useCallback(async () => {
         if (!userId) {
-            console.log('⏸️ No userId provided, skipping fetch');
+            console.log("⏸️ No userId provided, skipping fetch");
             setLoading(false);
             return;
         }
-        
-        console.log('🔄 Fetching notifications for userId:', userId);
+
+        console.log("🔄 Fetching notifications for userId:", userId);
         setLoading(true);
         setError(null);
-        
+
         try {
             const data = await notificationAPI.getNotifications(userId);
-            console.log('✅ Notifications data received:', data);
-            
+            console.log("✅ Notifications data received:", data);
+
             if (data.success) {
                 setNotifications(data.notifications || []);
                 setUnreadCount(data.unreadCount || 0);
-                console.log(`📨 Loaded ${data.notifications?.length || 0} notifications, ${data.unreadCount || 0} unread`);
+                console.log(
+                    `📨 Loaded ${
+                        data.notifications?.length || 0
+                    } notifications, ${data.unreadCount || 0} unread`
+                );
             } else {
-                setError('Failed to fetch notifications');
-                console.error('❌ API returned success: false');
+                setError("Failed to fetch notifications");
+                console.error("❌ API returned success: false");
             }
         } catch (err: any) {
-            console.error('💥 Error in fetchNotifications:', err);
-            setError(err.message || 'Failed to fetch notifications');
+            console.error("💥 Error in fetchNotifications:", err);
+            setError(err.message || "Failed to fetch notifications");
             setNotifications([]);
             setUnreadCount(0);
         } finally {
@@ -152,15 +150,15 @@ export const useNotifications = (userId?: string): UseNotificationsReturn => {
 
     const fetchUnreadCount = useCallback(async () => {
         if (!userId) return;
-        
+
         try {
             const data = await notificationAPI.getUnreadCount(userId);
             if (data.success) {
-                setUnreadCount(data.unreadCount);
-                console.log('🔢 Updated unread count:', data.unreadCount);
+                setUnreadCount(data.unreadCount || 0);
+                console.log("🔢 Updated unread count:", data.unreadCount);
             }
         } catch (err: any) {
-            console.error('Error in fetchUnreadCount:', err);
+            console.error("💥 Error in fetchUnreadCount:", err);
         }
     }, [userId]);
 
@@ -168,20 +166,24 @@ export const useNotifications = (userId?: string): UseNotificationsReturn => {
         try {
             const data = await notificationAPI.markAsRead(notificationId);
             if (data.success) {
-                setNotifications(prev => 
-                    prev.map(notif => 
-                        notif._id === notificationId 
-                            ? { ...notif, isRead: true, readAt: new Date().toISOString() }
+                setNotifications((prev) =>
+                    prev.map((notif) =>
+                        notif._id === notificationId
+                            ? {
+                                  ...notif,
+                                  isRead: true,
+                                  readAt: new Date().toISOString(),
+                              }
                             : notif
                     )
                 );
-                setUnreadCount(prev => Math.max(0, prev - 1));
-                console.log('✅ Marked notification as read:', notificationId);
+                setUnreadCount((prev) => Math.max(0, prev - 1));
+                console.log("✅ Marked notification as read:", notificationId);
                 return true;
             }
             return false;
         } catch (err: any) {
-            console.error('Error marking as read:', err);
+            console.error("❌ Error marking as read:", err);
             return false;
         }
     };
@@ -192,53 +194,64 @@ export const useNotifications = (userId?: string): UseNotificationsReturn => {
         try {
             const data = await notificationAPI.markAllAsRead(userId);
             if (data.success) {
-                setNotifications(prev => 
-                    prev.map(notif => ({ 
-                        ...notif, 
-                        isRead: true, 
-                        readAt: new Date().toISOString() 
+                setNotifications((prev) =>
+                    prev.map((notif) => ({
+                        ...notif,
+                        isRead: true,
+                        readAt: new Date().toISOString(),
                     }))
                 );
                 setUnreadCount(0);
-                console.log('✅ Marked all notifications as read');
+                console.log("✅ Marked all notifications as read");
                 return true;
             }
             return false;
         } catch (err: any) {
-            console.error('Error marking all as read:', err);
+            console.error("❌ Error marking all as read:", err);
             return false;
         }
     };
 
-    const deleteNotification = async (notificationId: string): Promise<boolean> => {
+    const deleteNotification = async (
+        notificationId: string
+    ): Promise<boolean> => {
         try {
-            const data = await notificationAPI.deleteNotification(notificationId);
+            const data = await notificationAPI.deleteNotification(
+                notificationId
+            );
             if (data.success) {
-                const notification = notifications.find(n => n._id === notificationId);
-                setNotifications(prev => prev.filter(notif => notif._id !== notificationId));
+                const notification = notifications.find(
+                    (n) => n._id === notificationId
+                );
+                setNotifications((prev) =>
+                    prev.filter((notif) => notif._id !== notificationId)
+                );
                 if (notification && !notification.isRead) {
-                    setUnreadCount(prev => Math.max(0, prev - 1));
+                    setUnreadCount((prev) => Math.max(0, prev - 1));
                 }
-                console.log('🗑️ Deleted notification:', notificationId);
+                console.log("🗑️ Deleted notification:", notificationId);
                 return true;
             }
             return false;
         } catch (err: any) {
-            console.error('Error deleting notification:', err);
+            console.error("❌ Error deleting notification:", err);
             return false;
         }
     };
 
     // Initial fetch
     useEffect(() => {
-        console.log('🎯 useNotifications hook initialized with userId:', userId);
+        console.log(
+            "🎯 useNotifications hook initialized with userId:",
+            userId
+        );
         fetchNotifications();
     }, [fetchNotifications]);
 
-    // Poll for updates
+    // Poll for updates every 30 seconds
     useEffect(() => {
         if (!userId) return;
-        
+
         const interval = setInterval(() => {
             fetchUnreadCount();
         }, 30000);
@@ -247,7 +260,7 @@ export const useNotifications = (userId?: string): UseNotificationsReturn => {
     }, [userId, fetchUnreadCount]);
 
     const refetch = () => {
-        console.log('🔄 Manually refetching notifications');
+        console.log("🔄 Manually refetching notifications");
         fetchNotifications();
     };
 
