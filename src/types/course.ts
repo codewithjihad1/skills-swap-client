@@ -51,7 +51,7 @@ export interface CoursesResponse {
 }
 
 // services/courseService.ts
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const getCourses = async (filters: CourseFilters = {}): Promise<CoursesResponse> => {
   const { page, limit, category, level, search, sortBy, order } = filters;
