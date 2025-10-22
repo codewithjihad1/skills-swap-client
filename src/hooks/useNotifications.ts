@@ -2,6 +2,7 @@
 
 import axiosInstance from "@/axios/axiosInstance";
 import { useState, useEffect, useCallback } from "react";
+import { useSocket } from "@/context/SocketContext";
 
 export interface Notification {
     _id: string;
@@ -110,6 +111,7 @@ export const useNotifications = (userId?: string): UseNotificationsReturn => {
     const [unreadCount, setUnreadCount] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const { socket, unreadCounts } = useSocket();
 
     const fetchNotifications = useCallback(async () => {
         if (!userId) {
@@ -248,16 +250,86 @@ export const useNotifications = (userId?: string): UseNotificationsReturn => {
         fetchNotifications();
     }, [fetchNotifications]);
 
-    // Poll for updates every 30 seconds
+    // Listen for real-time socket updates
     useEffect(() => {
-        if (!userId) return;
+        if (!socket || !userId) return;
 
-        const interval = setInterval(() => {
-            fetchUnreadCount();
-        }, 30000);
+        console.log("🔌 Setting up socket listeners for notifications");
 
-        return () => clearInterval(interval);
-    }, [userId, fetchUnreadCount]);
+        // Listen for new notifications
+        const handleNewNotification = (notification: Notification) => {
+            console.log("🔔 New notification received:", notification);
+            setNotifications((prev) => [notification, ...prev]);
+            setUnreadCount((prev) => prev + 1);
+        };
+
+        // Listen for unread count updates
+        const handleUnreadCount = (data: { count: number }) => {
+            console.log("🔢 Unread count updated:", data.count);
+            setUnreadCount(data.count);
+        };
+
+        // Listen for read confirmation
+        const handleReadConfirm = (data: {
+            notificationId: string;
+            success: boolean;
+        }) => {
+            if (data.success) {
+                console.log(
+                    "✅ Notification read confirmed:",
+                    data.notificationId
+                );
+            }
+        };
+
+        // Listen for all read confirmation
+        const handleAllReadConfirm = (data: {
+            success: boolean;
+            modifiedCount: number;
+        }) => {
+            if (data.success) {
+                console.log(
+                    "✅ All notifications marked as read:",
+                    data.modifiedCount
+                );
+            }
+        };
+
+        // Listen for delete confirmation
+        const handleDeleteConfirm = (data: {
+            notificationId: string;
+            success: boolean;
+        }) => {
+            if (data.success) {
+                console.log("🗑️ Notification deleted:", data.notificationId);
+            }
+        };
+
+        socket.on("notification:new", handleNewNotification);
+        socket.on("notification:unread-count", handleUnreadCount);
+        socket.on("notification:read-confirm", handleReadConfirm);
+        socket.on("notification:all-read-confirm", handleAllReadConfirm);
+        socket.on("notification:delete-confirm", handleDeleteConfirm);
+
+        return () => {
+            socket.off("notification:new", handleNewNotification);
+            socket.off("notification:unread-count", handleUnreadCount);
+            socket.off("notification:read-confirm", handleReadConfirm);
+            socket.off("notification:all-read-confirm", handleAllReadConfirm);
+            socket.off("notification:delete-confirm", handleDeleteConfirm);
+        };
+    }, [socket, userId]);
+
+    // Sync with socket unread counts
+    useEffect(() => {
+        if (unreadCounts.notifications !== unreadCount) {
+            console.log(
+                "🔄 Syncing unread count from socket:",
+                unreadCounts.notifications
+            );
+            setUnreadCount(unreadCounts.notifications);
+        }
+    }, [unreadCounts.notifications]);
 
     const refetch = () => {
         console.log("🔄 Manually refetching notifications");

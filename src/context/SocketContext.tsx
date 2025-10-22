@@ -71,6 +71,8 @@ interface SocketContextType {
     markMessageAsRead: (messageId: string, conversationId: string) => void;
     markConversationAsRead: (conversationId: string, userId: string) => void;
     markNotificationAsRead: (notificationId: string, userId: string) => void;
+    markAllNotificationsAsRead: (userId: string) => void;
+    deleteNotification: (notificationId: string, userId: string) => void;
     joinConversation: (conversationId: string) => void;
     leaveConversation: (conversationId: string) => void;
     sendTypingStatus: (
@@ -108,7 +110,12 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
         if (!session?.user?.id) return;
 
         const socketUrl =
-            process.env.NEXT_PUBLIC_SOCKET_URL;
+            process.env.NEXT_PUBLIC_SOCKET_URL ||
+            process.env.NEXT_PUBLIC_API_URL ||
+            "http://localhost:5000";
+
+        console.log("🔌 Connecting to socket server:", socketUrl);
+
         const newSocket = io(socketUrl, {
             transports: ["websocket", "polling"],
             reconnection: true,
@@ -117,9 +124,11 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
         });
 
         newSocket.on("connect", () => {
-            // console.log("✅ Socket connected:", newSocket.id);
+            console.log("✅ Socket connected:", newSocket.id);
             setIsConnected(true);
             newSocket.emit("user:join", session.user.id);
+            // Join notification room
+            newSocket.emit("notification:join", session.user.id);
         });
 
         newSocket.on("disconnect", () => {
@@ -139,6 +148,11 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
 
         newSocket.on("unread:update", (counts: Partial<UnreadCounts>) => {
             setUnreadCounts((prev) => ({ ...prev, ...counts }));
+        });
+
+        // Listen for notification unread count updates
+        newSocket.on("notification:unread-count", (data: { count: number }) => {
+            setUnreadCounts((prev) => ({ ...prev, notifications: data.count }));
         });
 
         // Listen for new messages
@@ -207,7 +221,19 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
 
     const markNotificationAsRead = (notificationId: string, userId: string) => {
         if (socket && isConnected) {
-            socket.emit("notification:read", { notificationId, userId });
+            socket.emit("notification:mark-read", { notificationId, userId });
+        }
+    };
+
+    const markAllNotificationsAsRead = (userId: string) => {
+        if (socket && isConnected) {
+            socket.emit("notification:mark-all-read", { userId });
+        }
+    };
+
+    const deleteNotification = (notificationId: string, userId: string) => {
+        if (socket && isConnected) {
+            socket.emit("notification:delete", { notificationId, userId });
         }
     };
 
@@ -247,6 +273,8 @@ export const SocketProvider = ({ children }: SocketProviderProps) => {
                 markMessageAsRead,
                 markConversationAsRead,
                 markNotificationAsRead,
+                markAllNotificationsAsRead,
+                deleteNotification,
                 joinConversation,
                 leaveConversation,
                 sendTypingStatus,
