@@ -101,59 +101,59 @@ const DesktopHeader = () => {
     const getNotificationIcon = (type: string) => {
         switch (type) {
             case "message":
-                return <MessageSquare className="w-4 h-4 text-blue-500" />;
+                return <MessageSquare className="w-4 h-4 text-primary" />;
             case "skill_request":
-                return <Zap className="w-4 h-4 text-orange-500" />;
+                return <Zap className="w-4 h-4 text-secondary" />;
             case "skill_accepted":
-                return <CheckCircle className="w-4 h-4 text-green-500" />;
+                return <CheckCircle className="w-4 h-4 text-primary" />;
             case "skill_rejected":
-                return <AlertCircle className="w-4 h-4 text-red-500" />;
+                return <AlertCircle className="w-4 h-4 text-destructive" />;
             case "swap_completed":
-                return <Check className="w-4 h-4 text-purple-500" />;
+                return <Check className="w-4 h-4 text-accent-foreground" />;
             case "review_received":
-                return <Bell className="w-4 h-4 text-yellow-500" />;
+                return <Bell className="w-4 h-4 text-secondary" />;
             case "system":
-                return <Zap className="w-4 h-4 text-gray-500" />;
+                return <Zap className="w-4 h-4 text-muted-foreground" />;
             default:
-                return <Bell className="w-4 h-4 text-gray-500" />;
+                return <Bell className="w-4 h-4 text-muted-foreground" />;
         }
     };
 
     const getNotificationColor = (type: string) => {
         switch (type) {
             case "message":
-                return "border-l-blue-500 bg-blue-50 dark:bg-blue-950/20";
+                return "border-l-primary bg-primary/5";
             case "skill_request":
-                return "border-l-orange-500 bg-orange-50 dark:bg-orange-950/20";
+                return "border-l-secondary bg-secondary/5";
             case "skill_accepted":
-                return "border-l-green-500 bg-green-50 dark:bg-green-950/20";
+                return "border-l-primary bg-primary/5";
             case "skill_rejected":
-                return "border-l-red-500 bg-red-50 dark:bg-red-950/20";
+                return "border-l-destructive bg-destructive/5";
             case "swap_completed":
-                return "border-l-purple-500 bg-purple-50 dark:bg-purple-950/20";
+                return "border-l-accent bg-accent/10";
             case "review_received":
-                return "border-l-yellow-500 bg-yellow-50 dark:bg-yellow-950/20";
+                return "border-l-secondary bg-secondary/5";
             case "system":
-                return "border-l-gray-500 bg-gray-50 dark:bg-gray-800";
+                return "border-l-muted bg-muted";
             default:
-                return "border-l-gray-500 bg-gray-50 dark:bg-gray-800";
+                return "border-l-muted bg-muted";
         }
     };
 
     // Show loading state while session is being fetched
     if (status === "loading" && !session) {
         return (
-            <header className="hidden lg:block bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+            <header className="hidden lg:block bg-card border-b border-border px-6 py-4 shadow-sm">
                 <div className="flex items-center justify-between">
                     <div className="flex-1 max-w-lg">
                         {/* Skeleton replacement for search input */}
-                        <div className="h-10 w-full bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />
+                        <div className="h-10 w-full bg-muted rounded-lg animate-pulse" />
                     </div>
                     <div className="flex items-center gap-4">
                         {/* Skeleton replacement for buttons */}
-                        <div className="h-9 w-24 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse" />
-                        <div className="h-9 w-9 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse" />
-                        <div className="h-8 w-8 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse" />
+                        <div className="h-9 w-24 bg-muted rounded-md animate-pulse" />
+                        <div className="h-9 w-9 bg-muted rounded-full animate-pulse" />
+                        <div className="h-8 w-8 bg-muted rounded-full animate-pulse" />
                     </div>
                 </div>
             </header>
@@ -161,15 +161,15 @@ const DesktopHeader = () => {
     }
 
     return (
-        <header className="hidden lg:block bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+        <header className="hidden lg:block bg-card border-b border-border px-6 py-4 shadow-sm">
             <div className="flex items-center justify-between">
                 <div className="flex-1 max-w-lg">
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                         <input
                             type="text"
                             placeholder="Search skills, users, or conversations..."
-                            className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-primary focus:border-transparent"
+                            className="w-full pl-10 pr-4 py-2 border border-input rounded-lg bg-background text-foreground placeholder-muted-foreground focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                         />
                     </div>
                 </div>
@@ -183,8 +183,8 @@ const DesktopHeader = () => {
                             variant="ghost"
                             size="sm"
                             className={cn(
-                                "relative transition-all duration-200",
-                                unreadCount > 0 && "text-blue-600 animate-pulse"
+                                "relative transition-all duration-200 hover:bg-accent",
+                                unreadCount > 0 && "text-primary animate-pulse"
                             )}
                             onClick={() =>
                                 setIsNotificationOpen(!isNotificationOpen)
@@ -194,7 +194,7 @@ const DesktopHeader = () => {
                             {unreadCount > 0 && (
                                 <Badge
                                     variant="destructive"
-                                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs min-w-0"
+                                    className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs min-w-0 bg-primary hover:bg-primary"
                                 >
                                     {unreadCount > 9 ? "9+" : unreadCount}
                                 </Badge>
@@ -209,15 +209,15 @@ const DesktopHeader = () => {
                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                                     transition={{ duration: 0.2 }}
-                                    className="absolute right-0 top-12 w-96 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-50"
+                                    className="absolute right-0 top-12 w-96 bg-card border border-border rounded-lg shadow-xl z-50"
                                 >
                                     {/* Header */}
-                                    <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                                    <div className="flex items-center justify-between p-4 border-b border-border">
                                         <div>
-                                            <h3 className="font-semibold text-gray-900 dark:text-white">
+                                            <h3 className="font-semibold text-foreground">
                                                 Notifications
                                             </h3>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                            <p className="text-sm text-muted-foreground">
                                                 {unreadCount} unread
                                             </p>
                                         </div>
@@ -229,7 +229,7 @@ const DesktopHeader = () => {
                                                     onClick={
                                                         handleMarkAllAsRead
                                                     } // ✅ FIXED: No parameter needed
-                                                    className="text-xs h-8"
+                                                    className="text-xs h-8 hover:bg-accent hover:text-primary"
                                                     disabled={loading}
                                                 >
                                                     <Check className="w-3 h-3 mr-1" />
@@ -242,7 +242,7 @@ const DesktopHeader = () => {
                                                 onClick={() =>
                                                     setIsNotificationOpen(false)
                                                 }
-                                                className="h-8 w-8 p-0"
+                                                className="h-8 w-8 p-0 hover:bg-accent"
                                             >
                                                 <X className="w-4 h-4" />
                                             </Button>
@@ -273,7 +273,7 @@ const DesktopHeader = () => {
                                                 </div>
                                             ) : notifications.length === 0 ? (
                                                 // Empty state
-                                                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                                                <div className="text-center py-8 text-muted-foreground">
                                                     <Bell className="w-12 h-12 mx-auto mb-3 opacity-50" />
                                                     <p className="text-sm">
                                                         No notifications yet
@@ -405,11 +405,11 @@ const DesktopHeader = () => {
 
                                     {/* Footer */}
                                     {notifications.length > 0 && (
-                                        <div className="p-3 border-t border-gray-200 dark:border-gray-700">
+                                        <div className="p-3 border-t border-border">
                                             <Button
                                                 variant="outline"
                                                 size="sm"
-                                                className="w-full text-sm"
+                                                className="w-full text-sm hover:bg-primary hover:text-white transition-colors"
                                                 onClick={() => {
                                                     setIsNotificationOpen(
                                                         false
