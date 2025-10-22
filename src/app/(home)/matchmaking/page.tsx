@@ -4,6 +4,24 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+    Sparkles,
+    Users,
+    MessageCircle,
+    Calendar,
+    Star,
+    MapPin,
+    TrendingUp,
+    Zap,
+    Target,
+    CheckCircle2,
+    ArrowRight,
+    Loader2,
+} from "lucide-react";
 
 interface User {
     id: number;
@@ -15,60 +33,71 @@ interface User {
     rating: number;
     location: string;
     isOnline: boolean;
+    bio: string;
+    completedSwaps: number;
 }
 
 interface MatchStep {
     id: number;
     title: string;
+    titleBengali: string;
     description: string;
-    icon: string;
+    icon: React.ReactNode;
     color: string;
 }
 
 const sampleUsers: User[] = [
     {
         id: 1,
-        name: "Arif Hossain",
-        avatar: "https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=150&h=150&fit=crop&crop=face",
-        skillOffered: "React Development",
+        name: "Md Jihad Hossain",
+        avatar: "./jihad.jpg",
+        skillOffered: "MERN Stack Development",
         skillWanted: "UI/UX Design",
         level: "Advanced",
         rating: 4.9,
         location: "Dhaka, Bangladesh",
         isOnline: true,
+        bio: "Full-stack developer with 5+ years experience in MERN stack",
+        completedSwaps: 23,
     },
     {
         id: 2,
-        name: "Mitu Akter",
-        avatar: "https://i.ibb.co.com/XfQhSwk8/Borkha-Unlimited-Hijab1-jpg.webp",
+        name: "Raj Kumar",
+        avatar: "./Raj.jpg",
         skillOffered: "UI/UX Design",
         skillWanted: "React Development",
-        level: "Intermediate",
+        level: "Advanced",
         rating: 4.8,
         location: "Chittagong, Bangladesh",
         isOnline: true,
+        bio: "Product designer specializing in user-centered design",
+        completedSwaps: 19,
     },
     {
         id: 3,
-        name: "Sabbir Ahmed",
-        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-        skillOffered: "UI/UX Design",
-        skillWanted: "DevOps",
-        level: "Advanced",
+        name: "Sourav",
+        avatar: "./shourav.jpg",
+        skillOffered: "Digital Marketing",
+        skillWanted: "Video Editing",
+        level: "Intermediate",
         rating: 4.7,
         location: "Khulna, Bangladesh",
-        isOnline: false,
+        isOnline: true,
+        bio: "Marketing expert helping businesses grow online",
+        completedSwaps: 15,
     },
     {
         id: 4,
-        name: "Nusrat Jahan",
-        avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&h=150&fit=crop&crop=face",
-        skillOffered: "UI/UX Design",
-        skillWanted: "Python",
+        name: "Ihsan",
+        avatar: "./ishan.jpeg",
+        skillOffered: "Python & Data Science",
+        skillWanted: "Machine Learning",
         level: "Intermediate",
         rating: 4.9,
         location: "Sylhet, Bangladesh",
         isOnline: true,
+        bio: "Data analyst passionate about AI and machine learning",
+        completedSwaps: 12,
     },
 ];
 
@@ -76,32 +105,36 @@ const matchSteps: MatchStep[] = [
     {
         id: 1,
         title: "Share Your Skills",
+        titleBengali: "আপনার দক্ষতা শেয়ার করুন",
         description: "Tell us what you can teach and what you want to learn",
-        icon: "🎯",
-        color: "from-blue-500 to-cyan-500",
+        icon: <Target className="w-6 h-6" />,
+        color: "from-[#21BF73] to-[#007a3f]",
     },
     {
         id: 2,
         title: "Smart Matching",
+        titleBengali: "স্মার্ট ম্যাচিং",
         description:
             "Our AI finds perfect skill-swap partners based on compatibility",
-        icon: "🤖",
-        color: "from-purple-500 to-pink-500",
+        icon: <Sparkles className="w-6 h-6" />,
+        color: "from-[#007a3f] to-[#21BF73]",
     },
     {
         id: 3,
         title: "Connect & Chat",
+        titleBengali: "সংযোগ ও চ্যাট করুন",
         description:
             "Review profiles and start conversations with potential partners",
-        icon: "💬",
-        color: "from-green-500 to-emerald-500",
+        icon: <MessageCircle className="w-6 h-6" />,
+        color: "from-[#B0EACD] to-[#21BF73]",
     },
     {
         id: 4,
         title: "Learn Together",
+        titleBengali: "একসাথে শিখুন",
         description: "Schedule sessions and exchange knowledge in real-time",
-        icon: "🚀",
-        color: "from-orange-500 to-red-500",
+        icon: <TrendingUp className="w-6 h-6" />,
+        color: "from-[#21BF73] to-[#B0EACD]",
     },
 ];
 
@@ -204,8 +237,15 @@ const Matchmaking = () => {
     }
 
     return (
-        <section className="py-16 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative min-h-screen bg-gradient-to-br from-white via-[#B0EACD]/10 to-white dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
+            {/* Animated Background Pattern */}
+            <div className="absolute inset-0 opacity-30">
+                <div className="absolute top-20 left-20 w-72 h-72 bg-[#21BF73]/20 rounded-full blur-3xl animate-pulse" />
+                <div className="absolute bottom-20 right-20 w-96 h-96 bg-[#007a3f]/20 rounded-full blur-3xl animate-pulse delay-1000" />
+                <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-[#B0EACD]/30 rounded-full blur-3xl animate-pulse delay-500" />
+            </div>
+
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                 {/* Header Section */}
                 <motion.div
                     className="text-center mb-16"
@@ -214,45 +254,65 @@ const Matchmaking = () => {
                     viewport={{ once: true }}
                     variants={containerVariants}
                 >
-                    <motion.div
-                        className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-primary to-purple-600 rounded-full mb-6"
-                        variants={itemVariants}
-                        whileHover={{
-                            scale: 1.1,
-                            rotate: 360,
-                            transition: { duration: 0.8 },
-                        }}
-                    >
-                        <svg
-                            className="w-10 h-10 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                    {/* Badge */}
+                    <motion.div variants={itemVariants} className="mb-6">
+                        <Badge
+                            variant="outline"
+                            className="px-4 py-2 bg-gradient-to-r from-[#21BF73] to-[#007a3f] text-white border-none"
                         >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M13 10V3L4 14h7v7l9-11h-7z"
-                            />
-                        </svg>
+                            <Sparkles className="w-4 h-4 mr-2" />
+                            AI-Powered Skill Matching
+                        </Badge>
                     </motion.div>
 
-                    <motion.h2
-                        className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6"
+                    {/* Title */}
+                    <motion.h1
+                        className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6"
                         variants={itemVariants}
                     >
-                        Smart Skill Matchmaking
-                    </motion.h2>
+                        <span className="bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+                            Find Your Perfect{" "}
+                        </span>
+                        <span className="bg-gradient-to-r from-[#21BF73] to-[#007a3f] bg-clip-text text-transparent">
+                            Skill Partner
+                        </span>
+                    </motion.h1>
 
+                    {/* Description */}
                     <motion.p
                         className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-8"
                         variants={itemVariants}
                     >
-                        Our AI-powered matching system connects you with the
-                        perfect learning partners. Trade skills, share
-                        knowledge, and grow together in our vibrant community.
+                        Connect with learners across Bangladesh who want to
+                        exchange skills. Our smart matching algorithm pairs you
+                        with the perfect partners based on your goals and
+                        expertise.
                     </motion.p>
+
+                    {/* Stats */}
+                    <motion.div
+                        variants={itemVariants}
+                        className="flex flex-wrap justify-center gap-6 mb-8"
+                    >
+                        <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-md">
+                            <Users className="w-5 h-5 text-[#21BF73]" />
+                            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                10,000+ Active Learners
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-md">
+                            <Zap className="w-5 h-5 text-[#21BF73]" />
+                            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                5,000+ Successful Matches
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-full shadow-md">
+                            <Star className="w-5 h-5 text-[#21BF73]" />
+                            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                4.9/5 Average Rating
+                            </span>
+                        </div>
+                    </motion.div>
                 </motion.div>
 
                 {/* How It Works Steps */}
@@ -263,88 +323,95 @@ const Matchmaking = () => {
                     viewport={{ once: true }}
                     variants={containerVariants}
                 >
-                    <motion.h3
-                        className="text-2xl font-bold text-center text-gray-900 dark:text-gray-100 mb-12"
+                    <motion.div
+                        className="text-center mb-12"
                         variants={itemVariants}
                     >
-                        How Skill Swapping Works
-                    </motion.h3>
+                        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                            How It Works
+                        </h2>
+                    </motion.div>
 
-                    <div className="grid md:grid-cols-4 gap-8">
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         {matchSteps.map((step, index) => (
                             <motion.div
                                 key={step.id}
                                 variants={cardVariants}
                                 whileHover="hover"
-                                className={`relative text-center p-6 rounded-2xl bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 ${
-                                    currentStep === index
-                                        ? "ring-2 ring-primary ring-opacity-50"
-                                        : ""
-                                }`}
                             >
-                                {/* Step Number */}
-                                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                                    <div
-                                        className={`w-8 h-8 rounded-full bg-gradient-to-r ${step.color} flex items-center justify-center text-white font-bold text-sm`}
-                                    >
-                                        {step.id}
-                                    </div>
-                                </div>
-
-                                {/* Icon */}
-                                <motion.div
-                                    className="text-4xl mb-4 mt-4"
-                                    animate={
+                                <Card
+                                    className={`relative overflow-hidden h-full transition-all duration-300 ${
                                         currentStep === index
-                                            ? {
-                                                  scale: [1, 1.2, 1],
-                                                  rotate: [0, 5, -5, 0],
-                                              }
-                                            : {}
-                                    }
-                                    transition={{
-                                        duration: 0.6,
-                                        repeat:
-                                            currentStep === index
-                                                ? Infinity
-                                                : 0,
-                                        repeatDelay: 2,
-                                    }}
+                                            ? "ring-2 ring-[#21BF73] shadow-xl shadow-[#21BF73]/20"
+                                            : "hover:shadow-lg"
+                                    }`}
                                 >
-                                    {step.icon}
-                                </motion.div>
+                                    {/* Step Number Badge */}
+                                    <div className="absolute -top-2 -right-2">
+                                        <div
+                                            className={`w-12 h-12 rounded-full bg-gradient-to-r ${step.color} flex items-center justify-center text-white font-bold shadow-lg`}
+                                        >
+                                            {step.id}
+                                        </div>
+                                    </div>
 
-                                {/* Content */}
-                                <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
-                                    {step.title}
-                                </h4>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    {step.description}
-                                </p>
+                                    <CardContent className="p-6">
+                                        {/* Icon */}
+                                        <motion.div
+                                            className={`inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-r ${step.color} mb-4 text-white`}
+                                            animate={
+                                                currentStep === index
+                                                    ? {
+                                                          scale: [1, 1.1, 1],
+                                                          rotate: [0, 5, -5, 0],
+                                                      }
+                                                    : {}
+                                            }
+                                            transition={{
+                                                duration: 0.6,
+                                                repeat:
+                                                    currentStep === index
+                                                        ? Infinity
+                                                        : 0,
+                                                repeatDelay: 2,
+                                            }}
+                                        >
+                                            {step.icon}
+                                        </motion.div>
 
-                                {/* Progress indicator */}
-                                <motion.div
-                                    className="mt-4 h-1 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
-                                    initial={{ width: 0 }}
-                                    animate={{
-                                        width:
-                                            currentStep === index
-                                                ? "100%"
-                                                : "0%",
-                                    }}
-                                    transition={{ duration: 4 }}
-                                >
-                                    <div
-                                        className={`h-full bg-gradient-to-r ${step.color} rounded-full`}
-                                    />
-                                </motion.div>
+                                        {/* English Title */}
+                                        <h4 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">
+                                            {step.title}
+                                        </h4>
+
+                                        {/* Description */}
+                                        <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                            {step.description}
+                                        </p>
+
+                                        {/* Progress Bar */}
+                                        <div className="mt-4 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                            <motion.div
+                                                className={`h-full bg-gradient-to-r ${step.color} rounded-full`}
+                                                initial={{ width: "0%" }}
+                                                animate={{
+                                                    width:
+                                                        currentStep === index
+                                                            ? "100%"
+                                                            : "0%",
+                                                }}
+                                                transition={{ duration: 4 }}
+                                            />
+                                        </div>
+                                    </CardContent>
+                                </Card>
                             </motion.div>
                         ))}
                     </div>
                 </motion.div>
 
                 {/* Interactive Demo */}
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="grid lg:grid-cols-2 gap-8 items-start">
                     {/* User Profile Demo */}
                     <motion.div
                         initial="hidden"
@@ -352,86 +419,132 @@ const Matchmaking = () => {
                         viewport={{ once: true }}
                         variants={containerVariants}
                     >
-                        <motion.h3
-                            className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6"
+                        <motion.div
+                            className="flex items-center gap-3 mb-6"
                             variants={itemVariants}
                         >
-                            Your Profile
-                        </motion.h3>
+                            <div className="w-1 h-8 bg-gradient-to-b from-[#21BF73] to-[#007a3f] rounded-full" />
+                            <div>
+                                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                                    Your Profile
+                                </h3>
+                            </div>
+                        </motion.div>
 
-                        <motion.div
-                            className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl border border-gray-200 dark:border-gray-700"
-                            variants={cardVariants}
-                            whileHover="hover"
-                        >
-                            <div className="flex items-center space-x-4 mb-6">
-                                <motion.img
-                                    src={
-                                        session?.user?.image || ""
-                                    }
-                                    alt={
-                                        session?.user?.name || "profile picture"
-                                    }
-                                    className="w-16 h-16 rounded-full border-4 border-primary/20"
-                                    whileHover={{ scale: 1.1, rotate: 5 }}
-                                />
-                                <div>
-                                    <h4 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
-                                        {session?.user?.name || "Unknown User"}
-                                    </h4>
-                                    <p className="text-gray-600 dark:text-gray-400">
-                                        {session?.user?.location || "Dhaka, Bangladesh"}
-                                    </p>
-                                    <div className="flex items-center space-x-1">
-                                        <div className="flex text-yellow-400">
-                                            {[...Array(5)].map((_, i) => (
-                                                <motion.svg
-                                                    key={i}
-                                                    className="w-4 h-4"
-                                                    fill="currentColor"
-                                                    viewBox="0 0 20 20"
-                                                    initial={{
-                                                        opacity: 0,
-                                                        scale: 0,
-                                                    }}
-                                                    animate={{
-                                                        opacity: 1,
-                                                        scale: 1,
-                                                    }}
-                                                    transition={{
-                                                        delay: i * 0.1,
-                                                    }}
-                                                >
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </motion.svg>
-                                            ))}
+                        <motion.div variants={cardVariants} whileHover="hover">
+                            <Card className="overflow-hidden border-2 hover:border-[#21BF73]/50 transition-all duration-300">
+                                <CardContent className="p-6">
+                                    {/* Profile Header */}
+                                    <div className="flex items-start gap-4 mb-6">
+                                        <Avatar className="w-20 h-20 border-4 border-[#21BF73]/20">
+                                            <AvatarImage
+                                                src={session?.user?.image || ""}
+                                                alt={
+                                                    session?.user?.name ||
+                                                    "User"
+                                                }
+                                            />
+                                            <AvatarFallback className="bg-gradient-to-br from-[#21BF73] to-[#007a3f] text-white text-2xl">
+                                                {session?.user?.name?.charAt(
+                                                    0
+                                                ) || "U"}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <div className="flex-1">
+                                            <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
+                                                {session?.user?.name ||
+                                                    "Unknown User"}
+                                            </h4>
+                                            <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400 mb-2">
+                                                <MapPin className="w-4 h-4" />
+                                                <span className="text-sm">
+                                                    {session?.user?.location ||
+                                                        "Dhaka, Bangladesh"}
+                                                </span>
+                                            </div>
+                                            {/* Rating */}
+                                            <div className="flex items-center gap-2">
+                                                <div className="flex">
+                                                    {[...Array(5)].map(
+                                                        (_, i) => (
+                                                            <Star
+                                                                key={i}
+                                                                className={`w-4 h-4 ${
+                                                                    i < 4
+                                                                        ? "fill-yellow-400 text-yellow-400"
+                                                                        : "fill-gray-300 text-gray-300"
+                                                                }`}
+                                                            />
+                                                        )
+                                                    )}
+                                                </div>
+                                                <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                    {session?.user?.rating ||
+                                                        "4.8"}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                                            {session?.user?.rating || "N/A"}
-                                        </span>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div className="space-y-4">
-                                <div className="flex items-center justify-between p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-                                    <span className="text-sm font-medium text-green-700 dark:text-green-300">
-                                        🚀 I can teach:
-                                    </span>
-                                    <span className="px-3 py-1 bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">
-                                        {session?.user?.skillOffered || "JavaScript"}
-                                    </span>
-                                </div>
+                                    {/* Skills Section */}
+                                    <div className="space-y-3 mb-6">
+                                        <div className="p-4 bg-gradient-to-r from-[#21BF73]/10 to-[#B0EACD]/10 rounded-xl border-2 border-[#21BF73]/30">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="w-8 h-8 rounded-lg bg-[#21BF73] flex items-center justify-center">
+                                                    <TrendingUp className="w-4 h-4 text-white" />
+                                                </div>
+                                                <span className="text-sm font-semibold text-[#007a3f] dark:text-[#B0EACD]">
+                                                    I can teach
+                                                </span>
+                                            </div>
+                                            <Badge
+                                                variant="outline"
+                                                className="bg-[#21BF73] text-white border-[#007a3f] font-medium"
+                                            >
+                                                {session?.user?.skillOffered ||
+                                                    "MERN Stack Development"}
+                                            </Badge>
+                                        </div>
 
-                                <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                                    <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
-                                        🎯 I want to learn:
-                                    </span>
-                                    <span className="px-3 py-1 bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">
-                                        {session?.user?.skillWanted || "UI/UX Design"}
-                                    </span>
-                                </div>
-                            </div>
+                                        <div className="p-4 bg-gradient-to-r from-[#007a3f]/10 to-[#21BF73]/10 rounded-xl border-2 border-[#007a3f]/30">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <div className="w-8 h-8 rounded-lg bg-[#007a3f] flex items-center justify-center">
+                                                    <Target className="w-4 h-4 text-white" />
+                                                </div>
+                                                <span className="text-sm font-semibold text-[#007a3f] dark:text-[#B0EACD]">
+                                                    I want to learn
+                                                </span>
+                                            </div>
+                                            <Badge
+                                                variant="outline"
+                                                className="bg-[#007a3f] text-white border-[#21BF73] font-medium"
+                                            >
+                                                {session?.user?.skillWanted ||
+                                                    "UI/UX Design"}
+                                            </Badge>
+                                        </div>
+                                    </div>
+
+                                    {/* Action Button */}
+                                    <Button
+                                        className="w-full bg-gradient-to-r from-[#21BF73] to-[#007a3f] hover:from-[#007a3f] hover:to-[#21BF73] text-white"
+                                        onClick={startMatching}
+                                        disabled={isMatching}
+                                    >
+                                        {isMatching ? (
+                                            <>
+                                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                                Finding Matches...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Sparkles className="w-4 h-4 mr-2" />
+                                                Start Matching
+                                            </>
+                                        )}
+                                    </Button>
+                                </CardContent>
+                            </Card>
                         </motion.div>
                     </motion.div>
 
@@ -446,40 +559,27 @@ const Matchmaking = () => {
                             className="flex items-center justify-between mb-6"
                             variants={itemVariants}
                         >
-                            <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                                Perfect Matches
-                            </h3>
+                            <div className="flex items-center gap-3">
+                                <div className="w-1 h-8 bg-gradient-to-b from-[#21BF73] to-[#007a3f] rounded-full" />
+                                <div>
+                                    <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                                        Perfect Matches
+                                    </h3>
+                                </div>
+                            </div>
                             {isMatching && (
-                                <motion.div
-                                    className="flex items-center space-x-2 text-primary"
-                                    animate={{ opacity: [1, 0.5, 1] }}
-                                    transition={{
-                                        duration: 1.5,
-                                        repeat: Infinity,
-                                    }}
+                                <Badge
+                                    variant="outline"
+                                    className="border-[#21BF73] text-[#007a3f] animate-pulse"
                                 >
-                                    <svg
-                                        className="w-5 h-5 animate-spin"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                                        />
-                                    </svg>
-                                    <span className="text-sm font-medium">
-                                        Finding matches...
-                                    </span>
-                                </motion.div>
+                                    <Loader2 className="w-3 h-3 mr-2 animate-spin" />
+                                    Matching...
+                                </Badge>
                             )}
                         </motion.div>
 
                         <div className="space-y-4">
-                            <AnimatePresence>
+                            <AnimatePresence mode="popLayout">
                                 {matches.map((user, index) => (
                                     <motion.div
                                         key={user.id}
@@ -487,141 +587,234 @@ const Matchmaking = () => {
                                         initial="hidden"
                                         animate="visible"
                                         exit="exit"
-                                        className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300"
+                                        layout
                                     >
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center space-x-3">
-                                                <div className="relative">
-                                                    <Image
-                                                        src={user.avatar}
-                                                        alt={user.name}
-                                                        className="w-12 h-12 rounded-full border-2 border-gray-200 dark:border-gray-600"
-                                                        width={48}
-                                                        height={48}
-                                                    />
-                                                    {user.isOnline && (
-                                                        <motion.div
-                                                            className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-800"
-                                                            animate={{
-                                                                scale: [
-                                                                    1, 1.2, 1,
-                                                                ],
-                                                            }}
-                                                            transition={{
-                                                                duration: 2,
-                                                                repeat: Infinity,
-                                                            }}
-                                                        />
-                                                    )}
+                                        <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-2 hover:border-[#21BF73]/50">
+                                            <CardContent className="p-5">
+                                                {/* Header with Avatar and Action */}
+                                                <div className="flex items-start justify-between mb-4">
+                                                    <div className="flex items-start gap-3 flex-1">
+                                                        <div className="relative">
+                                                            <Avatar className="w-14 h-14 border-2 border-[#21BF73]/30">
+                                                                <AvatarImage
+                                                                    src={
+                                                                        user.avatar
+                                                                    }
+                                                                    alt={
+                                                                        user.name
+                                                                    }
+                                                                />
+                                                                <AvatarFallback className="bg-gradient-to-br from-[#21BF73] to-[#007a3f] text-white">
+                                                                    {user.name
+                                                                        .split(
+                                                                            " "
+                                                                        )
+                                                                        .map(
+                                                                            (
+                                                                                n
+                                                                            ) =>
+                                                                                n[0]
+                                                                        )
+                                                                        .join(
+                                                                            ""
+                                                                        )}
+                                                                </AvatarFallback>
+                                                            </Avatar>
+                                                            {user.isOnline && (
+                                                                <motion.div
+                                                                    className="absolute -bottom-1 -right-1 w-4 h-4 bg-[#21BF73] rounded-full border-2 border-white dark:border-gray-800"
+                                                                    animate={{
+                                                                        scale: [
+                                                                            1,
+                                                                            1.2,
+                                                                            1,
+                                                                        ],
+                                                                    }}
+                                                                    transition={{
+                                                                        duration: 2,
+                                                                        repeat: Infinity,
+                                                                    }}
+                                                                />
+                                                            )}
+                                                        </div>
+                                                        <div className="flex-1">
+                                                            <h4 className="font-bold text-gray-900 dark:text-gray-100 mb-1">
+                                                                {user.name}
+                                                            </h4>
+                                                            <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400 mb-1">
+                                                                <MapPin className="w-3 h-3" />
+                                                                <span className="text-xs">
+                                                                    {
+                                                                        user.location
+                                                                    }
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="flex">
+                                                                    {[
+                                                                        ...Array(
+                                                                            5
+                                                                        ),
+                                                                    ].map(
+                                                                        (
+                                                                            _,
+                                                                            i
+                                                                        ) => (
+                                                                            <Star
+                                                                                key={
+                                                                                    i
+                                                                                }
+                                                                                className={`w-3 h-3 ${
+                                                                                    i <
+                                                                                    Math.floor(
+                                                                                        user.rating
+                                                                                    )
+                                                                                        ? "fill-yellow-400 text-yellow-400"
+                                                                                        : "fill-gray-300 text-gray-300"
+                                                                                }`}
+                                                                            />
+                                                                        )
+                                                                    )}
+                                                                </div>
+                                                                <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                                                                    {
+                                                                        user.rating
+                                                                    }
+                                                                </span>
+                                                                <span className="text-xs text-gray-500">
+                                                                    •
+                                                                </span>
+                                                                <span className="text-xs text-gray-600 dark:text-gray-400">
+                                                                    {
+                                                                        user.completedSwaps
+                                                                    }{" "}
+                                                                    swaps
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <Button
+                                                        size="sm"
+                                                        className="bg-gradient-to-r from-[#21BF73] to-[#007a3f] hover:from-[#007a3f] hover:to-[#21BF73] text-white"
+                                                        onClick={() =>
+                                                            handleConnect(user)
+                                                        }
+                                                    >
+                                                        <Users className="w-3 h-3 mr-1" />
+                                                        Connect
+                                                    </Button>
                                                 </div>
-                                                <div>
-                                                    <h4 className="font-semibold text-gray-900 dark:text-gray-100">
-                                                        {user.name}
-                                                    </h4>
-                                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                        {user.location}
-                                                    </p>
+
+                                                {/* Bio */}
+                                                <p className="text-xs text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                                                    {user.bio}
+                                                </p>
+
+                                                {/* Skills Exchange */}
+                                                <div className="flex items-center gap-2 mb-3">
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="flex-1 justify-center bg-[#21BF73]/10 border-[#21BF73] text-[#007a3f] dark:text-[#B0EACD]"
+                                                    >
+                                                        <TrendingUp className="w-3 h-3 mr-1" />
+                                                        {user.skillOffered}
+                                                    </Badge>
+                                                    <ArrowRight className="w-4 h-4 text-gray-400" />
+                                                    <Badge
+                                                        variant="outline"
+                                                        className="flex-1 justify-center bg-[#007a3f]/10 border-[#007a3f] text-[#007a3f] dark:text-[#B0EACD]"
+                                                    >
+                                                        <Target className="w-3 h-3 mr-1" />
+                                                        {user.skillWanted}
+                                                    </Badge>
                                                 </div>
-                                            </div>
 
-                                            <motion.button
-                                                className="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200"
-                                                whileHover={{ scale: 1.05 }}
-                                                whileTap={{ scale: 0.95 }}
-                                                onClick={() =>
-                                                    handleConnect(user)
-                                                }
-                                            >
-                                                Connect
-                                            </motion.button>
-                                        </div>
-
-                                        <div className="mt-3 flex items-center justify-between text-sm">
-                                            <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full">
-                                                Offers: {user.skillOffered}
-                                            </span>
-                                            <span className="text-gray-500 dark:text-gray-400">
-                                                ↔️
-                                            </span>
-                                            <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-full">
-                                                Wants: {user.skillWanted}
-                                            </span>
-                                        </div>
-
-                                        <div className="mt-3 flex items-center justify-between">
-                                            <div className="flex items-center space-x-1">
-                                                <span className="text-xs text-gray-600 dark:text-gray-400">
-                                                    Match:
-                                                </span>
-                                                <div className="flex">
-                                                    {[...Array(5)].map(
-                                                        (_, i) => (
-                                                            <motion.div
-                                                                key={i}
-                                                                className={`w-2 h-2 rounded-full ${
-                                                                    i < 4
-                                                                        ? "bg-green-500"
-                                                                        : "bg-gray-300 dark:bg-gray-600"
-                                                                }`}
-                                                                initial={{
-                                                                    scale: 0,
-                                                                }}
-                                                                animate={{
-                                                                    scale: 1,
-                                                                }}
-                                                                transition={{
-                                                                    delay:
-                                                                        index *
-                                                                            0.3 +
-                                                                        i * 0.1,
-                                                                }}
-                                                            />
-                                                        )
-                                                    )}
+                                                {/* Match Info */}
+                                                <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-xs text-gray-600 dark:text-gray-400">
+                                                            Match Score:
+                                                        </span>
+                                                        <div className="flex gap-1">
+                                                            {[...Array(5)].map(
+                                                                (_, i) => (
+                                                                    <motion.div
+                                                                        key={i}
+                                                                        className={`w-2 h-2 rounded-full ${
+                                                                            i <
+                                                                            4
+                                                                                ? "bg-[#21BF73]"
+                                                                                : "bg-gray-300 dark:bg-gray-600"
+                                                                        }`}
+                                                                        initial={{
+                                                                            scale: 0,
+                                                                        }}
+                                                                        animate={{
+                                                                            scale: 1,
+                                                                        }}
+                                                                        transition={{
+                                                                            delay:
+                                                                                index *
+                                                                                    0.3 +
+                                                                                i *
+                                                                                    0.1,
+                                                                        }}
+                                                                    />
+                                                                )
+                                                            )}
+                                                        </div>
+                                                        <span className="text-xs font-bold text-[#21BF73]">
+                                                            95%
+                                                        </span>
+                                                    </div>
+                                                    <Badge
+                                                        variant="outline"
+                                                        className={`text-xs ${
+                                                            user.level ===
+                                                            "Advanced"
+                                                                ? "bg-[#007a3f]/10 border-[#007a3f] text-[#007a3f]"
+                                                                : user.level ===
+                                                                  "Intermediate"
+                                                                ? "bg-[#21BF73]/10 border-[#21BF73] text-[#21BF73]"
+                                                                : "bg-[#B0EACD]/10 border-[#B0EACD] text-[#007a3f]"
+                                                        }`}
+                                                    >
+                                                        {user.level}
+                                                    </Badge>
                                                 </div>
-                                                <span className="text-xs text-green-600 dark:text-green-400 font-medium">
-                                                    95%
-                                                </span>
-                                            </div>
-
-                                            <span
-                                                className={`text-xs px-2 py-1 rounded-full ${
-                                                    user.level === "Advanced"
-                                                        ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
-                                                        : user.level ===
-                                                          "Intermediate"
-                                                        ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300"
-                                                        : "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
-                                                }`}
-                                            >
-                                                {user.level}
-                                            </span>
-                                        </div>
+                                            </CardContent>
+                                        </Card>
                                     </motion.div>
                                 ))}
                             </AnimatePresence>
 
                             {matches.length === 0 && !isMatching && (
                                 <motion.div
-                                    className="text-center py-8 text-gray-500 dark:text-gray-400"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
                                 >
-                                    <div className="text-4xl mb-2">🔍</div>
-                                    <p>
-                                        Click "Start Matching Demo" to see
-                                        potential matches!
-                                    </p>
-
-                                    <motion.button
-                                        className="px-8 py-4 bg-gradient-to-r from-primary to-purple-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                                        variants={itemVariants}
-                                        whileHover={{ scale: 1.05, y: -2 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={startMatching}
-                                    >
-                                        Start Matching
-                                    </motion.button>
+                                    <Card className="border-2 border-dashed border-gray-300 dark:border-gray-700">
+                                        <CardContent className="p-12 text-center">
+                                            <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-[#21BF73]/20 to-[#007a3f]/20 flex items-center justify-center">
+                                                <Sparkles className="w-10 h-10 text-[#21BF73]" />
+                                            </div>
+                                            <h4 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                                                Ready to Find Your Match?
+                                            </h4>
+                                            <p className="text-gray-600 dark:text-gray-400 mb-6">
+                                                Click the button to discover
+                                                perfect learning partners
+                                            </p>
+                                            <Button
+                                                size="lg"
+                                                className="bg-gradient-to-r from-[#21BF73] to-[#007a3f] hover:from-[#007a3f] hover:to-[#21BF73] text-white"
+                                                onClick={startMatching}
+                                            >
+                                                <Zap className="w-4 h-4 mr-2" />
+                                                Start Matching
+                                            </Button>
+                                        </CardContent>
+                                    </Card>
                                 </motion.div>
                             )}
                         </div>
@@ -632,51 +825,113 @@ const Matchmaking = () => {
                 <AnimatePresence>
                     {showConnectionDemo && selectedUser && (
                         <motion.div
-                            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+                            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
+                            onClick={() => setShowConnectionDemo(false)}
                         >
                             <motion.div
-                                className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md mx-4 text-center"
-                                initial={{ scale: 0.8, y: 50 }}
-                                animate={{ scale: 1, y: 0 }}
-                                exit={{ scale: 0.8, y: 50 }}
+                                initial={{ scale: 0.8, y: 50, opacity: 0 }}
+                                animate={{ scale: 1, y: 0, opacity: 1 }}
+                                exit={{ scale: 0.8, y: 50, opacity: 0 }}
+                                onClick={(e) => e.stopPropagation()}
                             >
-                                <motion.div
-                                    className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4"
-                                    animate={{ scale: [1, 1.2, 1] }}
-                                    transition={{ duration: 0.6 }}
-                                >
-                                    <svg
-                                        className="w-8 h-8 text-green-600"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M5 13l4 4L19 7"
-                                        />
-                                    </svg>
-                                </motion.div>
+                                <Card className="max-w-md w-full overflow-hidden border-2 border-[#21BF73]">
+                                    <CardContent className="p-8 text-center">
+                                        {/* Success Icon */}
+                                        <motion.div
+                                            className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-[#21BF73] to-[#007a3f] flex items-center justify-center"
+                                            animate={{
+                                                scale: [1, 1.1, 1],
+                                                rotate: [0, 5, -5, 0],
+                                            }}
+                                            transition={{
+                                                duration: 0.6,
+                                                repeat: 1,
+                                            }}
+                                        >
+                                            <CheckCircle2 className="w-10 h-10 text-white" />
+                                        </motion.div>
 
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                                    Connection Sent! 🎉
-                                </h3>
-                                <p className="text-gray-600 dark:text-gray-400 mb-4">
-                                    Your skill swap request has been sent to{" "}
-                                    {selectedUser.name}. You'll be notified when
-                                    they respond!
-                                </p>
+                                        {/* Title */}
+                                        <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                                            Connection Sent! 🎉
+                                        </h3>
 
-                                <div className="flex items-center justify-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-                                    <span>🔄 Skill Exchange</span>
-                                    <span>💬 Chat Available</span>
-                                    <span>📅 Schedule Sessions</span>
-                                </div>
+                                        {/* User Info */}
+                                        <div className="bg-gradient-to-r from-[#21BF73]/10 to-[#B0EACD]/10 rounded-xl p-4 mb-6">
+                                            <div className="flex items-center gap-3 mb-3">
+                                                <Avatar className="w-12 h-12 border-2 border-[#21BF73]">
+                                                    <AvatarImage
+                                                        src={
+                                                            selectedUser.avatar
+                                                        }
+                                                        alt={selectedUser.name}
+                                                    />
+                                                    <AvatarFallback className="bg-gradient-to-br from-[#21BF73] to-[#007a3f] text-white">
+                                                        {selectedUser.name
+                                                            .split(" ")
+                                                            .map((n) => n[0])
+                                                            .join("")}
+                                                    </AvatarFallback>
+                                                </Avatar>
+                                                <div className="text-left flex-1">
+                                                    <h4 className="font-bold text-gray-900 dark:text-gray-100">
+                                                        {selectedUser.name}
+                                                    </h4>
+                                                    <p className="text-xs text-gray-600 dark:text-gray-400">
+                                                        {selectedUser.location}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <p className="text-sm text-gray-700 dark:text-gray-300">
+                                                Your skill swap request has been
+                                                sent. You'll be notified when
+                                                they respond!
+                                            </p>
+                                        </div>
+
+                                        {/* Features */}
+                                        <div className="grid grid-cols-3 gap-3 mb-6">
+                                            <div className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-gray-800 rounded-lg">
+                                                <div className="w-10 h-10 rounded-full bg-[#21BF73]/20 flex items-center justify-center">
+                                                    <Users className="w-5 h-5 text-[#21BF73]" />
+                                                </div>
+                                                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                                    Connect
+                                                </span>
+                                            </div>
+                                            <div className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-gray-800 rounded-lg">
+                                                <div className="w-10 h-10 rounded-full bg-[#21BF73]/20 flex items-center justify-center">
+                                                    <MessageCircle className="w-5 h-5 text-[#21BF73]" />
+                                                </div>
+                                                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                                    Chat
+                                                </span>
+                                            </div>
+                                            <div className="flex flex-col items-center gap-2 p-3 bg-white dark:bg-gray-800 rounded-lg">
+                                                <div className="w-10 h-10 rounded-full bg-[#21BF73]/20 flex items-center justify-center">
+                                                    <Calendar className="w-5 h-5 text-[#21BF73]" />
+                                                </div>
+                                                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                                    Schedule
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* Close Button */}
+                                        <Button
+                                            className="w-full bg-gradient-to-r from-[#21BF73] to-[#007a3f] hover:from-[#007a3f] hover:to-[#21BF73] text-white"
+                                            onClick={() =>
+                                                setShowConnectionDemo(false)
+                                            }
+                                        >
+                                            <CheckCircle2 className="w-4 h-4 mr-2" />
+                                            Got It!
+                                        </Button>
+                                    </CardContent>
+                                </Card>
                             </motion.div>
                         </motion.div>
                     )}

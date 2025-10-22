@@ -1,3 +1,5 @@
+// src/app/(home)/courses/[courseId]/page.tsx
+
 "use client";
 import React, { useState } from "react";
 import { useParams } from "next/navigation";
@@ -16,9 +18,7 @@ import {
 import axiosInstance from "@/axios/axiosInstance";
 
 const fetchCourse = async (courseId: string) => {
-    const res = await axiosInstance.get(
-        `http://localhost:5000/api/courses/${courseId}`
-    );
+    const res = await axiosInstance.get(`/api/courses/${courseId}`);
     if (res.status !== 200) throw new Error("Failed to fetch course data");
     return res.data.course as any;
 };

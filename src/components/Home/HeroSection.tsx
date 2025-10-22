@@ -167,7 +167,7 @@ const HeroSection = () => {
                                 </span>
                                 <br />
                                 Shape Your {" "}
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-accent">
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-primary">
                                     Future
                                 </span>
                             </h1>
