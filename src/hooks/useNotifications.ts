@@ -48,7 +48,7 @@ const notificationAPI = {
         try {
             console.log("🔍 Fetching notifications for user:", userId);
             const response = await axiosInstance.get(
-                `/notifications/user/${userId}`
+                `/api/notifications/user/${userId}`
             );
             return response.data;
         } catch (error) {
@@ -60,7 +60,7 @@ const notificationAPI = {
     getUnreadCount: async (userId: string): Promise<any> => {
         try {
             const response = await axiosInstance.get(
-                `/notifications/user/${userId}/unread/count`
+                `/api/notifications/user/${userId}/unread/count`
             );
             return response.data;
         } catch (error) {
@@ -72,7 +72,7 @@ const notificationAPI = {
     markAsRead: async (notificationId: string): Promise<any> => {
         try {
             const response = await axiosInstance.patch(
-                `/notifications/${notificationId}/read`
+                `/api/notifications/${notificationId}/read`
             );
             return response.data;
         } catch (error) {
@@ -84,7 +84,7 @@ const notificationAPI = {
     markAllAsRead: async (userId: string): Promise<any> => {
         try {
             const response = await axiosInstance.patch(
-                `/notifications/user/${userId}/read-all`
+                `/api/notifications/user/${userId}/read-all`
             );
             return response.data;
         } catch (error) {
@@ -96,7 +96,7 @@ const notificationAPI = {
     deleteNotification: async (notificationId: string): Promise<any> => {
         try {
             const response = await axiosInstance.delete(
-                `/notifications/${notificationId}`
+                `/api/notifications/${notificationId}`
             );
             return response.data;
         } catch (error) {
