@@ -20,7 +20,7 @@ const AboutUs = () => {
     };
 
     return (
-        <div className="min-h-screen bg-background text-foreground">
+        <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-900 dark:to-gray-950 text-gray-900 dark:text-white">
             {/* Hero Section */}
             <AboutHero />
 
@@ -39,7 +39,7 @@ const AboutUs = () => {
             <TeamSection></TeamSection>
 
             {/* CTA Section */}
-            <section className="py-20 px-4 md:px-8 lg:px-16 bg-primary-2">
+            <section className="py-20 px-4 md:px-8 lg:px-16 bg-gradient-to-r from-green-600 to-emerald-600">
                 <div className="max-w-4xl mx-auto text-center">
                     <motion.div
                         initial="hidden"
@@ -65,11 +65,11 @@ const AboutUs = () => {
                             variants={fadeIn}
                             className="flex flex-wrap justify-center gap-4"
                         >
-                            <button className="px-8 py-4 bg-white text-primary-2 rounded-lg font-semibold flex items-center">
+                            <button className="px-8 py-4 bg-white text-green-600 rounded-lg font-semibold flex items-center hover:bg-gray-100 transition-colors duration-200">
                                 Get Started{" "}
                                 <ArrowRight className="ml-2 w-5 h-5" />
                             </button>
-                            <button className="px-8 py-4 border border-white/20 text-white rounded-lg font-semibold">
+                            <button className="px-8 py-4 border border-white/20 text-white rounded-lg font-semibold hover:bg-white/10 transition-colors duration-200">
                                 Learn More
                             </button>
                         </motion.div>

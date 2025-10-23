@@ -12,14 +12,14 @@ const AboutHero = () => {
     };
 
     return (
-        <section className="relative py-16 px-4 md:px-8 lg:px-16 overflow-hidden bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <section className="relative py-16 px-4 md:px-8 lg:px-16 overflow-hidden bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             {/* Background elements */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-100/30 via-purple-100/20 to-pink-100/30 dark:from-gray-800/50 dark:via-gray-700/30 dark:to-gray-800/50 z-0"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-green-100/30 via-emerald-100/20 to-teal-100/30 dark:from-gray-800/50 dark:via-gray-700/30 dark:to-gray-800/50 z-0"></div>
 
             {/* Animated gradient circles */}
-            <div className="absolute top-1/4 -left-20 w-72 h-72 bg-blue-200/30 dark:bg-blue-500/20 rounded-full filter blur-xl animate-pulse-slow"></div>
-            <div className="absolute bottom-1/3 -right-20 w-80 h-80 bg-purple-200/30 dark:bg-purple-500/20 rounded-full filter blur-xl animate-pulse-slow delay-1000"></div>
-            <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-pink-200/30 dark:bg-pink-500/20 rounded-full filter blur-xl animate-pulse-slow delay-2000"></div>
+            <div className="absolute top-1/4 -left-20 w-72 h-72 bg-green-200/30 dark:bg-green-500/20 rounded-full filter blur-xl animate-pulse-slow"></div>
+            <div className="absolute bottom-1/3 -right-20 w-80 h-80 bg-emerald-200/30 dark:bg-emerald-500/20 rounded-full filter blur-xl animate-pulse-slow delay-1000"></div>
+            <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-teal-200/30 dark:bg-teal-500/20 rounded-full filter blur-xl animate-pulse-slow delay-2000"></div>
 
             <div className="max-w-6xl mx-auto relative z-10">
                 <motion.div
@@ -32,8 +32,8 @@ const AboutHero = () => {
                         variants={fadeIn}
                         className="inline-flex items-center justify-center mb-6 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full border border-gray-200/50 dark:border-gray-600/50"
                     >
-                        <Sparkles className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2" />
-                        <span className="text-lg font-semibold text-blue-600 dark:text-blue-400">
+                        <Sparkles className="w-5 h-5 text-green-600 dark:text-green-400 mr-2" />
+                        <span className="text-lg font-semibold text-green-600 dark:text-green-400">
                             About SkillShareHub
                         </span>
                     </motion.div>
@@ -43,11 +43,11 @@ const AboutHero = () => {
                         className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-gray-900 dark:text-white"
                     >
                         Where{" "}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400">
                             Skills Meet
                         </span>{" "}
                         & <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400">
                             Communities Grow
                         </span>
                     </motion.h1>
@@ -65,7 +65,7 @@ const AboutHero = () => {
                         variants={fadeIn}
                         className="flex flex-wrap justify-center gap-6 mt-12"
                     >
-                        <button className="px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-xl font-semibold flex items-center shadow-lg hover:shadow-blue-500/30 dark:hover:shadow-blue-400/30 transition-all duration-300 hover:-translate-y-1">
+                        <button className="px-8 py-4 bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600 text-white rounded-xl font-semibold flex items-center shadow-lg hover:shadow-green-500/30 dark:hover:shadow-green-400/30 transition-all duration-300 hover:-translate-y-1">
                             Join Our Community{" "}
                             <ArrowRight className="ml-2 w-5 h-5" />
                         </button>
