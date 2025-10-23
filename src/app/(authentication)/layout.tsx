@@ -27,7 +27,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
             <body>
                 <ThemeProvider
                     attribute="class"
-                    defaultTheme="system"
+                    defaultTheme="light"
                     enableSystem
                     disableTransitionOnChange
                 >
