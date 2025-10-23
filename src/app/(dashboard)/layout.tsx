@@ -243,7 +243,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                         <SocketProvider>
                             <ThemeProvider
                                 attribute="class"
-                                defaultTheme="system"
+                                defaultTheme="light"
                                 enableSystem
                                 disableTransitionOnChange
                             >

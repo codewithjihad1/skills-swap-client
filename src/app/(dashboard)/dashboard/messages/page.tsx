@@ -239,9 +239,6 @@ const MessagesPageContent = () => {
 
     return (
         <div className="grid lg:grid-cols-3 gap-6">
-            {/* Connection Status */}
-            <ConnectionStatusBanner isConnected={isConnected} />
-
             {/* Conversations List */}
             <ConversationList
                 conversations={filteredConversations}
