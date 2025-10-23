@@ -32,7 +32,7 @@ const TeamSection = () => {
         email: "mdjihadhossain793@gmail.com"
       },
       skills: ["Leadership", "React", "Node.js", "Next.js", "TypeScript"],
-      color: "from-primary to-primary-3"
+      color: "from-green-600 to-emerald-600"
     },
     {
       id: 2,
@@ -46,7 +46,7 @@ const TeamSection = () => {
         email: "sarkarrajkumar3460@gmail.com"
       },
       skills: ["React", "Node.js", "Next.js", "JavaScript", "Database"],
-      color: "from-secondary to-secondary-3"
+      color: "from-emerald-600 to-teal-600"
     },
     {
       id: 3,
@@ -60,7 +60,7 @@ const TeamSection = () => {
         email: "inf.souravmitra@gmail.com"
       },
       skills: ["React", "Next.js", "JavaScript", "TypeScript", "UI/UX"],
-      color: "from-accent to-accent-3"
+      color: "from-teal-600 to-cyan-600"
     },
     {
       id: 4,
@@ -74,15 +74,15 @@ const TeamSection = () => {
         email: "ihsanuddin.dev@gmail.com"
       },
       skills: ["React", "Node.js", "Next.js", "JavaScript", "Community"],
-      color: "from-secondary-2 to-secondary-3"
+      color: "from-lime-600 to-green-600"
     }
   ];
 
   return (
-    <section className="py-16 px-4 md:px-8 lg:px-16 relative overflow-hidden" style={{ background: 'var(--background)' }}>
+    <section className="py-16 px-4 md:px-8 lg:px-16 relative overflow-hidden bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-900 dark:to-gray-950">
       {/* Background decorative elements */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+      <div className="absolute top-0 left-0 w-72 h-72 bg-green-500/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl"></div>
       
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header */}
@@ -93,31 +93,29 @@ const TeamSection = () => {
           className="text-center mb-12"
         >
           <motion.div 
-            className="inline-flex items-center justify-center mb-4 px-4 py-2 bg-background/80 backdrop-blur-sm rounded-full border border-foreground/10"
+            className="inline-flex items-center justify-center mb-4 px-4 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full border border-gray-200 dark:border-gray-700"
             whileHover={{ scale: 1.05 }}
           >
-            <div className="w-5 h-5 bg-gradient-to-r from-primary to-primary-3 rounded-full mr-2 flex items-center justify-center">
+            <div className="w-5 h-5 bg-gradient-to-r from-green-600 to-emerald-600 rounded-full mr-2 flex items-center justify-center">
               <Users className="w-3 h-3 text-white" />
             </div>
-            <span className="text-xs font-semibold text-primary uppercase tracking-wider">Our Team</span>
+            <span className="text-xs font-semibold text-green-600 dark:text-green-400 uppercase tracking-wider">Our Team</span>
           </motion.div>
           
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
-            style={{ color: 'var(--foreground)' }}
+            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-gray-900 dark:text-white"
           >
-            Meet Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-3">Team</span>
+            Meet Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">Team</span>
           </motion.h2>
           
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg opacity-80 max-w-2xl mx-auto"
-            style={{ color: 'var(--foreground)' }}
+            className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto"
           >
             Passionate developers creating exceptional digital experiences
           </motion.p>
@@ -137,7 +135,7 @@ const TeamSection = () => {
               onMouseLeave={() => setHoveredMember(null)}
             >
               {/* Main Card - Compact Version */}
-              <div className="bg-background rounded-xl p-4 shadow-md transition-all duration-300 group-hover:shadow-lg h-full flex flex-col border border-foreground/10 group-hover:border-primary/30">
+              <div className="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md transition-all duration-300 group-hover:shadow-lg h-full flex flex-col border border-gray-200 dark:border-gray-700 group-hover:border-green-500/30">
                 {/* Circular Image Container - Modified to take full width */}
                 <div className="relative flex justify-center mb-4">
                   <div className="relative w-full aspect-square max-w-[120px] mx-auto">
@@ -145,7 +143,7 @@ const TeamSection = () => {
                     <div className={`absolute inset-0 bg-gradient-to-br ${member.color} rounded-full blur-md opacity-30 group-hover:opacity-50 transition-opacity duration-300`}></div>
                     
                     {/* Image container - Full circular image */}
-                    <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-background shadow-md">
+                    <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white dark:border-gray-800 shadow-md">
                       <Image
                         src={member.image}
                         width={150}
@@ -156,7 +154,7 @@ const TeamSection = () => {
                     </div>
                     
                     {/* Decorative elements */}
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-secondary-2 to-secondary-3 rounded-full flex items-center justify-center shadow-sm">
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full flex items-center justify-center shadow-sm">
                       <Sparkles className="w-3 h-3 text-white" />
                     </div>
                   </div>
@@ -164,8 +162,8 @@ const TeamSection = () => {
 
                 {/* Content */}
                 <div className="flex-1 flex flex-col text-center">
-                  <h3 className="text-sm font-bold mb-1" style={{ color: 'var(--foreground)' }}>{member.name}</h3>
-                  <p className="text-primary text-xs font-medium mb-2">{member.role}</p>
+                  <h3 className="text-sm font-bold mb-1 text-gray-900 dark:text-white">{member.name}</h3>
+                  <p className="text-green-600 dark:text-green-400 text-xs font-medium mb-2">{member.role}</p>
                   
                   {/* Skills - Only show on hover */}
                   <motion.div 
@@ -181,7 +179,7 @@ const TeamSection = () => {
                       {member.skills.slice(0, 3).map((skill, i) => (
                         <span
                           key={i}
-                          className="px-2 py-1 bg-foreground/5 text-foreground/90 text-xs rounded-full"
+                          className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-full"
                         >
                           {skill}
                         </span>
@@ -205,11 +203,11 @@ const TeamSection = () => {
                         key={i}
                         href={social.href}
                         whileHover={{ scale: 1.2 }}
-                        className="w-7 h-7 bg-foreground/5 rounded-full flex items-center justify-center transition-colors duration-200 hover:bg-primary/20"
+                        className="w-7 h-7 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center transition-colors duration-200 hover:bg-green-500/20"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <social.icon className="w-3 h-3" style={{ color: 'var(--foreground)' }} />
+                        <social.icon className="w-3 h-3 text-gray-700 dark:text-gray-300" />
                       </motion.a>
                     ))}
                   </motion.div>
@@ -225,17 +223,17 @@ const TeamSection = () => {
                   y: hoveredMember === member.id ? -5 : 10
                 }}
                 transition={{ duration: 0.2 }}
-                className="absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-full bg-background rounded-lg p-3 shadow-lg z-20 pointer-events-none border border-foreground/10 min-w-[200px]"
+                className="absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-full bg-white dark:bg-gray-800 rounded-lg p-3 shadow-lg z-20 pointer-events-none border border-gray-200 dark:border-gray-700 min-w-[200px]"
               >
                 <div className="text-center">
-                  <h4 className="text-sm font-bold mb-1" style={{ color: 'var(--foreground)' }}>{member.name}</h4>
-                  <p className="text-primary text-xs mb-2">{member.role}</p>
-                  <p className="text-xs opacity-80 mb-2" style={{ color: 'var(--foreground)' }}>{member.bio}</p>
+                  <h4 className="text-sm font-bold mb-1 text-gray-900 dark:text-white">{member.name}</h4>
+                  <p className="text-green-600 dark:text-green-400 text-xs mb-2">{member.role}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-300 mb-2">{member.bio}</p>
                   
                   <motion.a
                     href={`mailto:${member.social.email}`}
                     whileHover={{ scale: 1.05 }}
-                    className="inline-block bg-gradient-to-r from-primary to-primary-3 text-white py-1 px-3 rounded-full text-xs font-medium pointer-events-auto shadow-sm hover:shadow-md transition-shadow duration-200"
+                    className="inline-block bg-gradient-to-r from-green-600 to-emerald-600 text-white py-1 px-3 rounded-full text-xs font-medium pointer-events-auto shadow-sm hover:shadow-md transition-shadow duration-200"
                   >
                     Contact
                   </motion.a>
@@ -243,7 +241,7 @@ const TeamSection = () => {
                 
                 {/* Arrow pointing to card */}
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full w-4 h-4">
-                  <div className="w-4 h-4 bg-background transform rotate-45 border-b border-r border-foreground/10"></div>
+                  <div className="w-4 h-4 bg-white dark:bg-gray-800 transform rotate-45 border-b border-r border-gray-200 dark:border-gray-700"></div>
                 </div>
               </motion.div>
             </motion.div>
@@ -256,25 +254,25 @@ const TeamSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           viewport={{ once: true }}
-          className="mt-12 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-6 border border-foreground/10"
+          className="mt-12 bg-gradient-to-r from-green-100 to-emerald-100 dark:from-green-500/10 dark:to-emerald-500/10 rounded-xl p-6 border border-gray-200 dark:border-gray-700"
         >
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { value: "4", label: "Team Members", icon: Users, color: "text-primary" },
-              { value: "4+", label: "Years Experience", icon: Award, color: "text-secondary" },
-              { value: "25+", label: "Projects", icon: Target, color: "text-accent" },
-              { value: "100%", label: "Dedicated", icon: HeartHandshake, color: "text-secondary-2" }
+              { value: "4", label: "Team Members", icon: Users, color: "text-green-600 dark:text-green-400" },
+              { value: "4+", label: "Years Experience", icon: Award, color: "text-emerald-600 dark:text-emerald-400" },
+              { value: "25+", label: "Projects", icon: Target, color: "text-teal-600 dark:text-teal-400" },
+              { value: "100%", label: "Dedicated", icon: HeartHandshake, color: "text-lime-600 dark:text-lime-400" }
             ].map((stat, i) => (
               <motion.div 
                 key={i} 
                 className="text-center"
                 whileHover={{ scale: 1.05 }}
               >
-                <div className="w-12 h-12 mx-auto mb-2 bg-background/80 rounded-full flex items-center justify-center border border-foreground/10">
+                <div className="w-12 h-12 mx-auto mb-2 bg-white/80 dark:bg-gray-800/80 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700">
                   <stat.icon className={`w-5 h-5 ${stat.color}`} />
                 </div>
                 <div className={`text-xl font-bold mb-1 ${stat.color}`}>{stat.value}</div>
-                <div className="text-xs opacity-80" style={{ color: 'var(--foreground)' }}>{stat.label}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400">{stat.label}</div>
               </motion.div>
             ))}
           </div>

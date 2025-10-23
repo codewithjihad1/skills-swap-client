@@ -156,7 +156,7 @@ const OurJourney = () => {
         },
     };
 
-    // Journey data
+    // Journey data - All converted to green theme
     const journeyData = [
         {
             day: "Day 1",
@@ -171,7 +171,7 @@ const OurJourney = () => {
                 "Tailwind CSS Integration",
                 "Project Structure",
             ],
-            color: "from-blue-600 to-blue-800",
+            color: "from-green-600 to-emerald-600",
             team: "Both team members",
         },
         {
@@ -187,7 +187,7 @@ const OurJourney = () => {
                 "Hero Section",
                 "Smooth Animations",
             ],
-            color: "from-purple-600 to-purple-800",
+            color: "from-emerald-600 to-teal-600",
             team: "Frontend Specialist",
         },
         {
@@ -203,7 +203,7 @@ const OurJourney = () => {
                 "Footer Component",
                 "Responsive Design",
             ],
-            color: "from-emerald-600 to-emerald-800",
+            color: "from-teal-600 to-cyan-600",
             team: "Both team members",
         },
         {
@@ -219,7 +219,7 @@ const OurJourney = () => {
                 "Code Reviews",
                 "Collaboration Tools",
             ],
-            color: "from-amber-600 to-amber-800",
+            color: "from-lime-600 to-green-600",
             team: "Team Lead",
         },
         {
@@ -235,7 +235,7 @@ const OurJourney = () => {
                 "Profile Management",
                 "Secure Routes",
             ],
-            color: "from-red-600 to-red-800",
+            color: "from-green-600 to-emerald-700",
             team: "Backend Specialist",
         },
         {
@@ -251,7 +251,7 @@ const OurJourney = () => {
                 "Editing Features",
                 "Skill Management",
             ],
-            color: "from-indigo-600 to-indigo-800",
+            color: "from-emerald-600 to-teal-700",
             team: "Both team members",
         },
         {
@@ -267,7 +267,7 @@ const OurJourney = () => {
                 "Bug Fixes",
                 "Responsive Testing",
             ],
-            color: "from-pink-600 to-pink-800",
+            color: "from-teal-600 to-cyan-700",
             team: "Both team members",
         },
         {
@@ -283,7 +283,7 @@ const OurJourney = () => {
                 "Documentation",
                 "Code Review",
             ],
-            color: "from-cyan-600 to-cyan-800",
+            color: "from-cyan-600 to-blue-600",
             team: "Both team members",
         },
     ];
@@ -319,7 +319,7 @@ const OurJourney = () => {
     const current = journeyData[activeIndex];
 
     return (
-        <section className="py-16 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 text-gray-900 dark:text-white">
+        <section className="py-16 px-4 md:px-8 lg:px-16 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-900 dark:to-gray-950 text-gray-900 dark:text-white">
             <div className="max-w-7xl mx-auto">
                 {/* Section header */}
                 <motion.div
@@ -329,15 +329,15 @@ const OurJourney = () => {
                     className="text-center mb-16"
                 >
                     <motion.div className="inline-flex items-center justify-center mb-6 px-6 py-3 bg-white/70 dark:bg-gray-800/50 backdrop-blur-md rounded-full border border-gray-200 dark:border-gray-700">
-                        <CalendarIcon className="w-5 h-5 text-blue-600 dark:text-blue-400 mr-2" />
-                        <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+                        <CalendarIcon className="w-5 h-5 text-green-600 dark:text-green-400 mr-2" />
+                        <span className="text-sm font-semibold text-green-600 dark:text-green-400 uppercase tracking-wider">
                             Our Development Journey
                         </span>
                     </motion.div>
 
                     <motion.h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
                         Building{" "}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600">
                             SkillShareHub
                         </span>
                     </motion.h2>
@@ -357,7 +357,7 @@ const OurJourney = () => {
                     className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16"
                 >
                     <div className="bg-white/70 dark:bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-200 dark:border-gray-700">
-                        <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">
+                        <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">
                             8
                         </div>
                         <div className="text-gray-600 dark:text-gray-400">
@@ -365,7 +365,7 @@ const OurJourney = () => {
                         </div>
                     </div>
                     <div className="bg-white/70 dark:bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-200 dark:border-gray-700">
-                        <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">
+                        <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">
                             70+
                         </div>
                         <div className="text-gray-600 dark:text-gray-400">
@@ -373,7 +373,7 @@ const OurJourney = () => {
                         </div>
                     </div>
                     <div className="bg-white/70 dark:bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-200 dark:border-gray-700">
-                        <div className="text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">
+                        <div className="text-3xl font-bold text-teal-600 dark:text-teal-400 mb-2">
                             12+
                         </div>
                         <div className="text-gray-600 dark:text-gray-400">
@@ -381,7 +381,7 @@ const OurJourney = () => {
                         </div>
                     </div>
                     <div className="bg-white/70 dark:bg-gray-800/30 backdrop-blur-md rounded-xl p-6 text-center border border-gray-200 dark:border-gray-700">
-                        <div className="text-3xl font-bold text-amber-600 dark:text-amber-400 mb-2">
+                        <div className="text-3xl font-bold text-lime-600 dark:text-lime-400 mb-2">
                             2
                         </div>
                         <div className="text-gray-600 dark:text-gray-400">
@@ -494,8 +494,8 @@ const OurJourney = () => {
                                                 className={`rounded-3xl overflow-hidden shadow-2xl aspect-video bg-gradient-to-br ${current.color}/10 flex items-center justify-center p-8 border border-gray-200 dark:border-gray-700`}
                                             >
                                                 <div className="text-center">
-                                                    <div className="w-20 h-20 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                                                        <div className="w-10 h-10 text-blue-600 dark:text-blue-400">
+                                                    <div className="w-20 h-20 bg-gradient-to-br from-green-400/20 to-emerald-400/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                                        <div className="w-10 h-10 text-green-600 dark:text-green-400">
                                                             {current.icon}
                                                         </div>
                                                     </div>
