@@ -247,7 +247,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                                 enableSystem
                                 disableTransitionOnChange
                             >
-                                <div className="min-h-screen w-full bg-gray-50 dark:bg-gray-900">
+                                <div className="min-h-screen w-full bg-gradient-to-br from-accent/20 via-background to-accent/10">
                                     {/* Mobile Header */}
                                     <MobileHeader
                                         setSidebarOpen={setSidebarOpen}
@@ -277,7 +277,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
                                         {/* Page Content */}
                                         <main className="flex-1 p-4 lg:p-6">
-                                            {children}
+                                            <div className="max-w-7xl mx-auto">
+                                                {children}
+                                            </div>
                                         </main>
                                     </div>
                                 </div>
