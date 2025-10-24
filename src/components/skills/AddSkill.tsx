@@ -237,7 +237,7 @@ const AddSkillComponent = ({
                 {addSkillBtnContent ? (
                     addSkillBtnContent
                 ) : (
-                    <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg">
+                    <Button className="bg-gradient-to-r from-primary to-secondary hover:from-secondary hover:to-primary text-white shadow-lg transition-all transition-duration-300">
                         <Plus className="h-4 w-4 mr-2" />
                         Add New Skill
                     </Button>

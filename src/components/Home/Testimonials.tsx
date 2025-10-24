@@ -272,7 +272,7 @@ const Testimonials = () => {
                       </div>
 
                       {/* Profile Image Card - Separate Card Positioned Above */}
-                      <div className="absolute -top-24 right-4 z-20">
+                      <div className="absolute -top-28 right-4 z-20">
                         <div className="bg-white rounded-2xl shadow-xl">
                           <div className="relative">
                             <Image
