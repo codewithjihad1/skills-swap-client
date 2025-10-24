@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams , useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -264,6 +264,7 @@ function MobileNavDrawer({
 
 export default function CoursePage() {
   const { courseId } = useParams() as { courseId: string };
+    const router = useRouter();
   const [activeTab, setActiveTab] = useState("overview");
   const [activeNav, setActiveNav] = useState("overview");
   const [isSaved, setIsSaved] = useState(false);
@@ -858,15 +859,16 @@ export default function CoursePage() {
                   </div>
                 </div>
 
-                {/* CTA Buttons */}
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full bg-emerald-600 text-white py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-emerald-700 transition-colors mb-2 sm:mb-3 flex items-center justify-center gap-2 text-sm sm:text-base"
-                >
-                  <ShoppingCart size={18} className="sm:w-5 sm:h-5" />
-                  Enroll Now
-                </motion.button>
+              {/* CTA Buttons */}
+<motion.button
+  whileHover={{ scale: 1.02 }}
+  whileTap={{ scale: 0.98 }}
+  onClick={() => router.push(`/courses/${courseId}/checkout`)}
+  className="w-full bg-emerald-600 text-white py-2.5 sm:py-3 rounded-lg font-semibold hover:bg-emerald-700 transition-colors mb-2 sm:mb-3 flex items-center justify-center gap-2 text-sm sm:text-base"
+>
+  <ShoppingCart size={18} className="sm:w-5 sm:h-5" />
+  Enroll Now
+</motion.button>
 
                 <motion.button
                   whileHover={{ scale: 1.02 }}
