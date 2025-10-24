@@ -133,7 +133,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                     <div className="md:hidden">
                         <button
                             onClick={toggleMobileMenu}
-                            className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-slate-800 transition-all duration-200"
+                            className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary p-2 rounded-md hover:bg-gray-100 dark:hover:bg-slate-800 transition-all duration-200"
                         >
                             <svg
                                 className="w-6 h-6"
@@ -171,8 +171,8 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                                     href={item.href}
                                     className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-200 ${
                                         isActiveLink(item.href)
-                                            ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20"
-                                            : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-slate-700"
+                                            ? "text-primary dark:text-primary bg-blue-50 dark:bg-blue-900/20"
+                                            : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-700"
                                     }`}
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >
@@ -209,7 +209,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                                         </div>
                                         <Link
                                             href="/profile"
-                                            className="flex items-center px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 rounded-md mx-2"
+                                            className="flex items-center px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-primary dark:hover:text-primary transition-all duration-200 rounded-md mx-2"
                                             onClick={() =>
                                                 setIsMobileMenuOpen(false)
                                             }
@@ -219,7 +219,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
                                         </Link>
                                         <Link
                                             href="/dashboard"
-                                            className="flex items-center px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200 rounded-md mx-2"
+                                            className="flex items-center px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-primary dark:hover:text-primary transition-all duration-200 rounded-md mx-2"
                                             onClick={() =>
                                                 setIsMobileMenuOpen(false)
                                             }
