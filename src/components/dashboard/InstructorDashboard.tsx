@@ -37,7 +37,6 @@ export default function InstructorDashboard() {
             const response = await axiosInstance.get(
                 `/api/stats/instructor/${session?.user?.id}`
             );
-            console.log("🚀 ~ InstructorDashboard ~ response:", response);
             return response?.data?.stats;
         },
     });

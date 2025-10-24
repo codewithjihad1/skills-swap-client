@@ -87,24 +87,38 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     const instructorNavigationItems = [
         {
             name: "My Courses",
-            href: "/dashboard/courses",
+            href: "/dashboard/instructor/courses",
             icon: BookOpen,
             description: "Manage your courses",
-            roles: ["instructor", "admin"],
+            roles: ["instructor"],
         },
         {
             name: "Students",
-            href: "/dashboard/students",
+            href: "/dashboard/instructor/students",
             icon: GraduationCap,
             description: "Student management",
-            roles: ["instructor", "admin"],
+            roles: ["instructor"],
         },
         {
             name: "Analytics",
-            href: "/dashboard/analytics",
+            href: "/dashboard/instructor/analytics",
             icon: BarChart3,
             description: "Performance metrics",
-            roles: ["instructor", "admin"],
+            roles: ["instructor"],
+        },
+        {
+            name: "Wallet",
+            href: "/dashboard/instructor/wallet",
+            icon: Coins,
+            description: "Credits & transactions",
+            roles: ["user", "instructor"],
+        },
+        {
+            name: "Reviews",
+            href: "/dashboard/instructor/reviews",
+            icon: Star,
+            description: "Feedback & ratings",
+            roles: ["user", "instructor"],
         },
     ];
 
@@ -112,43 +126,25 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     const adminNavigationItems = [
         {
             name: "User Management",
-            href: "/dashboard/manageUsers",
+            href: "/dashboard/admin/manageUsers",
             icon: Users,
             description: "Manage all users",
             roles: ["admin"],
         },
         {
             name: "Reports",
-            href: "/dashboard/reports",
+            href: "/dashboard/admin/reports",
             icon: FileText,
             description: "System reports",
             roles: ["admin"],
         },
-        {
-            name: "System Settings",
-            href: "/dashboard/system-settings",
-            icon: SettingsIcon,
-            description: "Platform configuration",
-            roles: ["admin"],
-        },
-    ];
-
-    // Additional common navigation items
-    const commonNavigationItems = [
-        {
-            name: "Wallet",
-            href: "/dashboard/wallet",
-            icon: Coins,
-            description: "Credits & transactions",
-            roles: ["user", "instructor", "admin"],
-        },
-        {
-            name: "Reviews",
-            href: "/dashboard/reviews",
-            icon: Star,
-            description: "Feedback & ratings",
-            roles: ["user", "instructor", "admin"],
-        },
+        // {
+        //     name: "System Settings",
+        //     href: "/dashboard/admin/system-settings",
+        //     icon: SettingsIcon,
+        //     description: "Platform configuration",
+        //     roles: ["admin"],
+        // },
     ];
 
     // Filter navigation items based on user role
@@ -164,9 +160,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         if (userRole === "admin") {
             items = [...items, ...adminNavigationItems];
         }
-
-        // Add common items
-        items = [...items, ...commonNavigationItems];
 
         // Filter based on role
         return items.filter((item) => item.roles.includes(userRole));
