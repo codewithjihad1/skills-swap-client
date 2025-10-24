@@ -106,6 +106,20 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             description: "Performance metrics",
             roles: ["instructor", "admin"],
         },
+        {
+            name: "Wallet",
+            href: "/dashboard/wallet",
+            icon: Coins,
+            description: "Credits & transactions",
+            roles: ["user", "instructor", "admin"],
+        },
+        {
+            name: "Reviews",
+            href: "/dashboard/reviews",
+            icon: Star,
+            description: "Feedback & ratings",
+            roles: ["user", "instructor", "admin"],
+        },
     ];
 
     // Admin-specific navigation items
@@ -133,24 +147,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         },
     ];
 
-    // Additional common navigation items
-    const commonNavigationItems = [
-        {
-            name: "Wallet",
-            href: "/dashboard/wallet",
-            icon: Coins,
-            description: "Credits & transactions",
-            roles: ["user", "instructor", "admin"],
-        },
-        {
-            name: "Reviews",
-            href: "/dashboard/reviews",
-            icon: Star,
-            description: "Feedback & ratings",
-            roles: ["user", "instructor", "admin"],
-        },
-    ];
-
     // Filter navigation items based on user role
     const navigationItems = useMemo(() => {
         let items = [...baseNavigationItems];
@@ -164,9 +160,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         if (userRole === "admin") {
             items = [...items, ...adminNavigationItems];
         }
-
-        // Add common items
-        items = [...items, ...commonNavigationItems];
 
         // Filter based on role
         return items.filter((item) => item.roles.includes(userRole));

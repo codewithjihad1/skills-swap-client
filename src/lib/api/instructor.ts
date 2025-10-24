@@ -156,3 +156,41 @@ export const useInstructorStudents = (instructorId: string) => {
         enabled: !!instructorId,
     });
 };
+
+// ============ Instructor Analytics ============
+
+export interface InstructorStats {
+    totalStudents: number;
+    activeCourses: number;
+    completionRate: number;
+    averageRating: number;
+    totalEarnings: number;
+    thisMonthEarnings: number;
+    activeStudents: number;
+    totalEnrollments: number;
+    totalCourses: number;
+}
+
+export interface InstructorAnalyticsResponse {
+    success: boolean;
+    stats: InstructorStats;
+}
+
+// Get instructor analytics/statistics
+export const getInstructorAnalytics = async (
+    instructorId: string
+): Promise<InstructorAnalyticsResponse> => {
+    const response = await axiosInstance.get(
+        `${API_BASE_URL}/api/stats/instructor/${instructorId}`
+    );
+    return response.data;
+};
+
+// React Query hook for analytics
+export const useInstructorAnalytics = (instructorId: string) => {
+    return useQuery({
+        queryKey: ["instructor-analytics", instructorId],
+        queryFn: () => getInstructorAnalytics(instructorId),
+        enabled: !!instructorId,
+    });
+};
