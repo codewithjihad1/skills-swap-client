@@ -62,22 +62,17 @@ export const getInstructorStudents = async (
     instructorId: string
 ): Promise<InstructorStudentsResponse> => {
     try {
-        // First, get all courses by this instructor
-        const coursesResponse = await axiosInstance.get(`/api/courses`, {
-            params: {
-                instructor: instructorId,
-                limit: 1000, // Get all courses
-            },
-        });
+        // Use the dedicated instructor enrollments endpoint
+        const response = await axiosInstance.get(
+            `/api/enrollments/instructor/${instructorId}`
+        );
 
-        const courses = coursesResponse.data.courses || [];
-        const courseIds = courses.map((course: any) => course._id);
-
-        if (courseIds.length === 0) {
+        if (response.data.success) {
             return {
                 success: true,
-                students: [],
-                stats: {
+                students:
+                    response.data.students || response.data.enrollments || [],
+                stats: response.data.stats || {
                     totalStudents: 0,
                     activeStudents: 0,
                     completedStudents: 0,
@@ -87,54 +82,16 @@ export const getInstructorStudents = async (
             };
         }
 
-        // Get all enrollments for these courses
-        const enrollmentsPromises = courseIds.map((courseId: string) =>
-            axiosInstance
-                .get(`/api/enrollments/course/${courseId}`)
-                .catch(() => ({ data: { enrollments: [] } }))
-        );
-
-        const enrollmentsResponses = await Promise.all(enrollmentsPromises);
-
-        // Flatten all enrollments
-        const allEnrollments = enrollmentsResponses.flatMap(
-            (response) =>
-                response.data.enrollments || response.data.students || []
-        );
-
-        // Calculate statistics
-        const activeStudents = allEnrollments.filter(
-            (e: any) => e.status === "active"
-        ).length;
-        const completedStudents = allEnrollments.filter(
-            (e: any) => e.status === "completed"
-        ).length;
-        const averageProgress =
-            allEnrollments.length > 0
-                ? Math.round(
-                      allEnrollments.reduce(
-                          (sum: number, e: any) =>
-                              sum + (e.progress?.progressPercentage || 0),
-                          0
-                      ) / allEnrollments.length
-                  )
-                : 0;
-        const totalRevenue = allEnrollments.reduce(
-            (sum: number, e: any) =>
-                sum +
-                (e.paymentStatus === "completed" ? e.paymentAmount || 0 : 0),
-            0
-        );
-
+        // Fallback to empty data
         return {
             success: true,
-            students: allEnrollments,
+            students: [],
             stats: {
-                totalStudents: allEnrollments.length,
-                activeStudents,
-                completedStudents,
-                averageProgress,
-                totalRevenue,
+                totalStudents: 0,
+                activeStudents: 0,
+                completedStudents: 0,
+                averageProgress: 0,
+                totalRevenue: 0,
             },
         };
     } catch (error) {

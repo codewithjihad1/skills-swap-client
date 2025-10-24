@@ -78,7 +78,6 @@ function CoursesContent() {
         setFilters((prev) => ({ ...prev, page }));
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
-    console.log( "course data :",courses);
 
     return (
         <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">

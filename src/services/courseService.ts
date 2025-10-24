@@ -1,7 +1,6 @@
 // services/courseService.ts
+import axiosInstance from "@/axios/axiosInstance";
 import { CourseFilters, CoursesResponse } from "@/types/course";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const getCourses = async (
     filters: CourseFilters = {}
@@ -17,33 +16,23 @@ export const getCourses = async (
     if (sortBy) params.append("sortBy", sortBy);
     if (order) params.append("order", order);
 
-    const response = await fetch(`/api/courses?${params.toString()}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        cache: "no-store",
-    });
+    const response = await axiosInstance.get(
+        `/api/courses?${params.toString()}`
+    );
 
-    if (!response.ok) {
+    if (!response.status || response.status !== 200) {
         throw new Error("Failed to fetch courses");
     }
 
-    return response.json();
+    return response.data;
 };
 
 export const getCourseById = async (id: string) => {
-    const response = await fetch(`/api/courses/${id}`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        cache: "no-store",
-    });
+    const response = await axiosInstance.get(`/api/courses/${id}`);
 
-    if (!response.ok) {
+    if (!response.status || response.status !== 200) {
         throw new Error("Failed to fetch course");
     }
 
-    return response.json();
+    return response.data;
 };
