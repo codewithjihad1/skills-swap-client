@@ -34,6 +34,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
         { name: "Courses", href: "/courses" },
         { name: "Matchmaking", href: "/matchmaking" },
         { name: "About Us", href: "/about" },
+        { name: "My Courses", href: "/my-courses" },
         { name: "Contact", href: "/contact" },
     ];
 
