@@ -108,14 +108,14 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         },
         {
             name: "Wallet",
-            href: "/dashboard/wallet",
+            href: "/dashboard/instructor/wallet",
             icon: Coins,
             description: "Credits & transactions",
             roles: ["user", "instructor", "admin"],
         },
         {
             name: "Reviews",
-            href: "/dashboard/reviews",
+            href: "/dashboard/instructor/reviews",
             icon: Star,
             description: "Feedback & ratings",
             roles: ["user", "instructor", "admin"],

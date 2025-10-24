@@ -15,8 +15,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/axios/axiosInstance";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
 export interface Student {
     _id: string;
     user: {
@@ -65,15 +63,12 @@ export const getInstructorStudents = async (
 ): Promise<InstructorStudentsResponse> => {
     try {
         // First, get all courses by this instructor
-        const coursesResponse = await axiosInstance.get(
-            `${API_BASE_URL}/api/courses`,
-            {
-                params: {
-                    instructor: instructorId,
-                    limit: 1000, // Get all courses
-                },
-            }
-        );
+        const coursesResponse = await axiosInstance.get(`/api/courses`, {
+            params: {
+                instructor: instructorId,
+                limit: 1000, // Get all courses
+            },
+        });
 
         const courses = coursesResponse.data.courses || [];
         const courseIds = courses.map((course: any) => course._id);
@@ -95,7 +90,7 @@ export const getInstructorStudents = async (
         // Get all enrollments for these courses
         const enrollmentsPromises = courseIds.map((courseId: string) =>
             axiosInstance
-                .get(`${API_BASE_URL}/api/enrollments/course/${courseId}`)
+                .get(`/api/enrollments/course/${courseId}`)
                 .catch(() => ({ data: { enrollments: [] } }))
         );
 
@@ -181,7 +176,7 @@ export const getInstructorAnalytics = async (
     instructorId: string
 ): Promise<InstructorAnalyticsResponse> => {
     const response = await axiosInstance.get(
-        `${API_BASE_URL}/api/stats/instructor/${instructorId}`
+        `/api/stats/instructor/${instructorId}`
     );
     return response.data;
 };
