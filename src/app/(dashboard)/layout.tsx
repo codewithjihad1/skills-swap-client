@@ -138,13 +138,13 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             description: "System reports",
             roles: ["admin"],
         },
-        {
-            name: "System Settings",
-            href: "/dashboard/admin/system-settings",
-            icon: SettingsIcon,
-            description: "Platform configuration",
-            roles: ["admin"],
-        },
+        // {
+        //     name: "System Settings",
+        //     href: "/dashboard/admin/system-settings",
+        //     icon: SettingsIcon,
+        //     description: "Platform configuration",
+        //     roles: ["admin"],
+        // },
     ];
 
     // Filter navigation items based on user role
