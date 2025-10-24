@@ -1,109 +1,135 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import {
     Users,
     ShieldCheck,
     Activity,
-    AlertTriangle,
     TrendingUp,
-    Database,
-    Settings,
+    BookOpen,
     UserCheck,
+    DollarSign,
+    Award,
+    GraduationCap,
+    BarChart3,
+    PieChart as PieChartIcon,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAdminStats, useSystemStats, useAllUsers } from "@/lib/api/admin";
+import {
+    AreaChart,
+    Area,
+    BarChart,
+    Bar,
+    PieChart,
+    Pie,
+    Cell,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Legend,
+} from "recharts";
 
 export default function AdminDashboard() {
     const { data: session } = useSession();
     const [activeTab, setActiveTab] = useState("overview");
 
-    // Mock admin statistics
-    const stats = {
-        totalUsers: 12453,
-        activeUsers: 8234,
-        totalInstructors: 342,
-        pendingApprovals: 28,
-        reportedIssues: 15,
-        systemHealth: 98,
-        dailyActiveUsers: 3421,
-        monthlyGrowth: 12.5,
+    const {
+        data: adminStats,
+        isLoading: statsLoading,
+        error: statsError,
+    } = useAdminStats();
+
+    const {
+        data: systemStats,
+        isLoading: systemLoading,
+        error: systemError,
+    } = useSystemStats();
+
+    const {
+        data: usersData,
+        isLoading: usersLoading,
+        error: usersError,
+    } = useAllUsers({ limit: 10, page: 1 });
+
+    // Prepare chart data
+    const enrollmentChartData = useMemo(() => {
+        if (!systemStats?.monthlyEnrollments) return [];
+
+        return systemStats.monthlyEnrollments.map((item) => ({
+            month: `${item._id.month}/${item._id.year}`,
+            enrollments: item.count,
+        }));
+    }, [systemStats]);
+
+    const userGrowthData = useMemo(() => {
+        if (!systemStats?.userGrowth) return [];
+
+        return systemStats.userGrowth.map((item) => ({
+            month: `${item._id.month}/${item._id.year}`,
+            users: item.count,
+        }));
+    }, [systemStats]);
+
+    const categoryData = useMemo(() => {
+        if (!systemStats?.categoryDistribution) return [];
+
+        const COLORS = [
+            "var(--color-primary)",
+            "var(--color-secondary)",
+            "var(--color-accent)",
+            "#6366f1",
+            "#8b5cf6",
+        ];
+
+        return systemStats.categoryDistribution.map((item, index) => ({
+            name: item._id || "Uncategorized",
+            value: item.totalEnrollments,
+            count: item.count,
+            fill: COLORS[index % COLORS.length],
+        }));
+    }, [systemStats]);
+
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat("en-BD", {
+            style: "currency",
+            currency: "BDT",
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        }).format(amount);
     };
 
-    const recentUsers = [
-        {
-            id: "1",
-            name: "John Doe",
-            email: "john@example.com",
-            role: "user",
-            status: "active",
-            joined: "2 hours ago",
-        },
-        {
-            id: "2",
-            name: "Jane Smith",
-            email: "jane@example.com",
-            role: "instructor",
-            status: "pending",
-            joined: "5 hours ago",
-        },
-        {
-            id: "3",
-            name: "Mike Johnson",
-            email: "mike@example.com",
-            role: "user",
-            status: "active",
-            joined: "1 day ago",
-        },
-    ];
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+        });
+    };
 
-    const systemAlerts = [
-        {
-            id: "1",
-            type: "warning",
-            message: "High server load detected",
-            time: "10 minutes ago",
-        },
-        {
-            id: "2",
-            type: "info",
-            message: "Database backup completed successfully",
-            time: "1 hour ago",
-        },
-        {
-            id: "3",
-            type: "error",
-            message: "Failed login attempts from suspicious IP",
-            time: "2 hours ago",
-        },
-    ];
-
-    const pendingActions = [
-        {
-            id: "1",
-            type: "Instructor Application",
-            user: "Sarah Wilson",
-            priority: "high",
-            submitted: "2 days ago",
-        },
-        {
-            id: "2",
-            type: "Content Report",
-            user: "Alex Brown",
-            priority: "medium",
-            submitted: "3 days ago",
-        },
-        {
-            id: "3",
-            type: "Account Verification",
-            user: "Emily Davis",
-            priority: "low",
-            submitted: "5 days ago",
-        },
-    ];
+    const getInitials = (name: string) => {
+        return name
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase()
+            .slice(0, 2);
+    };
 
     const StatCard = ({
         title,
@@ -112,6 +138,7 @@ export default function AdminDashboard() {
         change,
         color,
         trend,
+        loading,
     }: {
         title: string;
         value: string | number;
@@ -119,28 +146,38 @@ export default function AdminDashboard() {
         change?: string;
         color: string;
         trend?: "up" | "down";
+        loading?: boolean;
     }) => (
-        <Card className="hover:shadow-lg transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">
+        <Card
+            className="hover:shadow-lg transition-shadow border-l-4"
+            style={{ borderLeftColor: color }}
+        >
+            <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                    <Icon className="h-4 w-4" style={{ color }} />
                     {title}
                 </CardTitle>
-                <Icon className={`h-5 w-5 ${color}`} />
             </CardHeader>
             <CardContent>
-                <div className="text-3xl font-bold text-gray-900 dark:text-white">
-                    {value}
-                </div>
-                {change && (
-                    <p
-                        className={`text-xs mt-1 ${
-                            trend === "up"
-                                ? "text-green-600 dark:text-green-400"
-                                : "text-red-600 dark:text-red-400"
-                        }`}
-                    >
-                        {change}
-                    </p>
+                {loading ? (
+                    <Skeleton className="h-8 w-32" />
+                ) : (
+                    <>
+                        <div className="text-3xl font-bold" style={{ color }}>
+                            {value}
+                        </div>
+                        {change && (
+                            <p
+                                className={`text-xs mt-1 ${
+                                    trend === "up"
+                                        ? "text-green-600 dark:text-green-400"
+                                        : "text-red-600 dark:text-red-400"
+                                }`}
+                            >
+                                {change}
+                            </p>
+                        )}
+                    </>
                 )}
             </CardContent>
         </Card>
@@ -151,287 +188,581 @@ export default function AdminDashboard() {
             case "admin":
                 return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
             case "instructor":
-                return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200";
+                return "bg-[var(--color-primary)]/20 text-[var(--color-primary)]";
             default:
                 return "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200";
         }
     };
 
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case "active":
-                return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
-            case "pending":
-                return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
-            case "suspended":
-                return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
-            default:
-                return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
-        }
-    };
-
-    const getPriorityColor = (priority: string) => {
-        switch (priority) {
-            case "high":
-                return "destructive";
-            case "medium":
-                return "default";
-            case "low":
-                return "secondary";
-            default:
-                return "default";
-        }
-    };
-
     return (
-        <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 dark:from-gray-900 dark:to-gray-800">
-            <div className="container mx-auto px-4 py-8">
-                {/* Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="mb-8"
-                >
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                                Admin Dashboard 👑
-                            </h1>
-                            <p className="text-gray-600 dark:text-gray-400">
-                                Welcome back, {session?.user?.name}! System
-                                control center.
-                            </p>
-                        </div>
-                        <div className="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full font-semibold flex items-center gap-2">
-                            <ShieldCheck className="h-4 w-4" />
-                            Admin Account
-                        </div>
-                    </div>
-                </motion.div>
-
-                {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <StatCard
-                        title="Total Users"
-                        value={stats.totalUsers.toLocaleString()}
-                        icon={Users}
-                        change={`+${stats.monthlyGrowth}% this month`}
-                        color="text-blue-600"
-                        trend="up"
-                    />
-                    <StatCard
-                        title="Active Users"
-                        value={stats.activeUsers.toLocaleString()}
-                        icon={UserCheck}
-                        change={`${stats.dailyActiveUsers} today`}
-                        color="text-green-600"
-                        trend="up"
-                    />
-                    <StatCard
-                        title="Instructors"
-                        value={stats.totalInstructors}
-                        icon={Activity}
-                        change="+8 new this week"
-                        color="text-purple-600"
-                        trend="up"
-                    />
-                    <StatCard
-                        title="System Health"
-                        value={`${stats.systemHealth}%`}
-                        icon={TrendingUp}
-                        change="All systems operational"
-                        color="text-green-600"
-                        trend="up"
-                    />
+        <div className="container mx-auto p-4 md:p-6 lg:p-8 space-y-6">
+            {/* Header */}
+            <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+            >
+                <div>
+                    <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] bg-clip-text text-transparent">
+                        Admin Dashboard
+                    </h1>
+                    <p className="text-muted-foreground mt-1">
+                        Welcome back, {session?.user?.name}! System control
+                        center.
+                    </p>
                 </div>
+                <Badge className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white px-4 py-2">
+                    <ShieldCheck className="h-4 w-4 mr-2" />
+                    Admin Account
+                </Badge>
+            </motion.div>
 
-                {/* Action Required Cards */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    <Card className="border-orange-200 dark:border-orange-800">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <StatCard
+                    title="Total Users"
+                    value={
+                        adminStats?.totalStudents
+                            ? (
+                                  adminStats.totalStudents +
+                                  adminStats.totalInstructors
+                              ).toLocaleString()
+                            : "0"
+                    }
+                    icon={Users}
+                    change={`${
+                        adminStats?.recentEnrollments || 0
+                    } new this week`}
+                    color="var(--color-primary)"
+                    trend="up"
+                    loading={statsLoading}
+                />
+                <StatCard
+                    title="Active Students"
+                    value={adminStats?.activeStudents.toLocaleString() || "0"}
+                    icon={UserCheck}
+                    change={`${adminStats?.totalEnrollments || 0} enrollments`}
+                    color="var(--color-secondary)"
+                    trend="up"
+                    loading={statsLoading}
+                />
+                <StatCard
+                    title="Instructors"
+                    value={adminStats?.totalInstructors || 0}
+                    icon={GraduationCap}
+                    change={`${adminStats?.activeCourses || 0} active courses`}
+                    color="var(--color-accent)"
+                    trend="up"
+                    loading={statsLoading}
+                />
+                <StatCard
+                    title="Total Revenue"
+                    value={formatCurrency(adminStats?.totalEarnings || 0)}
+                    icon={DollarSign}
+                    change={`${formatCurrency(
+                        adminStats?.thisMonthEarnings || 0
+                    )} this month`}
+                    color="#f59e0b"
+                    trend="up"
+                    loading={statsLoading}
+                />
+            </div>
+
+            {/* Secondary Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <Card className="border-l-4 border-l-[var(--color-primary)]">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                            <BookOpen className="w-4 h-4" />
+                            Total Courses
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {statsLoading ? (
+                            <Skeleton className="h-8 w-24" />
+                        ) : (
+                            <div className="text-2xl font-bold text-[var(--color-primary)]">
+                                {adminStats?.totalCourses || 0}
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-[var(--color-secondary)]">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                            <Activity className="w-4 h-4" />
+                            Completion Rate
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {statsLoading ? (
+                            <Skeleton className="h-8 w-24" />
+                        ) : (
+                            <div className="text-2xl font-bold text-[var(--color-secondary)]">
+                                {adminStats?.completionRate || 0}%
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-[var(--color-accent)]">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                            <Award className="w-4 h-4" />
+                            Average Rating
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {statsLoading ? (
+                            <Skeleton className="h-8 w-24" />
+                        ) : (
+                            <div className="text-2xl font-bold text-[var(--color-accent)]">
+                                {adminStats?.averageRating.toFixed(1) || "0.0"}{" "}
+                                ⭐
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+
+                <Card className="border-l-4 border-l-purple-500">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                            <TrendingUp className="w-4 h-4" />
+                            Active Courses
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {statsLoading ? (
+                            <Skeleton className="h-8 w-24" />
+                        ) : (
+                            <div className="text-2xl font-bold text-purple-500">
+                                {adminStats?.activeCourses || 0}
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
+
+            {/* Main Content Tabs */}
+            <Tabs
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="space-y-6"
+            >
+                <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="overview">
+                        <BarChart3 className="h-4 w-4 mr-2" />
+                        Overview
+                    </TabsTrigger>
+                    <TabsTrigger value="analytics">
+                        <PieChartIcon className="h-4 w-4 mr-2" />
+                        Analytics
+                    </TabsTrigger>
+                    <TabsTrigger value="users">
+                        <Users className="h-4 w-4 mr-2" />
+                        Users
+                    </TabsTrigger>
+                </TabsList>
+
+                {/* Overview Tab */}
+                <TabsContent value="overview" className="space-y-6">
+                    {/* Enrollment Trends */}
+                    <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
-                                <AlertTriangle className="h-5 w-5 text-orange-600" />
-                                Pending Actions ({stats.pendingApprovals})
+                                <TrendingUp className="w-5 h-5 text-[var(--color-primary)]" />
+                                Enrollment Trends
                             </CardTitle>
+                            <CardDescription>
+                                Monthly enrollment statistics
+                            </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-3">
-                            {pendingActions.map((action) => (
-                                <div
-                                    key={action.id}
-                                    className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg flex items-center justify-between"
-                                >
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-2">
-                                            <Badge
-                                                variant={getPriorityColor(
-                                                    action.priority
-                                                )}
+                        <CardContent>
+                            {systemLoading ? (
+                                <Skeleton className="h-64 w-full" />
+                            ) : (
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <AreaChart data={enrollmentChartData}>
+                                        <defs>
+                                            <linearGradient
+                                                id="enrollmentGradient"
+                                                x1="0"
+                                                y1="0"
+                                                x2="0"
+                                                y2="1"
                                             >
-                                                {action.priority}
-                                            </Badge>
-                                            <span className="font-semibold text-sm text-gray-900 dark:text-white">
-                                                {action.type}
-                                            </span>
-                                        </div>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                            {action.user} • {action.submitted}
-                                        </p>
-                                    </div>
-                                    <button className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition-colors">
-                                        Review
-                                    </button>
-                                </div>
-                            ))}
+                                                <stop
+                                                    offset="5%"
+                                                    stopColor="var(--color-primary)"
+                                                    stopOpacity={0.8}
+                                                />
+                                                <stop
+                                                    offset="95%"
+                                                    stopColor="var(--color-primary)"
+                                                    stopOpacity={0}
+                                                />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid
+                                            strokeDasharray="3 3"
+                                            className="stroke-muted"
+                                        />
+                                        <XAxis
+                                            dataKey="month"
+                                            className="text-sm"
+                                            tick={{ fill: "currentColor" }}
+                                        />
+                                        <YAxis
+                                            className="text-sm"
+                                            tick={{ fill: "currentColor" }}
+                                        />
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor:
+                                                    "hsl(var(--card))",
+                                                border: "1px solid hsl(var(--border))",
+                                                borderRadius: "8px",
+                                            }}
+                                        />
+                                        <Area
+                                            type="monotone"
+                                            dataKey="enrollments"
+                                            stroke="var(--color-primary)"
+                                            fillOpacity={1}
+                                            fill="url(#enrollmentGradient)"
+                                        />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            )}
                         </CardContent>
                     </Card>
 
-                    <Card className="border-yellow-200 dark:border-yellow-800">
+                    {/* User Growth */}
+                    <Card>
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2">
-                                <Database className="h-5 w-5 text-yellow-600" />
-                                System Alerts ({systemAlerts.length})
+                                <Users className="w-5 h-5 text-[var(--color-secondary)]" />
+                                User Growth
                             </CardTitle>
+                            <CardDescription>
+                                Monthly user registration statistics
+                            </CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-3">
-                            {systemAlerts.map((alert) => (
-                                <div
-                                    key={alert.id}
-                                    className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
-                                >
-                                    <div className="flex items-start gap-2">
-                                        <Badge
-                                            variant={
-                                                alert.type === "error"
-                                                    ? "destructive"
-                                                    : alert.type === "warning"
-                                                    ? "default"
-                                                    : "secondary"
-                                            }
-                                        >
-                                            {alert.type}
-                                        </Badge>
-                                        <div className="flex-1">
-                                            <p className="text-sm text-gray-900 dark:text-white">
-                                                {alert.message}
-                                            </p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                {alert.time}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
+                        <CardContent>
+                            {systemLoading ? (
+                                <Skeleton className="h-64 w-full" />
+                            ) : (
+                                <ResponsiveContainer width="100%" height={300}>
+                                    <BarChart data={userGrowthData}>
+                                        <CartesianGrid
+                                            strokeDasharray="3 3"
+                                            className="stroke-muted"
+                                        />
+                                        <XAxis
+                                            dataKey="month"
+                                            className="text-sm"
+                                            tick={{ fill: "currentColor" }}
+                                        />
+                                        <YAxis
+                                            className="text-sm"
+                                            tick={{ fill: "currentColor" }}
+                                        />
+                                        <Tooltip
+                                            contentStyle={{
+                                                backgroundColor:
+                                                    "hsl(var(--card))",
+                                                border: "1px solid hsl(var(--border))",
+                                                borderRadius: "8px",
+                                            }}
+                                        />
+                                        <Bar
+                                            dataKey="users"
+                                            fill="var(--color-secondary)"
+                                            radius={[8, 8, 0, 0]}
+                                        />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            )}
                         </CardContent>
                     </Card>
-                </div>
+                </TabsContent>
 
-                {/* Main Content Tabs */}
-                <Tabs
-                    value={activeTab}
-                    onValueChange={setActiveTab}
-                    className="space-y-6"
-                >
-                    <TabsList className="grid w-full grid-cols-4">
-                        <TabsTrigger value="overview">Overview</TabsTrigger>
-                        <TabsTrigger value="users">User Management</TabsTrigger>
-                        <TabsTrigger value="reports">Reports</TabsTrigger>
-                        <TabsTrigger value="settings">
-                            <Settings className="h-4 w-4 mr-2" />
-                            Settings
-                        </TabsTrigger>
-                    </TabsList>
-
-                    <TabsContent value="overview" className="space-y-6">
+                {/* Analytics Tab */}
+                <TabsContent value="analytics" className="space-y-6">
+                    {/* Category Distribution */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Recent User Registrations</CardTitle>
+                                <CardTitle className="flex items-center gap-2">
+                                    <PieChartIcon className="w-5 h-5 text-[var(--color-primary)]" />
+                                    Course Category Distribution
+                                </CardTitle>
+                                <CardDescription>
+                                    Enrollments by category
+                                </CardDescription>
                             </CardHeader>
                             <CardContent>
+                                {systemLoading ? (
+                                    <Skeleton className="h-64 w-full" />
+                                ) : (
+                                    <ResponsiveContainer
+                                        width="100%"
+                                        height={300}
+                                    >
+                                        <PieChart>
+                                            <Pie
+                                                data={categoryData}
+                                                cx="50%"
+                                                cy="50%"
+                                                labelLine={false}
+                                                label={(props: any) => {
+                                                    const {
+                                                        cx,
+                                                        cy,
+                                                        midAngle,
+                                                        innerRadius,
+                                                        outerRadius,
+                                                        percent,
+                                                    } = props;
+                                                    const radius =
+                                                        Number(innerRadius) +
+                                                        (Number(outerRadius) -
+                                                            Number(
+                                                                innerRadius
+                                                            )) *
+                                                            0.5;
+                                                    const x =
+                                                        Number(cx) +
+                                                        radius *
+                                                            Math.cos(
+                                                                (-Number(
+                                                                    midAngle
+                                                                ) *
+                                                                    Math.PI) /
+                                                                    180
+                                                            );
+                                                    const y =
+                                                        Number(cy) +
+                                                        radius *
+                                                            Math.sin(
+                                                                (-Number(
+                                                                    midAngle
+                                                                ) *
+                                                                    Math.PI) /
+                                                                    180
+                                                            );
+
+                                                    return (
+                                                        <text
+                                                            x={x}
+                                                            y={y}
+                                                            fill="white"
+                                                            textAnchor={
+                                                                x > Number(cx)
+                                                                    ? "start"
+                                                                    : "end"
+                                                            }
+                                                            dominantBaseline="central"
+                                                            className="text-sm font-bold"
+                                                        >
+                                                            {`${(
+                                                                Number(
+                                                                    percent
+                                                                ) * 100
+                                                            ).toFixed(0)}%`}
+                                                        </text>
+                                                    );
+                                                }}
+                                                outerRadius={100}
+                                                dataKey="value"
+                                            >
+                                                {categoryData.map(
+                                                    (entry, index) => (
+                                                        <Cell
+                                                            key={`cell-${index}`}
+                                                            fill={entry.fill}
+                                                        />
+                                                    )
+                                                )}
+                                            </Pie>
+                                            <Tooltip
+                                                formatter={(value: number) =>
+                                                    `${value} enrollments`
+                                                }
+                                            />
+                                            <Legend />
+                                        </PieChart>
+                                    </ResponsiveContainer>
+                                )}
+                            </CardContent>
+                        </Card>
+
+                        {/* Top Courses */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Award className="w-5 h-5 text-[var(--color-secondary)]" />
+                                    Top Performing Courses
+                                </CardTitle>
+                                <CardDescription>
+                                    Most popular courses by enrollment
+                                </CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                {systemLoading ? (
+                                    <div className="space-y-3">
+                                        {[...Array(5)].map((_, i) => (
+                                            <Skeleton
+                                                key={i}
+                                                className="h-16 w-full"
+                                            />
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <ScrollArea className="h-[300px]">
+                                        <div className="space-y-3">
+                                            {systemStats?.topCourses.map(
+                                                (course, index) => (
+                                                    <Card key={course._id}>
+                                                        <CardContent className="p-4">
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] flex items-center justify-center text-white font-bold">
+                                                                    {index + 1}
+                                                                </div>
+                                                                <div className="flex-1 min-w-0">
+                                                                    <h4 className="font-semibold truncate">
+                                                                        {
+                                                                            course.title
+                                                                        }
+                                                                    </h4>
+                                                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                                        <Badge variant="outline">
+                                                                            {
+                                                                                course.category
+                                                                            }
+                                                                        </Badge>
+                                                                        <span>
+                                                                            •
+                                                                        </span>
+                                                                        <span>
+                                                                            {
+                                                                                course.enrollmentCount
+                                                                            }{" "}
+                                                                            students
+                                                                        </span>
+                                                                        <span>
+                                                                            •
+                                                                        </span>
+                                                                        <span>
+                                                                            {course.rating.average.toFixed(
+                                                                                1
+                                                                            )}{" "}
+                                                                            ⭐
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </CardContent>
+                                                    </Card>
+                                                )
+                                            )}
+                                        </div>
+                                    </ScrollArea>
+                                )}
+                            </CardContent>
+                        </Card>
+                    </div>
+                </TabsContent>
+
+                {/* Users Tab */}
+                <TabsContent value="users" className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Recent User Registrations</CardTitle>
+                            <CardDescription>
+                                Latest users who joined the platform
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            {usersLoading ? (
                                 <div className="space-y-3">
-                                    {recentUsers.map((user) => (
+                                    {[...Array(5)].map((_, i) => (
                                         <div
-                                            key={user.id}
-                                            className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                                            key={i}
+                                            className="flex items-center gap-4 p-4"
                                         >
-                                            <div className="flex-1">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="font-semibold text-gray-900 dark:text-white">
-                                                        {user.name}
-                                                    </span>
-                                                    <Badge
-                                                        className={getRoleColor(
-                                                            user.role
-                                                        )}
-                                                    >
-                                                        {user.role}
-                                                    </Badge>
-                                                    <Badge
-                                                        className={getStatusColor(
-                                                            user.status
-                                                        )}
-                                                    >
-                                                        {user.status}
-                                                    </Badge>
-                                                </div>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                                    {user.email} • Joined{" "}
-                                                    {user.joined}
-                                                </p>
+                                            <Skeleton className="w-12 h-12 rounded-full" />
+                                            <div className="flex-1 space-y-2">
+                                                <Skeleton className="h-4 w-48" />
+                                                <Skeleton className="h-3 w-32" />
                                             </div>
-                                            <button className="px-3 py-1 text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
-                                                View Profile
-                                            </button>
                                         </div>
                                     ))}
                                 </div>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="users" className="space-y-6">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>User Management</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-gray-600 dark:text-gray-400">
-                                    User management features coming soon...
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="reports" className="space-y-6">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>
-                                    Reported Issues ({stats.reportedIssues})
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-gray-600 dark:text-gray-400">
-                                    Issue reports and moderation tools coming
-                                    soon...
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-
-                    <TabsContent value="settings" className="space-y-6">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>System Settings</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-gray-600 dark:text-gray-400">
-                                    System configuration and settings coming
-                                    soon...
-                                </p>
-                            </CardContent>
-                        </Card>
-                    </TabsContent>
-                </Tabs>
-            </div>
+                            ) : usersData?.users &&
+                              usersData.users.length > 0 ? (
+                                <div className="space-y-3">
+                                    {usersData.users.map((user) => (
+                                        <Card
+                                            key={user._id}
+                                            className="hover:shadow-md transition-shadow"
+                                        >
+                                            <CardContent className="p-4">
+                                                <div className="flex items-center gap-4">
+                                                    <Avatar className="w-12 h-12">
+                                                        <AvatarImage
+                                                            src={user.avatar}
+                                                            alt={user.name}
+                                                        />
+                                                        <AvatarFallback className="bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-white">
+                                                            {getInitials(
+                                                                user.name
+                                                            )}
+                                                        </AvatarFallback>
+                                                    </Avatar>
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="font-semibold">
+                                                                {user.name}
+                                                            </span>
+                                                            <Badge
+                                                                className={getRoleColor(
+                                                                    user.role
+                                                                )}
+                                                            >
+                                                                {user.role}
+                                                            </Badge>
+                                                        </div>
+                                                        <p className="text-sm text-muted-foreground">
+                                                            {user.email} •
+                                                            Joined{" "}
+                                                            {formatDate(
+                                                                user.createdAt
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-center py-12">
+                                    <Users className="w-16 h-16 mx-auto text-muted-foreground/50 mb-4" />
+                                    <h3 className="text-lg font-semibold mb-2">
+                                        No users found
+                                    </h3>
+                                    <p className="text-muted-foreground">
+                                        Users will appear here once they
+                                        register
+                                    </p>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+            </Tabs>
         </div>
     );
 }

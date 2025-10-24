@@ -3,6 +3,7 @@
 import AddSkillComponent from "@/components/skills/AddSkill";
 import { ModeToggle } from "@/components/theme/toggle-theme";
 import { Button } from "@/components/ui";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { BookOpen, Settings, Star } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -66,16 +67,20 @@ const DesktopSidebar = ({ navigationItems, quickActions, isActive }: any) => {
                     <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-primary/10 via-accent/20 to-secondary/10 rounded-lg border border-primary/20 shadow-sm hover:shadow-md transition-all duration-200">
                         <div className="relative">
                             <div className="w-10 h-10 rounded-full overflow-hidden bg-muted ring-2 ring-primary/20">
-                                <Image
-                                    src={
-                                        session?.user?.image ||
-                                        "/default-avatar.png"
-                                    }
-                                    alt="Profile"
-                                    width={40}
-                                    height={40}
-                                    className="w-full h-full object-cover"
-                                />
+                                <Avatar className="h-24 w-24">
+                                    <AvatarImage
+                                        src={
+                                            session?.user?.image ||
+                                            "/default-avatar.png"
+                                        }
+                                        alt={session?.user?.name || "Profile"}
+                                    />
+                                    <AvatarFallback className="text-2xl bg-gradient-to-r from-primary to-secondary text-white w-full h-full flex items-center justify-center">
+                                        {session?.user?.name
+                                            ? session?.user?.name?.charAt(0)
+                                            : "U"}
+                                    </AvatarFallback>
+                                </Avatar>
                             </div>
                             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-primary rounded-full border-2 border-card"></div>
                         </div>
