@@ -160,120 +160,6 @@ const SkillsPage = () => {
                     </div>
                 </motion.div>
 
-                {/* Stats Cards */}
-                {/* <motion.div
-                    variants={itemVariants}
-                    className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4"
-                >
-                    <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-700">
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-blue-600 rounded-lg">
-                                    <BookOpen className="h-4 w-4 text-white" />
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                        Skills Offered
-                                    </p>
-                                    <p className="text-2xl font-bold text-blue-600">
-                                        {stats.totalOffered}
-                                    </p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 border-purple-200 dark:border-purple-700">
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-purple-600 rounded-lg">
-                                    <Target className="h-4 w-4 text-white" />
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                        Learning
-                                    </p>
-                                    <p className="text-2xl font-bold text-purple-600">
-                                        {stats.totalWanted}
-                                    </p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-700">
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-green-600 rounded-lg">
-                                    <Users className="h-4 w-4 text-white" />
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                        Students
-                                    </p>
-                                    <p className="text-2xl font-bold text-green-600">
-                                        {stats.activeStudents}
-                                    </p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 border-orange-200 dark:border-orange-700">
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-orange-600 rounded-lg">
-                                    <TrendingUp className="h-4 w-4 text-white" />
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                        Earnings
-                                    </p>
-                                    <p className="text-2xl font-bold text-orange-600">
-                                        ${stats.totalEarnings}
-                                    </p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 border-yellow-200 dark:border-yellow-700">
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-yellow-600 rounded-lg">
-                                    <Star className="h-4 w-4 text-white" />
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                        Rating
-                                    </p>
-                                    <p className="text-2xl font-bold text-yellow-600">
-                                        {stats.averageRating}
-                                    </p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card className="bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/20 dark:to-indigo-800/20 border-indigo-200 dark:border-indigo-700">
-                        <CardContent className="p-4">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-indigo-600 rounded-lg">
-                                    <Award className="h-4 w-4 text-white" />
-                                </div>
-                                <div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                        Sessions
-                                    </p>
-                                    <p className="text-2xl font-bold text-indigo-600">
-                                        {stats.completedSessions}
-                                    </p>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </motion.div> */}
-
                 {/* Search and Filter */}
                 <motion.div
                     variants={itemVariants}
@@ -381,9 +267,9 @@ const SkillsPage = () => {
                                             </CardHeader>
 
                                             <CardContent className="space-y-4">
-                                                <p className="text-sm text-gray-600 dark:text-gray-300">
+                                                {/* <p className="text-sm text-gray-600 dark:text-gray-300">
                                                     {skill.description}
-                                                </p>
+                                                </p> */}
 
                                                 <div className="flex flex-wrap gap-1">
                                                     {skill.tags.map((tag) => (

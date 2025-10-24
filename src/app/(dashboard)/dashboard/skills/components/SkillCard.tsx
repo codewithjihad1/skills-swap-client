@@ -95,9 +95,9 @@ const SkillCard = ({ skillData, index }: any) => {
                 </CardHeader>
 
                 <CardContent className="space-y-4">
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                    {/* <p className="text-sm text-gray-600 dark:text-gray-300">
                         {skillData.description}
-                    </p>
+                    </p> */}
 
                     <div className="flex flex-wrap gap-1">
                         {skillData.tags.map((tag: string) => (

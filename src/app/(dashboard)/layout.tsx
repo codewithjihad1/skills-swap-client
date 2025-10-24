@@ -87,21 +87,21 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     const instructorNavigationItems = [
         {
             name: "My Courses",
-            href: "/dashboard/courses",
+            href: "/dashboard/instructor/courses",
             icon: BookOpen,
             description: "Manage your courses",
             roles: ["instructor", "admin"],
         },
         {
             name: "Students",
-            href: "/dashboard/students",
+            href: "/dashboard/instructor/students",
             icon: GraduationCap,
             description: "Student management",
             roles: ["instructor", "admin"],
         },
         {
             name: "Analytics",
-            href: "/dashboard/analytics",
+            href: "/dashboard/instructor/analytics",
             icon: BarChart3,
             description: "Performance metrics",
             roles: ["instructor", "admin"],
@@ -112,21 +112,21 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     const adminNavigationItems = [
         {
             name: "User Management",
-            href: "/dashboard/manageUsers",
+            href: "/dashboard/admin/manageUsers",
             icon: Users,
             description: "Manage all users",
             roles: ["admin"],
         },
         {
             name: "Reports",
-            href: "/dashboard/reports",
+            href: "/dashboard/admin/reports",
             icon: FileText,
             description: "System reports",
             roles: ["admin"],
         },
         {
             name: "System Settings",
-            href: "/dashboard/system-settings",
+            href: "/dashboard/admin/system-settings",
             icon: SettingsIcon,
             description: "Platform configuration",
             roles: ["admin"],
