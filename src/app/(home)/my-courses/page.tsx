@@ -131,12 +131,12 @@ export default function MyCoursesPage() {
 
     // Handle continue learning
     const handleContinueLearning = (courseId: string) => {
-        router.push(`/course/${courseId}/learn`);
+        router.push(`/my-courses/${courseId}/learn`);
     };
 
     // Handle rate course
     const handleRateCourse = (courseId: string) => {
-        router.push(`/course/${courseId}/rate`);
+        router.push(`/my-courses/${courseId}/rate`);
     };
 
     // Get status badge color
