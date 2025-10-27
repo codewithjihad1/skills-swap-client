@@ -116,7 +116,7 @@ export default function ProfileHeader() {
                             </h1>
                             <Badge
                                 variant="secondary"
-                                className="w-fit bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+                               className="w-fit bg-gradient-to-r from-green-600 to-emerald-600 text-white"
                             >
                                 {userProfile?.isActive
                                     ? "Active Member"
@@ -145,19 +145,19 @@ export default function ProfileHeader() {
                         <div className="flex items-center gap-2 pt-2">
                             <Badge
                                 variant="outline"
-                                className="text-blue-600 dark:text-blue-400"
+                                className="text-green-600 dark:text-green-400"
                             >
                                 {userProfile?.skills?.length || 0} Skills
                             </Badge>
                         </div>
                     </div>
-                    <Button
-                        variant="default"
-                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                        onClick={() => setIsEditMode(!isEditMode)}
-                    >
-                        Edit Profile
-                    </Button>
+<Button
+    variant="default"
+    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+    onClick={() => setIsEditMode(!isEditMode)}
+>
+    Edit Profile
+</Button>
                 </div>
             </CardContent>
         </Card>
