@@ -20,21 +20,21 @@ const Footer: React.FC = () => {
 
                     <div className="flex space-x-4 justify-center sm:justify-start">
                         <Image
-                            src="/facebook.png"
+                            src="https://i.ibb.co.com/V0zjX8gp/images-q-tbn-ANd9-Gc-Tjvz-C-QRv6mo-Ahg-Nb5-C6e3yic-Kg-FND1g2-Rw-A-s.jpg"
                             alt="Facebook"
                             width={42}
                             height={42}
                             className="bg-white rounded-full p-2 hover:bg-primary transform hover:-translate-y-1 transition-all duration-300"
                         />
                         <Image
-                            src="/youtube.png"
+                            src="https://i.ibb.co.com/KxCfsbzy/1280px-You-Tube-full-color-icon-2017-svg.png"
                             alt="YouTube"
                             width={42}
                             height={42}
                             className="bg-white rounded-full p-2 hover:bg-primary transform hover:-translate-y-1 transition-all duration-300"
                         />
                         <Image
-                            src="/linkedin.png"
+                            src="https://i.ibb.co.com/b5Cj95j5/vector-linkedin-apps-logo-rounded-asset-isolated-1004619-457.jpg"
                             alt="LinkedIn"
                             width={42}
                             height={42}
