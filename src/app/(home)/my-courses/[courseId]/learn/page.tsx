@@ -149,8 +149,8 @@ export default function CourseLearningPage() {
 
     const lessons = lessonsData?.lessons || [];
     const currentLesson = lessonData?.lesson;
-    const videoId = currentLesson?.videoUrl
-        ? getYouTubeVideoId(currentLesson.videoUrl)
+    const videoId = currentLesson?.content
+        ? getYouTubeVideoId(currentLesson.content)
         : null;
 
     // Calculate progress
@@ -491,7 +491,7 @@ export default function CourseLearningPage() {
                                                                 Lesson{" "}
                                                                 {lesson.order}
                                                             </span>
-                                                            {lesson.videoUrl && (
+                                                            {lesson.content && (
                                                                 <PlayCircle className="h-4 w-4 text-[var(--color-primary)]" />
                                                             )}
                                                         </div>
